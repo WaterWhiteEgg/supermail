@@ -1,7 +1,10 @@
 <template>
     <div id="app">
-      <Tabbar></Tabbar>
+      
         <router-view />
+
+
+      <Tabbar></Tabbar>
     </div>
 </template>
 
