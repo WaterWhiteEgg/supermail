@@ -1,22 +1,22 @@
 <template>
     <div>
         <ul class="tabbar_style">
-            <Tabbaritem>
+            <Tabbaritem this_router='/home'>
                 <template #tabbarico>
                     <li class="icon-home">首页</li>
                 </template>
             </Tabbaritem>
-            <Tabbaritem
+            <Tabbaritem this_router='/homeview'
                 ><template #tabbarico>
                     <li class="icon-books">浏览</li>
                 </template>
             </Tabbaritem>
-            <Tabbaritem
+            <Tabbaritem this_router='/cart'
                 ><template #tabbarico>
                     <li class="icon-cart">购物车</li>
                 </template></Tabbaritem
             >
-            <Tabbaritem
+            <Tabbaritem this_router='/user'
                 ><template #tabbarico>
                     <li class="icon-user">我的</li>
                 </template></Tabbaritem

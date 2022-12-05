@@ -5,10 +5,15 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const Home = () => import('../views/home/Home.vue');
-const View = () => import('../views/view/View.vue');
+const View = () => import('../views/homeview/HomeView.vue');
 const Cart = () => import('../views/cart/Cart.vue');
 const User = () => import('../views/user/User.vue');
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(to) {
+	return originalPush.call(this, to).catch(err => err)
+}
+// 取消重复路由不会报错代码
 const routes = [
   {
     path: '',
@@ -19,7 +24,7 @@ const routes = [
     component: Home,
   },
   {
-    path: '/view',
+    path: '/homeview',
     component: View,
   },
   {

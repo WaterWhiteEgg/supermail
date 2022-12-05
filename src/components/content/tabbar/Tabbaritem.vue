@@ -1,5 +1,5 @@
 <template >
-    <div class="tabbaritem_style" :style="isroute">
+    <div class="tabbaritem_style" :style="isroute" @click="changeRoute">
         <slot name="tabbarico"><li class="icon-home">默认值</li></slot>
     </div>
 </template>
@@ -10,11 +10,20 @@ export default {
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        changeRoute() {
+            this.$router.push(this.this_router);
+        },
+    },
     computed: {
         isroute() {
-            
-            return "color:red";
+            return this.$route.path === this.this_router ? "color:red" : {};
+        },
+    },
+    props: {
+        this_router: {
+            type: String,
+            default: "",
         },
     },
 };
