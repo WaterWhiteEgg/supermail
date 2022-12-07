@@ -3,18 +3,19 @@
         <div class="swiper-wrapper">
             <div
                 class="swiper-slide"
-                v-for="(item, index) in allBanner"
-                :key="index"
+                v-for="(item, index) in imageBanner"
+                :key="titleBanner[index]"
             >
-                <a :href="allBanner[index].link">
+                <a :href="linkBanner[index]">
                     <img
-                        :src="allBanner[index].image"
-                        :alt="allBanner[index].title"
-                /></a>
+                        :src="item"
+                        :alt="titleBanner[index]"
+                        :style="changeHeight(index)"
+                    />
+                </a>
             </div>
         </div>
         <div class="swiper-pagination"></div>
-
         <!-- 分页器 -->
 
         <!-- 导航按钮 -->
@@ -65,11 +66,37 @@ export default {
         });
     },
     props: {
-        allBanner: {
+        imageBanner: {
             type: Array,
             default: function () {
                 return [];
             },
+        },
+        titleBanner: {
+            type: Array,
+            default: function () {
+                return [];
+            },
+        },
+        linkBanner: {
+            type: Array,
+            default: function () {
+                return [];
+            },
+        },
+        heightBanner: {
+            type: Array,
+            default: function () {
+                return [];
+            },
+        },
+    },
+    computed: {
+        changeHeight() {
+            return (index) => {
+                // 若在计算函数里传递值，应该返回的是一个函数，并且值在这里传
+                return "height:" + this.heightBanner[index] + "px";
+            };
         },
     },
 };

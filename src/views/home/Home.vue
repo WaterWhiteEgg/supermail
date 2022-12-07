@@ -3,11 +3,17 @@
         <Navbar class="home_navbar">
             <template #center>购物街破解版</template>
         </Navbar>
-        <Banner :allBanner="banner" ></Banner>
-        <div>
+        <Banner
+            :imageBanner="bannerimage"
+            :linkBanner="bannerlink"
+            :titleBanner="bannertitle"
+        >
             <!-- 轮播图 -->
             <!-- {{ banner }} -->
-        </div>
+            <!-- :heightBanner="bannerheight" -->
+            <!-- 由于高度属性太丑，即使做了，也不要传了 -->
+        </Banner>
+        <div></div>
     </div>
 </template>
 
@@ -22,6 +28,12 @@ export default {
     data() {
         return {
             banner: [],
+            bannerimage: [],
+            bannerlink: [],
+            bannertitle: [],
+            bannerheight: [],
+            // 太丑了不要
+            // 其实，也可以不分的。。。直接写.xxx,但这样好看一点
             dKeyword: {},
             keywords: {},
             recommend: {},
@@ -43,6 +55,14 @@ export default {
                 this.keywords = res.data.data.keywords;
                 this.recommend = res.data.data.recommend;
                 console.log(this.banner);
+                this.banner.map((value) => {
+                    // 遍历数据以便swiper模块化
+                    this.bannerimage.push(value.image);
+                    this.bannerlink.push(value.link);
+                    this.bannertitle.push(value.title);
+                    // this.bannerheight.push(value.height);
+                    // 太丑了不要
+                });
             })
             .catch((err) => {
                 console.log(err);
