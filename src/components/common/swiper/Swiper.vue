@@ -46,7 +46,7 @@ export default {
             speed: 300,
             // 切换速度
             autoplay: {
-                delay: 3000,
+                delay: 90000000000000000000000,
                 // 什么时候开始
                 disableOnInteraction: false,
                 // 操作后不停止轮播图
@@ -112,5 +112,8 @@ export default {
 .swiper-slide img {
     width: 100%;
     height: 100%;
+}
+.swiper-slide a{
+    display:block;
 }
 </style>

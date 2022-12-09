@@ -1,10 +1,8 @@
 <template>
     <div id="app">
-      
         <router-view />
 
-
-      <Tabbar></Tabbar>
+        <Tabbar></Tabbar>
     </div>
 </template>
 
@@ -12,9 +10,9 @@
 import Tabbar from "components/common/tabbar/Tabbar.vue";
 export default {
     name: "App",
-    components:{
-      Tabbar
-    }
+    components: {
+        Tabbar,
+    },
 };
 </script>
 <style>
