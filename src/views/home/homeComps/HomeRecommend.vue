@@ -32,7 +32,7 @@ export default {
     },
 
     updated() {
-        console.log(this.listRecommend);
+        // console.log(this.listRecommend);
     },
 
     methods: {},

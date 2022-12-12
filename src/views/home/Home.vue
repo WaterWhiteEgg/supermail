@@ -1,9 +1,9 @@
 <template>
     <div>
-        <Navbar class="home_navbar">
+        <navbar class="home_navbar">
             <template #center>购物街破解版</template>
-        </Navbar>
-        <Banner
+        </navbar>
+        <banner
             :imageBanner="bannerimage"
             :linkBanner="bannerlink"
             :titleBanner="bannertitle"
@@ -12,8 +12,10 @@
             <!-- {{ banner }} -->
             <!-- :heightBanner="bannerheight" -->
             <!-- 由于高度属性太丑，即使做了，也不要传了 -->
-        </Banner>
-        <HomeRecommend :listRecommend="recommend.list"></HomeRecommend>
+        </banner>
+        <home-recommend :listRecommend="recommend.list"></home-recommend>
+        <home-feature></home-feature>
+
     </div>
 </template>
 
@@ -21,9 +23,10 @@
 <script>
 import Navbar from "components/common/navbar/Navbar.vue";
 import Banner from "components/common/swiper/Swiper.vue";
-import HomeRecommend from "./homeComps/HomeRecommend.vue"
+import HomeRecommend from "./homeComps/HomeRecommend.vue"   
 
 import { getHomeData } from "../../network/home";
+import HomeFeature from './homeComps/HomeFeature.vue';
 export default {
     name: "Home",
     data() {
@@ -45,6 +48,7 @@ export default {
         Navbar,
         Banner,
         HomeRecommend,
+        HomeFeature,
     },
     mounted() {
         // 创建完实例后执行
@@ -57,6 +61,7 @@ export default {
                 this.keywords = res.data.data.keywords;
                 this.recommend = res.data.data.recommend;
                 // console.log(this.banner);
+                console.log(res);
                 // console.log(this.recommend);
                 this.banner.map((value) => {
                     // 遍历数据以便swiper模块化
