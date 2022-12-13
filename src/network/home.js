@@ -10,3 +10,12 @@ export function getHomeData() {
     // 本来是在这里写then catch的，但是我们还是让调用者直接用比较好
     // 这里只是多封装了一层导出去，原理不变的
 }
+export function getGoodsHome(type,page) {
+    return requestHome({
+        url: "/home/data",
+        params: {
+            type,
+            page,
+        }
+    })
+}

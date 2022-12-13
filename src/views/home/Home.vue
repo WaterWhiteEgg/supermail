@@ -15,7 +15,20 @@
         </banner>
         <home-recommend :listRecommend="recommend.list"></home-recommend>
         <home-feature></home-feature>
+        <tab-control :giveArray="giveArray"></tab-control>
 
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
     </div>
 </template>
 
@@ -23,10 +36,11 @@
 <script>
 import Navbar from "components/common/navbar/Navbar.vue";
 import Banner from "components/common/swiper/Swiper.vue";
-import HomeRecommend from "./homeComps/HomeRecommend.vue"   
+import HomeRecommend from "./homeComps/HomeRecommend.vue";
+import TabControl from "components/common/tabcontrol/TabControl.vue";
 
-import { getHomeData } from "../../network/home";
-import HomeFeature from './homeComps/HomeFeature.vue';
+import { getHomeData, getGoodsHome } from "../../network/home";
+import HomeFeature from "./homeComps/HomeFeature.vue";
 export default {
     name: "Home",
     data() {
@@ -36,12 +50,17 @@ export default {
             bannerlink: [],
             bannertitle: [],
             bannerheight: [],
-            // 太丑了不要
             // 其实，也可以不分的。。。直接写.xxx,但这样好看一点
-            dKeyword: {},
-            keywords: {},
+            // dKeyword: {},
+            // keywords: {},
             recommend: {},
             // 网络请求
+            giveArray: [],
+            goods: {
+                pop: { page: 0, list: [] },
+                new: { page: 0, list: [] },
+                sell: { page: 0, list: [] },
+            },
         };
     },
     components: {
@@ -49,32 +68,58 @@ export default {
         Banner,
         HomeRecommend,
         HomeFeature,
+        TabControl,
     },
     mounted() {
         // 创建完实例后执行
     },
     created() {
-        getHomeData()
-            .then((res) => {
-                this.banner = res.data.data.banner.list;
-                this.dKeyword = res.data.data.dKeyword;
-                this.keywords = res.data.data.keywords;
-                this.recommend = res.data.data.recommend;
-                // console.log(this.banner);
-                console.log(res);
-                // console.log(this.recommend);
-                this.banner.map((value) => {
-                    // 遍历数据以便swiper模块化
-                    this.bannerimage.push(value.image);
-                    this.bannerlink.push(value.link);
-                    this.bannertitle.push(value.title);
-                    // this.bannerheight.push(value.height);
-                    // 太丑了不要
+        // 抽离到methods出来也有好处，可以传参，节省逻辑判断
+        this.togetHomeData();
+        console.log(this.goods);
+        for (let i in this.goods) {
+            this.togetGoodsHome(i);
+        }
+    },
+    methods: {
+        // 这里放主要逻辑，看起来分工明显点
+        togetHomeData() {
+            getHomeData()
+                .then((res) => {
+                    this.banner = res.data.data.banner.list;
+                    // this.dKeyword = res.data.data.dKeyword;
+                    // this.keywords = res.data.data.keywords;
+                    this.recommend = res.data.data.recommend;
+                    // console.log(this.banner);
+                    // console.log(res);
+                    // console.log(this.recommend);
+                    this.banner.map((value) => {
+                        // 遍历数据以便swiper模块化
+                        this.bannerimage.push(value.image);
+                        this.bannerlink.push(value.link);
+                        this.bannertitle.push(value.title);
+                        // this.bannerheight.push(value.height);
+                        // 太丑了不要
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
                 });
-            })
-            .catch((err) => {
-                console.log(err);
+        },
+        togetGoodsHome(type) {
+            const page = ++this.goods[type].page;
+            // 获取页码时使其+1,因为从0开始
+            getGoodsHome(type, page).then((res) => {
+                this.goods[type].list.push(...res.data.data.list)
+            
+
+                this.giveArray = [];
+                // 先进行清除防止多压
+                res.data.data.filter.list.map((item) => {
+                    this.giveArray.push(item.title);
+                });
             });
+        },
     },
 };
 </script>

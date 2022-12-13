@@ -45,7 +45,7 @@ export default {
     width: 100vw;
     height: 8vh;
     display: flex;
-    position: absolute;
+    position:fixed;
     bottom: 0;
     left: 0;
     list-style: none;
