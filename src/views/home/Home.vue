@@ -17,18 +17,7 @@
         <home-feature></home-feature>
         <tab-control :giveArray="giveArray"></tab-control>
 
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
+        <goods-item :homeGoods="goods['pop'].list"></goods-item>
     </div>
 </template>
 
@@ -41,6 +30,7 @@ import TabControl from "components/common/tabcontrol/TabControl.vue";
 
 import { getHomeData, getGoodsHome } from "../../network/home";
 import HomeFeature from "./homeComps/HomeFeature.vue";
+import GoodsItem from '../../components/content/goods/GoodsItem.vue';
 export default {
     name: "Home",
     data() {
@@ -69,6 +59,7 @@ export default {
         HomeRecommend,
         HomeFeature,
         TabControl,
+        GoodsItem,
     },
     mounted() {
         // 创建完实例后执行
@@ -76,7 +67,7 @@ export default {
     created() {
         // 抽离到methods出来也有好处，可以传参，节省逻辑判断
         this.togetHomeData();
-        console.log(this.goods);
+    
         for (let i in this.goods) {
             this.togetGoodsHome(i);
         }
