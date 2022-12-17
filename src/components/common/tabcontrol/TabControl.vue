@@ -34,6 +34,7 @@ export default {
     methods: {
         toggle_selection(index) {
             this.isactive = index;
+            this.$emit("pushIndex", index);
         },
     },
 };

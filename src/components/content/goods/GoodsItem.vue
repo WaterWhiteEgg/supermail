@@ -2,7 +2,7 @@
     <div>
         <ul class="goods_item">
             
-            <goods-item-data v-for="(item) in homeGoods" :key="item.iid" :goodsItemData="item"></goods-item-data>
+            <goods-item-data v-for="(item,index) in homeGoods" :key="index+item.iid" :goodsItemData="item"></goods-item-data>
         </ul>
     </div>
 </template>

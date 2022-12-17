@@ -15,9 +15,12 @@
         </banner>
         <home-recommend :listRecommend="recommend.list"></home-recommend>
         <home-feature></home-feature>
-        <tab-control :giveArray="giveArray"></tab-control>
+        <tab-control
+            :giveArray="giveArray"
+            @pushIndex="haveIndex"
+        ></tab-control>
 
-        <goods-item :homeGoods="goods['pop'].list"></goods-item>
+        <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
     </div>
 </template>
 
@@ -30,7 +33,7 @@ import TabControl from "components/common/tabcontrol/TabControl.vue";
 
 import { getHomeData, getGoodsHome } from "../../network/home";
 import HomeFeature from "./homeComps/HomeFeature.vue";
-import GoodsItem from '../../components/content/goods/GoodsItem.vue';
+import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 export default {
     name: "Home",
     data() {
@@ -51,6 +54,7 @@ export default {
                 new: { page: 0, list: [] },
                 sell: { page: 0, list: [] },
             },
+            baseGoodsType: "pop",
         };
     },
     components: {
@@ -67,10 +71,13 @@ export default {
     created() {
         // 抽离到methods出来也有好处，可以传参，节省逻辑判断
         this.togetHomeData();
-    
-        for (let i in this.goods) {
-            this.togetGoodsHome(i);
-        }
+        
+        this.togetGoodsHome("pop");
+        this.togetGoodsHome("new");
+        this.togetGoodsHome("sell");
+    },
+    updated() {
+
     },
     methods: {
         // 这里放主要逻辑，看起来分工明显点
@@ -101,15 +108,32 @@ export default {
             const page = ++this.goods[type].page;
             // 获取页码时使其+1,因为从0开始
             getGoodsHome(type, page).then((res) => {
-                this.goods[type].list.push(...res.data.data.list)
-            
-
+                this.goods[type].list.push(...res.data.data.list);
                 this.giveArray = [];
                 // 先进行清除防止多压
                 res.data.data.filter.list.map((item) => {
                     this.giveArray.push(item.title);
                 });
             });
+        },
+
+        haveIndex(index) {
+            // 用switch判断数字，因为是这里特有的功能所以不模块化一点也可以
+            switch (index) {
+                case 0:
+                    this.baseGoodsType = "pop";
+                    break;
+                case 1:
+                    this.baseGoodsType = "new";
+                    break;
+                case 2:
+                    this.baseGoodsType = "sell";
+                    break;
+
+                default:
+                    this.togetGoodsHome = "";
+                    break;
+            }
         },
     },
 };
