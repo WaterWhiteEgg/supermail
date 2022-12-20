@@ -1,90 +1,8 @@
 <template>
     <div class="wrapper">
         <div class="content">
+            <scroll></scroll>
             <button @click="ff">dd</button>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
             <li>fff</li>
             <li>fff</li>
             <li>fff</li>
@@ -109,14 +27,17 @@
 <script>
 import BScroll from "@better-scroll/core";
 import Pulldown from "@better-scroll/pull-down";
-import Pullup from '@better-scroll/pull-up';
+import Pullup from "@better-scroll/pull-up";
+import Scroll from "../../components/common/better_scroll/Scroll.vue";
 
 export default {
+    components: { Scroll },
     name: "HomeView",
     data() {
         return {
             bs: null,
             bss: null,
+            bsss: null,
         };
     },
     methods: {
@@ -127,8 +48,11 @@ export default {
     mounted() {
         // 在这里才能获取到DOM元素
         BScroll.use(Pulldown);
+        BScroll.use(Pullup);
         this.bss = new BScroll(".wrapper", {
             pullDownRefresh: true,
+            pullUpLoad: true,
+
         });
 
         this.bs = new BScroll(".wrapper", {
@@ -138,7 +62,7 @@ export default {
             // 3. probeType 为 2，仅仅当手指按在滚动区域上，一直派发 scroll 事件，
             // 4. probeType 为 3，任何时候都派发 scroll 事件，包括调用 scrollTo 或者触发 momentum 滚动动画
             // click: true,
-            
+
             // 允许执行原生点击事件
         });
         this.bs.on("scroll", (position) => {
@@ -147,7 +71,12 @@ export default {
         this.bss.on("pullingDown", () => {
             this.bss.finishPullDown();
             // 这样可以重复执行
-            console.log('position');
+            console.log("position");
+        });
+
+        this.bss.on("pullingUp", () => {
+            this.bss.finishPullUp();
+            console.log("downposition");
         });
     },
 };
