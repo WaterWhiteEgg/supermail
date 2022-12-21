@@ -1,26 +1,30 @@
 <template>
-    <div>
+    <div id="home">
         <navbar class="home_navbar">
             <template #center>购物街破解版</template>
         </navbar>
-        <banner
-            :imageBanner="bannerimage"
-            :linkBanner="bannerlink"
-            :titleBanner="bannertitle"
-        >
-            <!-- 轮播图 -->
-            <!-- {{ banner }} -->
-            <!-- :heightBanner="bannerheight" -->
-            <!-- 由于高度属性太丑，即使做了，也不要传了 -->
-        </banner>
-        <home-recommend :listRecommend="recommend.list"></home-recommend>
-        <home-feature></home-feature>
-        <tab-control
-            :giveArray="giveArray"
-            @pushIndex="haveIndex"
-        ></tab-control>
+        <scroll class="scroll">
+            <banner
+                :imageBanner="bannerimage"
+                :linkBanner="bannerlink"
+                :titleBanner="bannertitle"
+                class="home_banner"
+            >
+                <!-- 轮播图 -->
+                <!-- {{ banner }} -->
+                <!-- :heightBanner="bannerheight" -->
+                <!-- 由于高度属性太丑，即使做了，也不要传了 -->
+            </banner>
+            <home-recommend :listRecommend="recommend.list"></home-recommend>
+            <home-feature></home-feature>
+            <tab-control
+                :giveArray="giveArray"
+                @pushIndex="haveIndex"
+                class="tab_control"
+            ></tab-control>
 
-        <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
+            <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
+        </scroll>
     </div>
 </template>
 
@@ -34,6 +38,7 @@ import TabControl from "components/common/tabcontrol/TabControl.vue";
 import { getHomeData, getGoodsHome } from "../../network/home";
 import HomeFeature from "./homeComps/HomeFeature.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
+import Scroll from "../../components/common/better_scroll/Scroll.vue";
 export default {
     name: "Home",
     data() {
@@ -64,6 +69,7 @@ export default {
         HomeFeature,
         TabControl,
         GoodsItem,
+        Scroll,
     },
     mounted() {
         // 创建完实例后执行
@@ -71,14 +77,12 @@ export default {
     created() {
         // 抽离到methods出来也有好处，可以传参，节省逻辑判断
         this.togetHomeData();
-        
+
         this.togetGoodsHome("pop");
         this.togetGoodsHome("new");
         this.togetGoodsHome("sell");
     },
-    updated() {
-
-    },
+    updated() {},
     methods: {
         // 这里放主要逻辑，看起来分工明显点
         togetHomeData() {
@@ -139,9 +143,23 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+#home {
+    height: 100vh;
+}
 .home_navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9;
     box-shadow: 0px 3px #ababab18;
     background-color: #a5d6ff;
+}
+.tab_control{
+}
+.scroll {
+    height: calc(100% - 93px);
+    z-index: 1;
 }
 </style>

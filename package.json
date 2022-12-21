@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@better-scroll/core": "^2.5.0",
+    "@better-scroll/observe-dom": "^2.5.0",
+    "@better-scroll/observe-image": "^2.5.0",
     "@better-scroll/pull-down": "^2.5.0",
     "@better-scroll/pull-up": "^2.5.0",
     "axios": "^1.2.0",
