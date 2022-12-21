@@ -156,8 +156,7 @@ export default {
     box-shadow: 0px 3px #ababab18;
     background-color: #a5d6ff;
 }
-.tab_control{
-}
+
 .scroll {
     height: calc(100% - 93px);
     z-index: 1;
