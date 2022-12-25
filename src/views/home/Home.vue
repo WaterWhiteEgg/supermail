@@ -3,7 +3,12 @@
         <navbar class="home_navbar">
             <template #center>购物街破解版</template>
         </navbar>
-        <scroll class="scroll">
+        <scroll
+            class="scroll"
+            ref="scroll"
+            :probeType="3"
+            @scrollCheck="scrollCheck"
+        >
             <banner
                 :imageBanner="bannerimage"
                 :linkBanner="bannerlink"
@@ -25,6 +30,7 @@
 
             <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
         </scroll>
+        <in-back-top @click.native="homeBackTop" v-show="isShow"></in-back-top>
     </div>
 </template>
 
@@ -39,6 +45,8 @@ import { getHomeData, getGoodsHome } from "../../network/home";
 import HomeFeature from "./homeComps/HomeFeature.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
+import InBackTop from "../../components/content/backtop/InBackTop.vue";
+
 export default {
     name: "Home",
     data() {
@@ -60,6 +68,7 @@ export default {
                 sell: { page: 0, list: [] },
             },
             baseGoodsType: "pop",
+            isShow: false,
         };
     },
     components: {
@@ -70,7 +79,9 @@ export default {
         TabControl,
         GoodsItem,
         Scroll,
+        InBackTop,
     },
+
     mounted() {
         // 创建完实例后执行
     },
@@ -108,6 +119,7 @@ export default {
                     console.log(err);
                 });
         },
+
         togetGoodsHome(type) {
             const page = ++this.goods[type].page;
             // 获取页码时使其+1,因为从0开始
@@ -133,11 +145,20 @@ export default {
                 case 2:
                     this.baseGoodsType = "sell";
                     break;
-
                 default:
                     this.togetGoodsHome = "";
                     break;
             }
+        },
+
+        homeBackTop() {
+            this.$refs.scroll.backTop();
+        },
+
+        scrollCheck(position) {
+            console.log(-position.y);
+
+            -position.y > 1000 ? (this.isShow = true) : (this.isShow = false);
         },
     },
 };

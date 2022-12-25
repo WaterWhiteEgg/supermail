@@ -1,23 +1,7 @@
 <template>
     <div>
         <scroll class="hight">
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
-            <li>fff</li>
+           
         </scroll>
     </div>
 </template>

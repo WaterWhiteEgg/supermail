@@ -21,7 +21,11 @@ export default {
         };
     },
     props: {
-            },
+        probeType: {
+            type: Number,
+            default: 0,
+        },
+    },
 
     mounted() {
         BScroll.use(Pulldown);
@@ -30,13 +34,13 @@ export default {
         BScroll.use(ObserveImage);
         // 使用插件
         this.bs = new BScroll(".wrapper", {
-            probeType: 3,
+            probeType: this.probeType,
             // 1. probeType 为 0，在任何时候都不派发 scroll 事件，
             // 2. probeType 为 1，仅仅当手指按在滚动区域上，每隔 momentumLimitTime 毫秒派发一次 scroll 事件，
             // 3. probeType 为 2，仅仅当手指按在滚动区域上，一直派发 scroll 事件，
             // 4. probeType 为 3，任何时候都派发 scroll 事件，包括调用 scrollTo 或者触发 momentum 滚动动画
             click: true,
-            // 允许执行原生点击事件
+            // 允许执行原生点击事件,不然div无法点击
             // resizePolling:60,
 
             pullDownRefresh: true,
@@ -51,13 +55,13 @@ export default {
 
         this.bs.on("scroll", (position) => {
             // console.log(position);
+            this.$emit("scrollCheck", position);
             // 滚动时触发事件，position提供xy数值
         });
         this.bs.on("pullingDown", () => {
             this.bs.finishPullDown();
             // 这样可以重复执行
             console.log("down");
-            console.log(this.hight);
         });
 
         this.bs.on("pullingUp", () => {
@@ -68,7 +72,9 @@ export default {
     },
 
     methods: {
-        
+        backTop(x = 0, y = 0, time = 100) {
+            this.bs.scrollTo(x, y, time);
+        },
     },
 };
 </script>
