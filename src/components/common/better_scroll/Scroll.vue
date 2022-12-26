@@ -25,6 +25,14 @@ export default {
             type: Number,
             default: 0,
         },
+        needPullUpLoad: {
+            type: Boolean,
+            default: false,
+        },
+        needPullDownRefresh: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     mounted() {
@@ -42,10 +50,9 @@ export default {
             click: true,
             // 允许执行原生点击事件,不然div无法点击
             // resizePolling:60,
-
-            pullDownRefresh: true,
+            pullDownRefresh: this.needPullDownRefresh,
             // 下拉检测插件的使用
-            pullUpLoad: true,
+            pullUpLoad: this.needPullUpLoad,
             // 上拉检测插件的使用
             observeDOM: true,
             // 检测dom元素变化重新计算的插件
@@ -58,17 +65,23 @@ export default {
             this.$emit("scrollCheck", position);
             // 滚动时触发事件，position提供xy数值
         });
-        this.bs.on("pullingDown", () => {
-            this.bs.finishPullDown();
-            // 这样可以重复执行
-            console.log("down");
-        });
 
-        this.bs.on("pullingUp", () => {
-            this.bs.finishPullUp();
-            // 这样可以重复执行
-            console.log("up");
-        });
+        if (this.needPullDownRefresh) {
+            this.bs.on("pullingDown", () => {
+                this.$emit("pullingDown");
+                this.bs.finishPullDown();
+                // 这样可以重复执行
+            });
+        }
+
+        if (this.needPullUpLoad) {
+            this.bs.on("pullingUp", () => {
+                this.$emit("pullingUp");
+
+                this.bs.finishPullUp();
+                // 这样可以重复执行
+            });
+        }
     },
 
     methods: {

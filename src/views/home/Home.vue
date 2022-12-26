@@ -7,7 +7,11 @@
             class="scroll"
             ref="scroll"
             :probeType="3"
+            :needPullUpLoad="true"
+            :needPullDownRefresh="true"
             @scrollCheck="scrollCheck"
+            @pullingDown="pullingDown"
+            @pullingUp="pullingUp"
         >
             <banner
                 :imageBanner="bannerimage"
@@ -146,7 +150,7 @@ export default {
                     this.baseGoodsType = "sell";
                     break;
                 default:
-                    this.togetGoodsHome = "";
+                    this.baseGoodsType = "";
                     break;
             }
         },
@@ -156,9 +160,16 @@ export default {
         },
 
         scrollCheck(position) {
-            console.log(-position.y);
-
             -position.y > 1000 ? (this.isShow = true) : (this.isShow = false);
+        },
+
+        pullingDown() {
+            console.log("down");
+        },
+
+        pullingUp() {
+            this.togetGoodsHome(this.baseGoodsType);
+
         },
     },
 };
