@@ -1,3 +1,31 @@
+// 默认教程里是要处理图片异步操作检测的
+// 但是最新的BatterScroll是带了个插件，使用插件可以检测DOM元素的变化以及图片的变化
+// 若要使用教程，可以有以下办法
+// 1.@load加载 load事件是等完全加载完毕后触发 给每个图片都加上这个（在循环里）
+// 2.加载完后通知，bs.refresh()重新计算滚动高度
+// 但是bs.refresh()在哪呢，放哪里好呢，肯定的在scroll里，但是需要重新计算的是home
+// 所以home里要拿到bs(子传父)
+// 然后图片响应也是要告诉home知道的，但是图片监听是在 home -- goodsitem -- gooditemdata里
+// 所以可以子传父两次获得
+// 可以使用vuex管理获得
+// ::可以再vue.config.js里注册原生事件，用于存储所有方法
+// ::例如
+// vue.config.js//
+// Vue.prototype.$bus = new Vue();
+
+// gooditemdata.vue//
+// methods:{
+// imgLoad(){
+// this.$bus.$emit("aaa");
+// }
+// }
+
+// home.vue//
+// this.$bus.$on("aaa",()=>{
+//     console.log("我get到啦");
+// })
+// ps:注意组件挂载，有时候scroll因为挂载的慢，有可能在DOM完事之后他没加载出就用了，要做容错处理
+// 做短路运算 && 判断值为空时不再执行后面 , 是否created在创建时拿不到
 <template>
     <div class="wrapper">
         <div class="content">
@@ -62,7 +90,7 @@ export default {
 
         this.bs.on("scroll", (position) => {
             // console.log(position);
-            this.$emit("scrollCheck", position);
+            this.bs && this.$emit("scrollCheck", position);
             // 滚动时触发事件，position提供xy数值
         });
 
@@ -86,7 +114,7 @@ export default {
 
     methods: {
         backTop(x = 0, y = 0, time = 100) {
-            this.bs.scrollTo(x, y, time);
+            this.bs && this.bs.scrollTo(x, y, time);
         },
     },
 };

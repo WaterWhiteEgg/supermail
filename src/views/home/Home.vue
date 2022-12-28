@@ -46,6 +46,7 @@ import HomeRecommend from "./homeComps/HomeRecommend.vue";
 import TabControl from "components/common/tabcontrol/TabControl.vue";
 
 import { getHomeData, getGoodsHome } from "../../network/home";
+import { debounce } from "../../common/utils.js";
 import HomeFeature from "./homeComps/HomeFeature.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
@@ -164,12 +165,15 @@ export default {
         },
 
         pullingDown() {
-            console.log("down");
+            debounce(() => {
+                console.log("down");
+            }, 1000);
         },
 
         pullingUp() {
-            this.togetGoodsHome(this.baseGoodsType);
-
+            debounce(() => {
+                this.togetGoodsHome(this.baseGoodsType);
+            });
         },
     },
 };
