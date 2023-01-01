@@ -18,6 +18,7 @@
                 :linkBanner="bannerlink"
                 :titleBanner="bannertitle"
                 class="home_banner"
+                @swiperImgLoad="swiperImgLoad"
             >
                 <!-- 轮播图 -->
                 <!-- {{ banner }} -->
@@ -30,6 +31,7 @@
                 :giveArray="giveArray"
                 @pushIndex="haveIndex"
                 class="tab_control"
+                ref="tabControl"
             ></tab-control>
 
             <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
@@ -74,6 +76,7 @@ export default {
             },
             baseGoodsType: "pop",
             isShow: false,
+            tabContOffSetTop: 0,
         };
     },
     components: {
@@ -98,7 +101,9 @@ export default {
         this.togetGoodsHome("new");
         this.togetGoodsHome("sell");
     },
-    updated() {},
+    updated() {
+        // 这是更新后获得的505高度，但是用更新生命周期探测太不优雅了，尝试别的？
+    },
     methods: {
         // 这里放主要逻辑，看起来分工明显点
         togetHomeData() {
@@ -167,14 +172,19 @@ export default {
         pullingDown() {
             debounce(() => {
                 console.log("down");
-            }, 1000);
+            }, 10);
         },
 
         pullingUp() {
             debounce(() => {
                 this.togetGoodsHome(this.baseGoodsType);
-            });
+            }, 300);
         },
+
+        swiperImgLoad() {
+            this.tabContOffSetTop = this.$refs.tabControl.$el.offsetTop;
+        // 获取获得轮播图图片后的banner对页面的高度
+},
     },
 };
 </script>

@@ -11,6 +11,7 @@
                         :src="item"
                         :alt="titleBanner[index]"
                         :style="changeHeight(index)"
+                        @load="swiperImgLoad"
                     />
                 </a>
             </div>
@@ -35,6 +36,11 @@ export default {
     name: "Swiper",
     data() {
         return {};
+    },
+    methods: {
+        swiperImgLoad(){
+            this.$emit('swiperImgLoad');
+}
     },
     updated() {
         // 创数据更新后后执行
@@ -113,7 +119,7 @@ export default {
     width: 100%;
     height: 100%;
 }
-.swiper-slide a{
-    display:block;
+.swiper-slide a {
+    display: block;
 }
 </style>
