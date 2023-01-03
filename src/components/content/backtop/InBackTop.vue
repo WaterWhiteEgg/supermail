@@ -20,19 +20,19 @@ export default {
 
 <style  scoped>
 .back_top {
-    width: 28px;
-    height: 28px;
+    width: 25px;
+    height: 25px;
     position: absolute;
-    bottom: 83px;
+    bottom: 73px;
     right: 15px;
     z-index: 999;
     text-align: center;
     line-height: 1.75rem;
-    background-color: rgba(255, 255, 255, 0.703);
+    background-color: rgba(255, 255, 255, 0.874);
     border-radius: 45%;
 }
 .back_top_text {
     font-weight: bold;
-    color: rgba(118, 114, 114, 0.699);
+    color: rgba(23, 163, 249, 0.699);
 }
 </style>

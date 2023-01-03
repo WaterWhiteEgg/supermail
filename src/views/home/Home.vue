@@ -3,6 +3,14 @@
         <navbar class="home_navbar">
             <template #center>购物街破解版</template>
         </navbar>
+        <tab-control
+            :giveArray="giveArray"
+            @pushIndex="haveIndex"
+            v-show="isTop"
+            class="tab_control_hide"
+            ref="tabControlHide"
+        ></tab-control>
+
         <scroll
             class="scroll"
             ref="scroll"
@@ -31,7 +39,7 @@
                 :giveArray="giveArray"
                 @pushIndex="haveIndex"
                 class="tab_control"
-                ref="tabControl"
+                ref="tabControlShow"
             ></tab-control>
 
             <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
@@ -76,6 +84,7 @@ export default {
             },
             baseGoodsType: "pop",
             isShow: false,
+            isTop: false,
             tabContOffSetTop: 0,
         };
     },
@@ -159,6 +168,9 @@ export default {
                     this.baseGoodsType = "";
                     break;
             }
+            // 让这两个都改为相同的isactive
+            this.$refs.tabControlHide.isactive = index;
+            this.$refs.tabControlShow.isactive = index;
         },
 
         homeBackTop() {
@@ -166,7 +178,13 @@ export default {
         },
 
         scrollCheck(position) {
+            // 检查InBackTop
             -position.y > 1000 ? (this.isShow = true) : (this.isShow = false);
+            // 检查TabControl
+            let addOtherHeight = this.tabContOffSetTop - 43;
+            -position.y >= addOtherHeight
+                ? (this.isTop = true)
+                : (this.isTop = false);
         },
 
         pullingDown() {
@@ -182,9 +200,10 @@ export default {
         },
 
         swiperImgLoad() {
-            this.tabContOffSetTop = this.$refs.tabControl.$el.offsetTop;
-        // 获取获得轮播图图片后的banner对页面的高度
-},
+            this.tabContOffSetTop = this.$refs.tabControlShow.$el.offsetTop;
+            // 获取获得轮播图图片后的banner对页面的高度
+            // 要获取原生属性的话要写$el
+        },
     },
 };
 </script>
@@ -206,5 +225,10 @@ export default {
 .scroll {
     height: calc(100% - 93px);
     z-index: 1;
+}
+.tab_control_hide {
+    width: 100%;
+    position: fixed;
+    z-index: 9;
 }
 </style>
