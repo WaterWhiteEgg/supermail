@@ -8,6 +8,8 @@ const Home = () => import('../views/home/Home.vue');
 const View = () => import('../views/homeview/HomeView.vue');
 const Cart = () => import('../views/cart/Cart.vue');
 const User = () => import('../views/user/User.vue');
+const Detail = () => import('../views/detail/Detail.vue');
+
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(to) {
@@ -31,8 +33,8 @@ const routes = [
     path: '/cart',
     component: Cart,
   }, {
-    path: '/user',
-    component: User,
+    path: '/detail',
+    component: Detail,
   },
 ]
 

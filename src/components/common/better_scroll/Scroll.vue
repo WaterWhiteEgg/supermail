@@ -116,6 +116,10 @@ export default {
         backTop(x = 0, y = 0, time = 100) {
             this.bs && this.bs.scrollTo(x, y, time);
         },
+        ToScrollY() {
+            return this.bs ? this.bs.y : 0;
+            // 获得其y的值
+        },
     },
 };
 </script>

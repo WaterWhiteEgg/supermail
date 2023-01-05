@@ -1,7 +1,6 @@
 <template>
     <li class="goods_item_data">
-        <a :href="goodsItemData.link">
-            <!-- {{ goodsItemData }} -->
+        <a href="javascript:0" @click="itemLink">
             <img :src="goodsItemData.show.img" :alt="goodsItemData.title" />
             <p class="title" :alt="goodsItemData.title">
                 {{ goodsItemData.title }}
@@ -28,10 +27,19 @@ export default {
             },
         },
     },
+    methods: {
+        itemLink() {
+            this.$router.push({
+                path: "/detail",
+                query: {
+                    iid: this.goodsItemData.iid,
+                },
+            });
+            // 传递iid
+        },
+    },
 
     mounted() {},
-
-    methods: {},
 };
 </script>
 
@@ -63,7 +71,7 @@ export default {
     color: #3700ff;
     text-shadow: 1px 1px #4ac6ff;
 }
-.goods_item_data  .collect {
+.goods_item_data .collect {
     margin-right: 10%;
     float: right;
     color: #ffa600;
