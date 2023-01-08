@@ -49,10 +49,10 @@ export default {
         new Swiper("#swiper", {
             initialSlide: 0,
             // 默认从第几个视图开始
-            speed: 300,
+            speed: 400,
             // 切换速度
             autoplay: {
-                delay: 90000000000000000000000,
+                delay: 3000,
                 // 什么时候开始
                 disableOnInteraction: false,
                 // 操作后不停止轮播图
