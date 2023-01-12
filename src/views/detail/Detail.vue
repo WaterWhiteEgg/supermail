@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="detail">
         <detail-navbar></detail-navbar>
         <detail-swiper :topImg="topImg"></detail-swiper>
         <datail-basedata :allGoodsItem="allGoodsItem"></datail-basedata>
@@ -32,8 +32,16 @@ export default {
             shopInfo: {},
         };
     },
-    destroyed() {},
+    destroyed() {
+        // 当销毁时再次把vueX托管的值改变
+        this.$store.state.needTabber = true;
+        
+    },
+
     created() {
+        this.$store.state.needTabber = false;
+        // 改变vueX的needTabber使其不显示
+
         // if (!(this.iid === this.$route.query.iid)) {
         // 如果iid已经相同则不需要再次请求网络
         this.iid = this.$route.query.iid;
@@ -53,12 +61,11 @@ export default {
         });
         // }
     },
-    activated() {},
     mounted() {},
 
     methods: {},
 };
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 </style>

@@ -115,11 +115,11 @@ export default {
     },
     activated() {
         // 活跃时触发
+        this.$refs.scroll.bs.refresh();
         // console.log(this.$refs.scroll.ToScrollY());
     },
     deactivated() {
         // 不活跃时触发
-        
         // 可以利用这个记录离开时scroll y的高度，到达活跃时再次使用这个高度
         // 但这里的bug新版本已经解决，不需要再次 bs.refresh()重定向
         // console.log(this.$refs.scroll.ToScrollY());
