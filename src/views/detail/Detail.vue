@@ -3,15 +3,17 @@
         <detail-navbar></detail-navbar>
         <detail-swiper :topImg="topImg"></detail-swiper>
         <datail-basedata :allGoodsItem="allGoodsItem"></datail-basedata>
+        <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
         {{ iid }}
     </div>
 </template>
 
 <script>
-import { getdetailItem, GoodsItem } from "../../network/detail";
+import { getdetailItem, GoodsItem, ShopInfo } from "../../network/detail";
 
 import datailBasedata from "./detailitem/datailBasedata.vue";
 import detailNavbar from "./detailitem/detailNavbar.vue";
+import DetailShopInfo from "./detailitem/detailShopInfo.vue";
 import detailSwiper from "./detailitem/detailSwiper.vue";
 export default {
     name: "Detail",
@@ -21,6 +23,7 @@ export default {
         detailNavbar,
         detailSwiper,
         datailBasedata,
+        DetailShopInfo,
     },
 
     data() {
@@ -28,6 +31,7 @@ export default {
             iid: null,
             topImg: [],
             allGoodsItem: {},
+            allShopInfo: {},
             itemInfo: {},
             shopInfo: {},
         };
@@ -35,7 +39,6 @@ export default {
     destroyed() {
         // 当销毁时再次把vueX托管的值改变
         this.$store.state.needTabber = true;
-        
     },
 
     created() {
@@ -57,6 +60,9 @@ export default {
                 this.columns,
                 this.shopInfo.services
             );
+
+            // 传入一个数据给类
+            this.allShopInfo = new ShopInfo(this.shopInfo);
             // console.log(this.allGoodsItem);
         });
         // }

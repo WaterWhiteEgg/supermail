@@ -44,7 +44,7 @@ export default {
     },
 
     updated() {
-        console.log(this.allGoodsItem);
+        // console.log(this.allGoodsItem);
     },
 
     methods: {},
