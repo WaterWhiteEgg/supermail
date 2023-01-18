@@ -3,8 +3,9 @@
         <detail-navbar></detail-navbar>
         <scroll class="scroll">
             <detail-swiper :topImg="topImg"></detail-swiper>
-            <datail-basedata :allGoodsItem="allGoodsItem"></datail-basedata>
+            <detail-basedata :allGoodsItem="allGoodsItem"></detail-basedata>
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
+            <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
         </scroll>
     </div>
 </template>
@@ -13,10 +14,11 @@
 import { getdetailItem, GoodsItem, ShopInfo } from "../../network/detail";
 
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
-import datailBasedata from "./detailitem/datailBasedata.vue";
+import detailBasedata from "./detailitem/detailBasedata.vue";
 import detailNavbar from "./detailitem/detailNavbar.vue";
-import DetailShopInfo from "./detailitem/detailShopInfo.vue";
+import detailShopInfo from "./detailitem/detailShopInfo.vue";
 import detailSwiper from "./detailitem/detailSwiper.vue";
+import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
 export default {
     name: "Detail",
     // 移除了保持活跃
@@ -24,8 +26,9 @@ export default {
     components: {
         detailNavbar,
         detailSwiper,
-        datailBasedata,
-        DetailShopInfo,
+        detailBasedata,
+        detailShopInfo,
+        detailGoodsInfo,
         Scroll,
     },
 
@@ -37,6 +40,7 @@ export default {
             allShopInfo: {},
             itemInfo: {},
             shopInfo: {},
+            detailInfo: {},
         };
     },
     destroyed() {
@@ -57,6 +61,7 @@ export default {
             this.itemInfo = res.data.result.itemInfo;
             this.shopInfo = res.data.result.shopInfo;
             this.columns = res.data.result.columns;
+            this.detailInfo = res.data.result.detailInfo;
             // 传入三个数据给类
             this.allGoodsItem = new GoodsItem(
                 this.itemInfo,

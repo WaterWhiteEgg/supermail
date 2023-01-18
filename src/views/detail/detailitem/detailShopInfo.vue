@@ -64,7 +64,7 @@ export default {
         },
     },
     updated() {
-        console.log(this.allShopInfo);
+        // console.log(this.allShopInfo);
     },
 
     methods: {},
