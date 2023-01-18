@@ -49,6 +49,10 @@ export default {
 <style  scoped>
 .navbar {
     border-bottom: 0.4px solid #00000027;
+    position: relative;
+    top: 0;
+    z-index: 9;
+background-color: #fff;
 }
 .navbar_left{
     font-size: 22px;

@@ -1,16 +1,18 @@
 <template>
     <div class="detail">
         <detail-navbar></detail-navbar>
-        <detail-swiper :topImg="topImg"></detail-swiper>
-        <datail-basedata :allGoodsItem="allGoodsItem"></datail-basedata>
-        <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
-        {{ iid }}
+        <scroll class="scroll">
+            <detail-swiper :topImg="topImg"></detail-swiper>
+            <datail-basedata :allGoodsItem="allGoodsItem"></datail-basedata>
+            <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
+        </scroll>
     </div>
 </template>
 
 <script>
 import { getdetailItem, GoodsItem, ShopInfo } from "../../network/detail";
 
+import Scroll from "../../components/common/better_scroll/Scroll.vue";
 import datailBasedata from "./detailitem/datailBasedata.vue";
 import detailNavbar from "./detailitem/detailNavbar.vue";
 import DetailShopInfo from "./detailitem/detailShopInfo.vue";
@@ -24,6 +26,7 @@ export default {
         detailSwiper,
         datailBasedata,
         DetailShopInfo,
+        Scroll,
     },
 
     data() {
@@ -74,4 +77,10 @@ export default {
 </script>
 
 <style  scoped>
+.detail {
+    height: 100vh;
+}
+.scroll {
+    height: calc(100% - 44px);
+}
 </style>

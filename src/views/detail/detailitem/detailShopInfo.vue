@@ -10,10 +10,12 @@
                     >{{ sells(allShopInfo.sells) }}
                     <p>总销量</p></span
                 >
-                <span class="storeData_data_goods"
-                    >{{ allShopInfo.goodsCount }}
-                    <p>全部宝贝</p></span
-                >
+                <span class="storeData_data_goods">
+                    <div class="storeData_data_goods_after">
+                        {{ allShopInfo.goodsCount }}
+                        <p>全部宝贝</p>
+                    </div>
+                </span>
             </div>
             <div class="storeData_score">
                 <div
@@ -98,19 +100,18 @@ export default {
     flex: 1;
     font-weight: 900;
 }
-.storeData_data_goods::after {
-    content: "";
-    right: 52%;
-    bottom: -56px;
-    position: absolute;
-    height: 3rem;
-    border-right: 0.01px solid #59595974;
-}
+
 .storeData_data_goods p,
 .storeData_data_sells p {
     font-size: 15px;
     font-weight: normal;
 }
+
+.storeData_data_goods_after {
+    width: 90%;
+    border-right: 1px solid #000;
+}
+
 .storeData_score {
     display: flex;
     flex-direction: column;
@@ -131,7 +132,7 @@ export default {
     font-size: 16px;
 }
 .storeLink {
-    margin-top: 16px; 
+    margin-top: 16px;
     text-align: center;
 }
 .storeLink button {
