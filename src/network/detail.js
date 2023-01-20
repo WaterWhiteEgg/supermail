@@ -33,3 +33,12 @@ export class ShopInfo {
 
     }
 }
+
+export class GoodsParam {
+    constructor(info, rule) {
+        // image有些商家可能没有
+        this.image = info.image ? info.image[0] : '';
+        this.infos = info.set;
+        this.sizes = rule.tables;
+    }
+}

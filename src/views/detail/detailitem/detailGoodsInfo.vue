@@ -56,7 +56,7 @@ export default {
         return {};
     },
     updated() {
-        console.log(this.detailInfo.detailImage[0]);
+        // console.log(this.detailInfo.detailImage[0]);
     },
     mounted() {},
 

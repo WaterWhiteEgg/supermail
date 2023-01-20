@@ -6,12 +6,13 @@
             <detail-basedata :allGoodsItem="allGoodsItem"></detail-basedata>
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
             <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
+            <detail-goods-param :goodsParams="goodsParams"></detail-goods-param>
         </scroll>
     </div>
 </template>
 
 <script>
-import { getdetailItem, GoodsItem, ShopInfo } from "../../network/detail";
+import { getdetailItem, GoodsItem, ShopInfo ,GoodsParam} from "../../network/detail";
 
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
 import detailBasedata from "./detailitem/detailBasedata.vue";
@@ -19,6 +20,7 @@ import detailNavbar from "./detailitem/detailNavbar.vue";
 import detailShopInfo from "./detailitem/detailShopInfo.vue";
 import detailSwiper from "./detailitem/detailSwiper.vue";
 import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
+import detailGoodsParam from './detailitem/detailGoodsParam.vue';
 export default {
     name: "Detail",
     // 移除了保持活跃
@@ -30,6 +32,7 @@ export default {
         detailShopInfo,
         detailGoodsInfo,
         Scroll,
+        detailGoodsParam,
     },
 
     data() {
@@ -41,6 +44,7 @@ export default {
             itemInfo: {},
             shopInfo: {},
             detailInfo: {},
+            goodsParams:{}
         };
     },
     destroyed() {
@@ -62,16 +66,19 @@ export default {
             this.shopInfo = res.data.result.shopInfo;
             this.columns = res.data.result.columns;
             this.detailInfo = res.data.result.detailInfo;
+            this.itemParams = res.data.result.itemParams;
             // 传入三个数据给类
             this.allGoodsItem = new GoodsItem(
                 this.itemInfo,
                 this.columns,
                 this.shopInfo.services
             );
-
+            
             // 传入一个数据给类
             this.allShopInfo = new ShopInfo(this.shopInfo);
             // console.log(this.allGoodsItem);
+
+            this.goodsParams = new GoodsParam(this.itemParams.info,this.itemParams.rule)
         });
         // }
     },
