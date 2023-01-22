@@ -1,7 +1,7 @@
 <template>
     <div class="detail">
         <detail-navbar></detail-navbar>
-        <scroll class="scroll">
+        <scroll class="scroll" ref="scroll">
             <detail-swiper :topImg="topImg"></detail-swiper>
             <detail-basedata :allGoodsItem="allGoodsItem"></detail-basedata>
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
@@ -12,7 +12,12 @@
 </template>
 
 <script>
-import { getdetailItem, GoodsItem, ShopInfo ,GoodsParam} from "../../network/detail";
+import {
+    getdetailItem,
+    GoodsItem,
+    ShopInfo,
+    GoodsParam,
+} from "../../network/detail";
 
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
 import detailBasedata from "./detailitem/detailBasedata.vue";
@@ -20,7 +25,7 @@ import detailNavbar from "./detailitem/detailNavbar.vue";
 import detailShopInfo from "./detailitem/detailShopInfo.vue";
 import detailSwiper from "./detailitem/detailSwiper.vue";
 import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
-import detailGoodsParam from './detailitem/detailGoodsParam.vue';
+import detailGoodsParam from "./detailitem/detailGoodsParam.vue";
 export default {
     name: "Detail",
     // 移除了保持活跃
@@ -44,13 +49,15 @@ export default {
             itemInfo: {},
             shopInfo: {},
             detailInfo: {},
-            goodsParams:{}
+            goodsParams: {},
         };
     },
-    destroyed() {
-        // 当销毁时再次把vueX托管的值改变
+    beforeDestroy() {
+        // 当销毁前再次把vueX托管的值改变
         this.$store.state.needTabber = true;
     },
+    deactivated() {},
+    updated() {},
 
     created() {
         this.$store.state.needTabber = false;
@@ -73,16 +80,21 @@ export default {
                 this.columns,
                 this.shopInfo.services
             );
-            
+
             // 传入一个数据给类
             this.allShopInfo = new ShopInfo(this.shopInfo);
             // console.log(this.allGoodsItem);
 
-            this.goodsParams = new GoodsParam(this.itemParams.info,this.itemParams.rule)
+            this.goodsParams = new GoodsParam(
+                this.itemParams.info,
+                this.itemParams.rule
+            );
         });
         // }
     },
-    mounted() {},
+    mounted() {
+        this.$refs.scroll.bs.refresh();
+    },
 
     methods: {},
 };

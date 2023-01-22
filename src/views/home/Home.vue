@@ -86,6 +86,7 @@ export default {
             isShow: false,
             isTop: false,
             tabContOffSetTop: 0,
+            toScrollY: 0,
         };
     },
     components: {
@@ -116,13 +117,13 @@ export default {
     activated() {
         // 活跃时触发
         this.$refs.scroll.bs.refresh();
-        // console.log(this.$refs.scroll.ToScrollY());
+        this.$refs.scroll.ToScrollY(this.toScrollY);
     },
     deactivated() {
         // 不活跃时触发
         // 可以利用这个记录离开时scroll y的高度，到达活跃时再次使用这个高度
-        // 但这里的bug新版本已经解决，不需要再次 bs.refresh()重定向
         // console.log(this.$refs.scroll.ToScrollY());
+        this.toScrollY = this.$refs.scroll.$el.offsetTop;
     },
     methods: {
         // 这里放主要逻辑，看起来分工明显点
