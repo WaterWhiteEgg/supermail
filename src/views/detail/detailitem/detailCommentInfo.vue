@@ -8,21 +8,16 @@
                 >
             </div>
         </div>
-
-        <div class="comment_info">
-            <div class="comment_info_user"></div>
-            <div class="comment_info_introduction">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        {{ commentInfo }}
+        <comment
+            :commentInfo="commentInfo.list && commentInfo.list"
+        ></comment>
     </div>
 </template>
 
 <script>
+import Comment from "../../../components/common/comment/Comment.vue";
 export default {
+    components: { Comment },
     name: "DetailCommentInfo",
     props: {
         commentInfo: {
