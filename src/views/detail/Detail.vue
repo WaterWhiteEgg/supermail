@@ -7,6 +7,7 @@
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
             <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
             <detail-goods-param :goodsParams="goodsParams"></detail-goods-param>
+            <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
         </scroll>
     </div>
 </template>
@@ -26,6 +27,7 @@ import detailShopInfo from "./detailitem/detailShopInfo.vue";
 import detailSwiper from "./detailitem/detailSwiper.vue";
 import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
 import detailGoodsParam from "./detailitem/detailGoodsParam.vue";
+import DetailCommentInfo from "./detailitem/detailCommentInfo.vue";
 export default {
     name: "Detail",
     // 移除了保持活跃
@@ -38,6 +40,7 @@ export default {
         detailGoodsInfo,
         Scroll,
         detailGoodsParam,
+        DetailCommentInfo,
     },
 
     data() {
@@ -50,6 +53,7 @@ export default {
             shopInfo: {},
             detailInfo: {},
             goodsParams: {},
+            commentInfo: {},
         };
     },
     beforeDestroy() {
@@ -74,6 +78,7 @@ export default {
             this.columns = res.data.result.columns;
             this.detailInfo = res.data.result.detailInfo;
             this.itemParams = res.data.result.itemParams;
+            this.commentInfo = res.data.result.rate;
             // 传入三个数据给类
             this.allGoodsItem = new GoodsItem(
                 this.itemInfo,

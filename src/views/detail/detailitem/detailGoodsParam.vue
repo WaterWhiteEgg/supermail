@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="params">
         <div class="goodsparam">
             <div
                 class="goodsparam_item"
@@ -9,8 +9,8 @@
             >
                 <span
                     class="goodsparam_item_key"
-                    v-for="(item2,index) in item"
-                    :key="index+'goodsparam_item_key'+ item2"
+                    v-for="(item2, index) in item"
+                    :key="index + 'goodsparam_item_key' + item2"
                     >{{ item2 }}</span
                 >
             </div>
@@ -42,8 +42,7 @@ export default {
             },
         },
     },
-    updated() {
-    },
+    updated() {},
     data() {
         return {};
     },
@@ -55,6 +54,9 @@ export default {
 </script>
 
 <style  scoped>
+#params{
+    border-bottom: 3px solid #ebebebd8;
+    }
 .businessparam_item {
     display: flex;
     font-size: 13px;
