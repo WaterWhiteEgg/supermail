@@ -1,8 +1,12 @@
 <template>
     <div>
         <ul class="goods_item">
-            
-            <goods-item-data v-for="(item,index) in homeGoods" :key="index+item.iid" :goodsItemData="item"></goods-item-data>
+            <goods-item-data
+                v-for="(item, index) in AllGoods"
+                :key="index + item.title"
+                :goodsItemData="item"
+            >
+            </goods-item-data>
         </ul>
     </div>
 </template>
@@ -18,7 +22,7 @@ export default {
         return {};
     },
     props: {
-        homeGoods: {
+        AllGoods: {
             type: Array,
             default: function () {
                 return [];
@@ -32,7 +36,7 @@ export default {
 </script>
 
 <style scoped>
-.goods_item{
+.goods_item {
     display: flex;
     flex-wrap: wrap;
     padding: 0;

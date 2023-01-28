@@ -42,7 +42,7 @@
                 ref="tabControlShow"
             ></tab-control>
 
-            <goods-item :homeGoods="goods[baseGoodsType].list"></goods-item>
+            <goods-item :AllGoods="goods[baseGoodsType].list"></goods-item>
         </scroll>
         <in-back-top @click.native="homeBackTop" v-show="isShow"></in-back-top>
     </div>
@@ -202,6 +202,7 @@ export default {
         pullingDown() {
             debounce(() => {
                 console.log("down");
+                // console.log(this.goods[this.baseGoodsType].list);
             }, 10);
         },
 

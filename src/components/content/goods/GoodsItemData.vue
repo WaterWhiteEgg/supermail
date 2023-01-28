@@ -1,23 +1,27 @@
 <template>
     <li class="goods_item_data">
         <a href="javascript:0" @click="itemLink">
-            <img :src="goodsItemData.show.img" :alt="goodsItemData.title" />
+            <img :src="whatImg" :alt="goodsItemData.title" />
             <p class="title" :alt="goodsItemData.title">
                 {{ goodsItemData.title }}
             </p>
         </a>
-
         <span class="price">价格:{{ goodsItemData.price }}</span>
         <span class="collect">★{{ goodsItemData.cfav }}</span>
     </li>
 </template>
 
 <script>
+import { debounce } from "../../../common/utils.js";
+
 export default {
     name: "GoodsItemData",
 
     data() {
-        return {};
+        return {
+            path: "/detail",
+            iid: this.goodsItemData.iid || this.goodsItemData.item_id,
+        };
     },
     props: {
         goodsItemData: {
@@ -27,19 +31,42 @@ export default {
             },
         },
     },
+    updated() {
+        // console.log(this.goodsItemData);
+    },
     methods: {
         itemLink() {
+            if (!this.$route.path.indexOf("/detail")) {
+                alert("提示\n暂时没有推荐数据，页面将不会刷新");
+            }
+
             this.$router.push({
-                path: "/detail",
+                path: this.path,
                 query: {
-                    iid: this.goodsItemData.iid,
+                    iid: this.iid,
                 },
             });
             // 传递iid
+            // console.log(this.$route);
         },
     },
 
-    mounted() {},
+    computed: {
+        whatImg() {
+            if (typeof this.goodsItemData.show === "undefined") {
+                return this.goodsItemData.image;
+            } else {
+                return this.goodsItemData.show.img;
+            }
+        },
+    },
+    watch: {
+        // 监听路由发生改变
+    },
+
+    mounted() {
+        // console.log(this.goodsItemData);
+    },
 };
 </script>
 

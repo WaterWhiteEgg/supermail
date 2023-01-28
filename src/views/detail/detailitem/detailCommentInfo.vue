@@ -32,7 +32,7 @@ export default {
         return {};
     },
     updated() {
-        console.log(this.commentInfo);
+        // console.log(this.commentInfo);
     },
 
     mounted() {},

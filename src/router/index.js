@@ -13,7 +13,7 @@ const Detail = () => import('../views/detail/Detail.vue');
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(to) {
-	return originalPush.call(this, to).catch(err => err)
+  return originalPush.call(this, to).catch(err => err)
 }
 // 取消重复路由不会报错代码
 const routes = [
@@ -35,6 +35,7 @@ const routes = [
   }, {
     path: '/detail',
     component: Detail,
+
   },
 ]
 

@@ -68,4 +68,34 @@ export default {
 </script>
 
 <style scoped>
+.comment_info {
+    border-bottom: 3px solid #ebebebd8;
+}
+.comment_info_user {
+    padding: 10px 0;
+}
+
+.comment_info_user_img img {
+    width: 10%;
+    padding: 0 6px;
+    border-radius: 25px;
+    vertical-align: middle;
+}
+.comment_info_description .comment_info_description_content {
+    padding: 3px;
+    color: #4e4d4d;
+    font-size: 15px;
+}
+.comment_info_description .comment_info_description_time {
+    padding: 3px 0;
+    font-size: 9px;
+    color: #7a7979;
+}
+.comment_info_img {
+    padding-bottom: 8px;
+}
+.comment_info_img img {
+    padding: 3px 1px;
+    width: 15%;
+}
 </style>

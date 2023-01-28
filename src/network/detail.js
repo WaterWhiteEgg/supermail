@@ -8,8 +8,13 @@ export function getdetailItem(iid) {
         }
     })
 }
+export function getdetailRecommend() {
+    return requestHome({
+        url: "/recommend"
+    })
+}
 
-export class GoodsItem {
+export class GoodsItemNet {
     constructor(itemInfo, columns, services) {
         this.title = itemInfo.title
         this.disc = itemInfo.desc
