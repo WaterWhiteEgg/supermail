@@ -56,6 +56,8 @@ import HomeRecommend from "./homeComps/HomeRecommend.vue";
 import TabControl from "components/common/tabcontrol/TabControl.vue";
 
 import { getHomeData, getGoodsHome } from "../../network/home";
+import { sorollRefresh } from "../../common/mixin.js";
+
 import { debounce } from "../../common/utils.js";
 import HomeFeature from "./homeComps/HomeFeature.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
@@ -64,6 +66,7 @@ import InBackTop from "../../components/content/backtop/InBackTop.vue";
 
 export default {
     name: "Home",
+    mixins: [sorollRefresh],
     data() {
         return {
             banner: [],

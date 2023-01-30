@@ -1,7 +1,12 @@
 <template>
     <div class="detail">
         <detail-navbar></detail-navbar>
-        <scroll class="scroll" ref="scroll">
+        <scroll
+            class="scroll"
+            ref="scroll"
+            :needPullDownRefresh="true"
+            @pullingDown="pullingDown"
+        >
             <detail-swiper :topImg="topImg"></detail-swiper>
             <detail-basedata :allGoodsItem="allGoodsItem"></detail-basedata>
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
@@ -33,10 +38,12 @@ import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
 import detailGoodsParam from "./detailitem/detailGoodsParam.vue";
 import detailCommentInfo from "./detailitem/detailCommentInfo.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
+import { debounce } from "../../common/utils.js";
+import { sorollRefresh } from "../../common/mixin.js";
 export default {
     name: "Detail",
     // 移除了保持活跃
-
+    mixins: [sorollRefresh],
     components: {
         detailNavbar,
         detailSwiper,
@@ -117,11 +124,16 @@ export default {
             });
         // }
     },
-    mounted() {
-        this.$refs.scroll.bs.refresh();
-    },
+    mounted() {},
 
-    methods: {},
+    methods: {
+        pullingDown() {
+            debounce(() => {
+                this.$refs.scroll.bs.refresh();
+                console.log("down");
+            }, 10);
+        },
+    },
 };
 </script>
 
