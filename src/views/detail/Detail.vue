@@ -1,21 +1,35 @@
 <template>
     <div class="detail">
-        <detail-navbar></detail-navbar>
+        <detail-navbar
+            :navbarOffsetTop="navbarOffsetTop"
+            ref="navbar"
+            :navbarChange="navbarChange"
+            @goOffsetTop="goOffsetTop"
+        ></detail-navbar>
         <scroll
             class="scroll"
             ref="scroll"
             :needPullDownRefresh="true"
             @pullingDown="pullingDown"
+            @scrollCheck="scrollCheck"
+            probeType:2
         >
-            <detail-swiper :topImg="topImg"></detail-swiper>
-            <detail-basedata :allGoodsItem="allGoodsItem"></detail-basedata>
+            <detail-swiper :topImg="topImg"  ref="swiper"></detail-swiper>
+            <detail-basedata
+                :allGoodsItem="allGoodsItem"
+                ref="basedata"
+            ></detail-basedata>
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
             <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
-            <detail-goods-param :goodsParams="goodsParams"></detail-goods-param>
+            <detail-goods-param
+                :goodsParams="goodsParams"
+                ref="param"
+            ></detail-goods-param>
             <detail-comment-info
                 :commentInfo="commentInfo"
+                ref="comment"
             ></detail-comment-info>
-            <goods-item :AllGoods="recommends"></goods-item>
+            <goods-item :AllGoods="recommends" ref="recommends"></goods-item>
         </scroll>
     </div>
 </template>
@@ -68,14 +82,32 @@ export default {
             goodsParams: {},
             commentInfo: {},
             recommends: [],
+            navbarOffsetTop: [],
+            navbarChange: 0,
         };
     },
+    computed: {
+        offsetTop() {
+            return [
+                this.$refs.swiper && this.$refs.swiper.$el.offsetTop,
+                this.$refs.param && this.$refs.param.$el.offsetTop,
+                this.$refs.comment && this.$refs.comment.$el.offsetTop,
+                this.$refs.recommends && this.$refs.recommends.$el.offsetTop,
+            ];
+        },
+    },
+    watch: {},
     beforeDestroy() {
         // 当销毁前再次把vueX托管的值改变
         this.$store.state.needTabber = true;
     },
     deactivated() {},
-    updated() {},
+    updated() {
+        // this.navbarOffsetTop = this.ToTop;
+        // console.log(this.$refs.recommends && this.$refs.recommends.$el.offsetTop);
+        // this.navbarOffsetTop = [];
+        // console.log(this.navbarOffsetTop);
+    },
 
     created() {
         this.$store.state.needTabber = false;
@@ -125,6 +157,7 @@ export default {
         // }
     },
     mounted() {},
+    activated() {},
 
     methods: {
         pullingDown() {
@@ -132,6 +165,40 @@ export default {
                 this.$refs.scroll.bs.refresh();
                 console.log("down");
             }, 10);
+        },
+        scrollCheck(position) {
+            // console.log(this.navbarOffsetTop.length==0);
+
+            if (this.navbarOffsetTop.length === 0) {
+                this.navbarOffsetTop = this.offsetTop;
+                // console.log(this.navbarOffsetTop);
+                // console.log(1);
+            }
+
+            if (
+                -position.y >= this.navbarOffsetTop[0] &&
+                -position.y <= this.navbarOffsetTop[1]
+            ) {
+                this.navbarChange = 0;
+            } else if (
+                -position.y >= this.navbarOffsetTop[1] &&
+                -position.y <= this.navbarOffsetTop[2]
+            ) {
+                this.navbarChange = 1;
+            } else if (
+                -position.y >= this.navbarOffsetTop[2] &&
+                -position.y <= this.navbarOffsetTop[3]
+            ) {
+                this.navbarChange = 2;
+            } else if (-position.y >= this.navbarOffsetTop[3]) {
+                this.navbarChange = 3;
+            }
+        },
+
+        goOffsetTop(index) {
+            this.navbarOffsetTop = this.offsetTop;
+            console.log(this.navbarOffsetTop);
+            this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index]+1));
         },
     },
 };

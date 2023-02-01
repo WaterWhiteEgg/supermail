@@ -1,13 +1,18 @@
 <template>
     <div>
+        <!-- {{navbarToTop}} -->
         <navbar class="navbar">
-            <template #left> <span @click="back" class="navbar_left">＜</span> </template>
+            <template #left>
+                <span @click="back" class="navbar_left">＜</span>
+            </template>
             <template #center class="navbar_center"
                 ><span
                     v-for="(item, index) in navbarItem"
                     :key="item"
                     class="navbar_item"
-                    :class="{ navbar_item_active: index === activeItem }"
+                    :class="{
+                        navbar_item_active: index === changeActiveItem,
+                    }"
                     @click="changeActive(index)"
                 >
                     {{ item }}
@@ -18,12 +23,30 @@
 </template>
 
 <script>
-
 import Navbar from "../../../components/common/navbar/Navbar.vue";
 export default {
     name: "datailNavbar",
+    props: {
+        navbarToTop: {
+            type: Array,
+            default() {
+                return [];
+            },
+        },
+        navbarChange: {
+            type: Number,
+            default() {
+                return 0;
+            },
+        },
+    },
     components: {
         Navbar,
+    },
+    computed: {
+        changeActiveItem() {
+            return this.navbarChange;
+        },
     },
     data() {
         return {
@@ -31,17 +54,19 @@ export default {
             activeItem: 0,
         };
     },
-    created(){
-    },
+
+    created() {},
     mounted() {},
 
     methods: {
         changeActive(index) {
             this.activeItem = index;
+            this.$emit("goOffsetTop", index);
         },
         back() {
             this.$router.go(-1);
         },
+        goTop(y) {},
     },
 };
 </script>
@@ -52,9 +77,9 @@ export default {
     position: relative;
     top: 0;
     z-index: 9;
-background-color: #fff;
+    background-color: #fff;
 }
-.navbar_left{
+.navbar_left {
     font-size: 22px;
 }
 .navbar_center {

@@ -115,6 +115,7 @@ export default {
     methods: {
         backTop(x = 0, y = 0, time = 100) {
             this.bs && this.bs.scrollTo(x, y, time);
+            // 跳转到某个地方
         },
         ToScrollY() {
             return this.bs ? this.bs.y : 0;
