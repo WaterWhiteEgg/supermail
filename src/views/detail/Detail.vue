@@ -14,7 +14,7 @@
             @scrollCheck="scrollCheck"
             probeType:2
         >
-            <detail-swiper :topImg="topImg"  ref="swiper"></detail-swiper>
+            <detail-swiper :topImg="topImg" ref="swiper"></detail-swiper>
             <detail-basedata
                 :allGoodsItem="allGoodsItem"
                 ref="basedata"
@@ -31,6 +31,10 @@
             ></detail-comment-info>
             <goods-item :AllGoods="recommends" ref="recommends"></goods-item>
         </scroll>
+        <in-back-top
+            @click.native="detailBackTop"
+            v-show="isShow"
+        ></in-back-top>
     </div>
 </template>
 
@@ -52,6 +56,8 @@ import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
 import detailGoodsParam from "./detailitem/detailGoodsParam.vue";
 import detailCommentInfo from "./detailitem/detailCommentInfo.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
+import InBackTop from "../../components/content/backtop/InBackTop.vue";
+
 import { debounce } from "../../common/utils.js";
 import { sorollRefresh } from "../../common/mixin.js";
 export default {
@@ -68,6 +74,7 @@ export default {
         detailGoodsParam,
         detailCommentInfo,
         GoodsItem,
+        InBackTop,
     },
 
     data() {
@@ -84,7 +91,17 @@ export default {
             recommends: [],
             navbarOffsetTop: [],
             navbarChange: 0,
+            isShow: false,
+
         };
+    },
+    watch: {
+        // "$refs.scroll": {
+        //     handler(newValue, oldValue) {
+        //         console.log(newValue, oldValue);
+        //     },
+        //     deep: true,
+        // },
     },
     computed: {
         offsetTop() {
@@ -96,7 +113,11 @@ export default {
             ];
         },
     },
-    watch: {},
+    watch: {
+        // a:function(data){
+        //     console.log(data);
+        // }
+    },
     beforeDestroy() {
         // 当销毁前再次把vueX托管的值改变
         this.$store.state.needTabber = true;
@@ -156,7 +177,8 @@ export default {
             });
         // }
     },
-    mounted() {},
+    mounted() {
+    },
     activated() {},
 
     methods: {
@@ -168,6 +190,7 @@ export default {
         },
         scrollCheck(position) {
             // console.log(this.navbarOffsetTop.length==0);
+            this.isShow = false;
 
             if (this.navbarOffsetTop.length === 0) {
                 this.navbarOffsetTop = this.offsetTop;
@@ -193,12 +216,20 @@ export default {
             } else if (-position.y >= this.navbarOffsetTop[3]) {
                 this.navbarChange = 3;
             }
+
+            // 判断什么时候显示
+            if (this.navbarChange >= 1) {
+                this.isShow = true;
+            }
         },
 
         goOffsetTop(index) {
             this.navbarOffsetTop = this.offsetTop;
-            console.log(this.navbarOffsetTop);
-            this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index]+1));
+            // console.log(this.navbarOffsetTop);
+            this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
+        },
+        detailBackTop() {
+            this.$refs.scroll.backTop();
         },
     },
 };

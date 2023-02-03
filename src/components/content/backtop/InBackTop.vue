@@ -7,6 +7,9 @@
 <script>
 export default {
     name: "InBackTop",
+    props: {
+       
+    },
 
     data() {
         return {};

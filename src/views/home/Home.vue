@@ -44,7 +44,11 @@
 
             <goods-item :AllGoods="goods[baseGoodsType].list"></goods-item>
         </scroll>
-        <in-back-top @click.native="homeBackTop" v-show="isShow"></in-back-top>
+        <in-back-top
+            @click.native="homeBackTop"
+            :giveScroll="$refs.scroll"
+            v-show="isShow"
+        ></in-back-top>
     </div>
 </template>
 
