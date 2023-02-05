@@ -92,7 +92,6 @@ export default {
             navbarOffsetTop: [],
             navbarChange: 0,
             isShow: false,
-
         };
     },
     watch: {
@@ -110,6 +109,9 @@ export default {
                 this.$refs.param && this.$refs.param.$el.offsetTop,
                 this.$refs.comment && this.$refs.comment.$el.offsetTop,
                 this.$refs.recommends && this.$refs.recommends.$el.offsetTop,
+                // 这个MAX_VALUE能获取js的最大数值，用于for循环的对比，不过记得循环该数组时长度减一
+                // 不然这个数据也会被循环到
+                Number.MAX_VALUE,
             ];
         },
     },
@@ -177,8 +179,7 @@ export default {
             });
         // }
     },
-    mounted() {
-    },
+    mounted() {},
     activated() {},
 
     methods: {
@@ -197,30 +198,36 @@ export default {
                 // console.log(this.navbarOffsetTop);
                 // console.log(1);
             }
-
-            if (
-                -position.y >= this.navbarOffsetTop[0] &&
-                -position.y <= this.navbarOffsetTop[1]
-            ) {
-                this.navbarChange = 0;
-            } else if (
-                -position.y >= this.navbarOffsetTop[1] &&
-                -position.y <= this.navbarOffsetTop[2]
-            ) {
-                this.navbarChange = 1;
-            } else if (
-                -position.y >= this.navbarOffsetTop[2] &&
-                -position.y <= this.navbarOffsetTop[3]
-            ) {
-                this.navbarChange = 2;
-            } else if (-position.y >= this.navbarOffsetTop[3]) {
-                this.navbarChange = 3;
+            // 减少判断加强性能
+            // 这个判断比if else显然不如性能好，但是代码执行效率以及观感好很多
+            for (let i = 0; i < this.navbarOffsetTop.length - 1; i++) {
+                if (
+                    this.navbarChange !== i &&
+                    -position.y >= this.navbarOffsetTop[i] &&
+                    -position.y <= this.navbarOffsetTop[i + 1]
+                ) {
+                    this.navbarChange = i;
+                }
             }
-
-            // 判断什么时候显示
+            // 判断什么时候显示backtop
             if (this.navbarChange >= 1) {
                 this.isShow = true;
             }
+            // if (-position.y <= this.navbarOffsetTop[1]) {
+            //     this.navbarChange = 0;
+            // } else if (
+            //     -position.y >= this.navbarOffsetTop[1] &&
+            //     -position.y <= this.navbarOffsetTop[2]
+            // ) {
+            //     this.navbarChange = 1;
+            // } else if (
+            //     -position.y >= this.navbarOffsetTop[2] &&
+            //     -position.y <= this.navbarOffsetTop[3]
+            // ) {
+            //     this.navbarChange = 2;
+            // } else if (-position.y >= this.navbarOffsetTop[3]) {
+            //     this.navbarChange = 3;
+            // }
         },
 
         goOffsetTop(index) {
