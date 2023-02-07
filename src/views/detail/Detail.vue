@@ -35,6 +35,7 @@
             @click.native="detailBackTop"
             v-show="isShow"
         ></in-back-top>
+        <detail-bottom-bar ></detail-bottom-bar>
     </div>
 </template>
 
@@ -60,6 +61,7 @@ import InBackTop from "../../components/content/backtop/InBackTop.vue";
 
 import { debounce } from "../../common/utils.js";
 import { sorollRefresh } from "../../common/mixin.js";
+import DetailBottomBar from "./detailitem/detailBottomBar.vue";
 export default {
     name: "Detail",
     // 移除了保持活跃
@@ -75,6 +77,7 @@ export default {
         detailCommentInfo,
         GoodsItem,
         InBackTop,
+        DetailBottomBar,
     },
 
     data() {
@@ -247,6 +250,6 @@ export default {
     height: 100vh;
 }
 .scroll {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 48px);
 }
 </style>

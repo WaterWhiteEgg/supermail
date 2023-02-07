@@ -1,0 +1,83 @@
+<template>
+    <div class="bottombar">
+        <div class="bottombar_icon">
+            <span class="bottombar_icon_kefu">
+                <img src="~/assets/img/svg/detail/kefu.svg" alt="" />
+                <div>客服</div></span
+            ><span>
+                <img src="~/assets/img/svg/detail/shangpin.svg" alt="" />
+                <div>店铺</div></span
+            ><span>
+                <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
+                <div>收藏</div>
+            </span>
+        </div>
+        <div class="bottombar_car"><button>加入购物车</button></div>
+        <div class="bottombar_buy"><button>购买</button></div>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "DetailBottomBar",
+
+    data() {
+        return {};
+    },
+
+    mounted() {},
+
+    methods: {},
+};
+</script>
+
+
+<style scoped>
+button {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+.bottombar {
+    display: flex;
+    position: absolute;
+    height: 48px;
+    bottom: 0;
+    background-color: #fff;
+}
+.bottombar .bottombar_icon {
+    flex: 5;
+    height: 100%;
+    display: flex;
+}
+.bottombar .bottombar_car {
+    flex: 2.5;
+}
+.bottombar .bottombar_buy {
+    flex: 2.5;
+
+}
+.bottombar .bottombar_car button {
+    background-color: #ffec5a;
+}
+.bottombar .bottombar_buy button {
+    background-color: #00ce00;
+}
+.bottombar .bottombar_icon span {
+    align-items: flex-start;
+    text-align: center;
+}
+.bottombar .bottombar_icon span img {
+    padding-top: 6px;
+
+    width: 30%;
+}
+.bottombar .bottombar_icon span div {
+    font-size: 12px;
+}
+.bottombar_icon_kefu {
+    background-color: #ffedf7;
+}
+</style>
