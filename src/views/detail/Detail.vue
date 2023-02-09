@@ -32,10 +32,10 @@
             <goods-item :AllGoods="recommends" ref="recommends"></goods-item>
         </scroll>
         <in-back-top
-            @click.native="detailBackTop"
+            @click.native="BackTop"
             v-show="isShow"
         ></in-back-top>
-        <detail-bottom-bar ></detail-bottom-bar>
+        <detail-bottom-bar></detail-bottom-bar>
     </div>
 </template>
 
@@ -60,12 +60,12 @@ import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import InBackTop from "../../components/content/backtop/InBackTop.vue";
 
 import { debounce } from "../../common/utils.js";
-import { sorollRefresh } from "../../common/mixin.js";
+import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 import DetailBottomBar from "./detailitem/detailBottomBar.vue";
 export default {
     name: "Detail",
     // 移除了保持活跃
-    mixins: [sorollRefresh],
+    mixins: [sorollRefresh, mixinBackTop],
     components: {
         detailNavbar,
         detailSwiper,
@@ -76,7 +76,6 @@ export default {
         detailGoodsParam,
         detailCommentInfo,
         GoodsItem,
-        InBackTop,
         DetailBottomBar,
     },
 
@@ -94,7 +93,6 @@ export default {
             recommends: [],
             navbarOffsetTop: [],
             navbarChange: 0,
-            isShow: false,
         };
     },
     watch: {
@@ -238,9 +236,7 @@ export default {
             // console.log(this.navbarOffsetTop);
             this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
         },
-        detailBackTop() {
-            this.$refs.scroll.backTop();
-        },
+        
     },
 };
 </script>

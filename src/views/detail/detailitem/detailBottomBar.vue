@@ -1,7 +1,7 @@
 <template>
     <div class="bottombar">
         <div class="bottombar_icon">
-            <span class="bottombar_icon_kefu">
+            <span class="bottombar_icon_kefu" @click="callCM">
                 <img src="~/assets/img/svg/detail/kefu.svg" alt="" />
                 <div>客服</div></span
             ><span>
@@ -12,8 +12,13 @@
                 <div>收藏</div>
             </span>
         </div>
-        <div class="bottombar_car"><button>加入购物车</button></div>
-        <div class="bottombar_buy"><button>购买</button></div>
+        <div class="bottombar_car" v-if="1">
+            <button @click="addcar">加入购物车</button>
+        </div>
+        <div class="bottombar_car bottombar_car_off" v-else>
+            <button @click="addcarOff">删除购物车</button>
+        </div>
+        <div class="bottombar_buy"><button @click="addcar">购买</button></div>
     </div>
 </template>
 
@@ -27,7 +32,17 @@ export default {
 
     mounted() {},
 
-    methods: {},
+    methods: {
+        addcar() {
+            console.log(1);
+        },
+        addcarOff() {
+            console.log(2);
+        },
+        callCM() {
+            alert("反向打折，包吃包住，性感客服，在线跑路");
+        },
+    },
 };
 </script>
 
@@ -57,7 +72,6 @@ button {
 }
 .bottombar .bottombar_buy {
     flex: 2.5;
-
 }
 .bottombar .bottombar_car button {
     background-color: #ffec5a;

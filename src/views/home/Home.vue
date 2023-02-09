@@ -45,7 +45,7 @@
             <goods-item :AllGoods="goods[baseGoodsType].list"></goods-item>
         </scroll>
         <in-back-top
-            @click.native="homeBackTop"
+            @click.native="BackTop"
             :giveScroll="$refs.scroll"
             v-show="isShow"
         ></in-back-top>
@@ -60,7 +60,7 @@ import HomeRecommend from "./homeComps/HomeRecommend.vue";
 import TabControl from "components/common/tabcontrol/TabControl.vue";
 
 import { getHomeData, getGoodsHome } from "../../network/home";
-import { sorollRefresh } from "../../common/mixin.js";
+import { sorollRefresh ,mixinBackTop} from "../../common/mixin.js";
 
 import { debounce } from "../../common/utils.js";
 import HomeFeature from "./homeComps/HomeFeature.vue";
@@ -70,7 +70,7 @@ import InBackTop from "../../components/content/backtop/InBackTop.vue";
 
 export default {
     name: "Home",
-    mixins: [sorollRefresh],
+    mixins: [sorollRefresh,mixinBackTop],
     data() {
         return {
             banner: [],
@@ -90,7 +90,6 @@ export default {
                 sell: { page: 0, list: [] },
             },
             baseGoodsType: "pop",
-            isShow: false,
             isTop: false,
             tabContOffSetTop: 0,
             toScrollY: 0,
@@ -104,7 +103,6 @@ export default {
         TabControl,
         GoodsItem,
         Scroll,
-        InBackTop,
     },
 
     mounted() {
@@ -192,9 +190,7 @@ export default {
             this.$refs.tabControlShow.isactive = index;
         },
 
-        homeBackTop() {
-            this.$refs.scroll.backTop();
-        },
+       
 
         scrollCheck(position) {
             // 检查InBackTop
