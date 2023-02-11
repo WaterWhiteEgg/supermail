@@ -47,3 +47,13 @@ export class GoodsParam {
         this.sizes = rule.tables;
     }
 }
+
+export class Product {
+    constructor(img, info) {
+        this.image = img[0];
+        this.iid = info.iid;
+        this.desc = info.desc;
+        this.title = info.title;
+        this.price = info.lowNowPrice
+    }
+}

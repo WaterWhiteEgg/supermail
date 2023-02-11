@@ -34,7 +34,7 @@ export default {
 
     methods: {
         addcar() {
-            console.log(1);
+            this.$emit("addcar");
         },
         addcarOff() {
             console.log(2);

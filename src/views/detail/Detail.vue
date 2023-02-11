@@ -31,11 +31,8 @@
             ></detail-comment-info>
             <goods-item :AllGoods="recommends" ref="recommends"></goods-item>
         </scroll>
-        <in-back-top
-            @click.native="BackTop"
-            v-show="isShow"
-        ></in-back-top>
-        <detail-bottom-bar></detail-bottom-bar>
+        <in-back-top @click.native="BackTop" v-show="isShow"></in-back-top>
+        <detail-bottom-bar @addcar="addcar"></detail-bottom-bar>
     </div>
 </template>
 
@@ -46,6 +43,7 @@ import {
     ShopInfo,
     GoodsParam,
     getdetailRecommend,
+    Product,
 } from "../../network/detail";
 
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
@@ -57,7 +55,6 @@ import detailGoodsInfo from "./detailitem/detailGoodsInfo.vue";
 import detailGoodsParam from "./detailitem/detailGoodsParam.vue";
 import detailCommentInfo from "./detailitem/detailCommentInfo.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
-import InBackTop from "../../components/content/backtop/InBackTop.vue";
 
 import { debounce } from "../../common/utils.js";
 import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
@@ -91,6 +88,7 @@ export default {
             goodsParams: {},
             commentInfo: {},
             recommends: [],
+            product: {},
             navbarOffsetTop: [],
             navbarChange: 0,
         };
@@ -123,7 +121,7 @@ export default {
     },
     beforeDestroy() {
         // 当销毁前再次把vueX托管的值改变
-        this.$store.state.needTabber = true;
+        this.$store.commit("changeNeedTabber");
     },
     deactivated() {},
     updated() {
@@ -134,7 +132,8 @@ export default {
     },
 
     created() {
-        this.$store.state.needTabber = false;
+        // this.$store.state.needTabber = false;
+        this.$store.commit("changeNeedTabber");
         // 改变vueX的needTabber使其不显示
 
         // if (!(this.iid === this.$route.query.iid)) {
@@ -150,6 +149,7 @@ export default {
                 this.detailInfo = res.data.result.detailInfo;
                 this.itemParams = res.data.result.itemParams;
                 this.commentInfo = res.data.result.rate;
+
                 // 传入三个数据给类
                 this.allGoodsItem = new GoodsItemNet(
                     this.itemInfo,
@@ -161,10 +161,13 @@ export default {
                 this.allShopInfo = new ShopInfo(this.shopInfo);
                 // console.log(this.allGoodsItem);
 
+                // 传入两个数据给类
                 this.goodsParams = new GoodsParam(
                     this.itemParams.info,
                     this.itemParams.rule
                 );
+
+                this.product = new Product(this.topImg, this.itemInfo);
             })
             .catch((err) => {
                 console.log(err);
@@ -236,7 +239,10 @@ export default {
             // console.log(this.navbarOffsetTop);
             this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
         },
-        
+
+        addcar() {
+            this.$store.commit("shopcarData", this.product);
+        },
     },
 };
 </script>
