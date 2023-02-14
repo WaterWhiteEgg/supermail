@@ -6,6 +6,7 @@
             :navbarChange="navbarChange"
             @goOffsetTop="goOffsetTop"
         ></detail-navbar>
+
         <scroll
             class="scroll"
             ref="scroll"
@@ -32,6 +33,7 @@
             <goods-item :AllGoods="recommends" ref="recommends"></goods-item>
         </scroll>
         <in-back-top @click.native="BackTop" v-show="isShow"></in-back-top>
+
         <detail-bottom-bar @addcar="addcar"></detail-bottom-bar>
     </div>
 </template>
@@ -91,6 +93,7 @@ export default {
             product: {},
             navbarOffsetTop: [],
             navbarChange: 0,
+            popup: false,
         };
     },
     watch: {
@@ -241,7 +244,9 @@ export default {
         },
 
         addcar() {
-            this.$store.commit("shopcarData", this.product);
+            // console.log(this.topImg, this.itemInfo);    
+            this.product = new Product(this.topImg, this.itemInfo);
+            this.$store.dispatch("shopcarData", this.product);
         },
     },
 };

@@ -8,6 +8,7 @@ const store = new Vuex.Store({
     needTabber: true,
     needCartPush: true,
     cartLists: [],
+    popup: false,
   },
   getters: {
   },
@@ -15,30 +16,40 @@ const store = new Vuex.Store({
     changeNeedTabber(state) {
       state.needTabber = !state.needTabber
     },
-    shopcarData(state, payload) {
+    noRepeatShopcar(state, payload) {
 
       for (let i = 0; i < state.cartLists.length; i++) {
-        if (state.cartLists[i].iid == payload.iid) {
+        if (state.cartLists || state.cartLists[i].iid == payload.iid) {
           state.needCartPush = false
         }
       }
+    },
+    pushShopcarData(state, payload) {
       if (state.needCartPush) {
         state.cartLists.push(payload);
-
-
       } else {
-
-        state.needCartPush = true
+        state.needCartPush = true;
       }
 
-
-
+    },
+    openPopup(state, payload) {
+      state.popup = true
+    },
+    closePopup(state, payload) {
+      state.popup = false
     }
 
   },
   actions: {
+
+    shopcarData(context, payload) {
+      context.commit("noRepeatShopcar", payload)
+      context.commit("pushShopcarData", payload)
+
+    }
   },
   modules: {
+
   }
 })
 export default store

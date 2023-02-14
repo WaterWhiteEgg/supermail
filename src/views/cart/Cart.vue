@@ -1,7 +1,9 @@
 <template >
-    <div class="cart"  @click="test">
+    <div class="cart">
         <scroll class="scroll" ref="scroll">
-            <div>{{ $store.state.cartLists }}</div>
+            <div class="cart_list">
+                <div>{{ cartLists }}</div>
+            </div>
         </scroll>
     </div>
 </template>
@@ -13,15 +15,24 @@ import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 export default {
     name: "Cart",
     components: { Scroll },
-    mixins: [sorollRefresh, mixinBackTop],
-    updated() {
-        
+    data() {
+        return {
+            cartLists: this.$store.state.cartLists,
+        };
     },
-    methods:{
-        test(){
+    mixins: [sorollRefresh, mixinBackTop],
+    watch: {
+        cartLists(newlist, oldlist) {
+            // this.$refs.scroll.bs.refresh();
+
+        },
+    },
+    updated() {},
+    methods: {
+        text() {
             this.$refs.scroll.bs.refresh();
-        }
-    }
+        },
+    },
 };
 </script>
 
@@ -31,6 +42,10 @@ export default {
 }
 .scroll {
     height: calc(100% - 44px);
+    /* height: 100px; */
     /* background-color: red; */
+}
+.cart_list {
+    min-height: 100vh;
 }
 </style>

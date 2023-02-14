@@ -1,5 +1,6 @@
 <template>
     <div class="bottombar">
+        <popup class="popup" :popupText="popupText"></popup>
         <div class="bottombar_icon">
             <span class="bottombar_icon_kefu" @click="callCM">
                 <img src="~/assets/img/svg/detail/kefu.svg" alt="" />
@@ -23,11 +24,17 @@
 </template>
 
 <script>
+import Popup from "../../../components/common/popup/Popup.vue";
 export default {
     name: "DetailBottomBar",
+    components: {
+        Popup,
+    },
 
     data() {
-        return {};
+        return {
+            popupText: "添加到购物车",
+        };
     },
 
     mounted() {},
@@ -35,6 +42,7 @@ export default {
     methods: {
         addcar() {
             this.$emit("addcar");
+            this.$store.commit("openPopup");
         },
         addcarOff() {
             console.log(2);
@@ -48,6 +56,16 @@ export default {
 
 
 <style scoped>
+.popup {
+    transform: translate(0, -50vh);
+    /* display: none; */
+    position: absolute;
+    width: 100vh;
+    width: 100vw;
+    box-sizing: border-box;
+
+    z-index: 999;
+}
 button {
     padding: 0;
     margin: 0;
