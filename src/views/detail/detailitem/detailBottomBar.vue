@@ -57,7 +57,7 @@ export default {
             this.popupText = "添加到购物车";
         },
         callCM() {
-            alert("反向打折，包吃包住，性感客服，在线跑路");
+            alert("你拨打的用户正在跑路中，请稍后再拨");
         },
     },
 };

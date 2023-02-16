@@ -1,7 +1,7 @@
 <template>
     <div>
         <scroll class="hight">
-           
+            <div>数据栏</div>
         </scroll>
     </div>
 </template>
@@ -25,6 +25,5 @@ export default {
 <style scoped>
 .hight{
     /* height: 300px; */
-    background-color: red;
 }
 </style>

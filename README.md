@@ -1,5 +1,5 @@
 # supermail练习
-
+目前home的模块制作已经完毕，当然购物车栏，用户栏，列表栏都没有制作
 ## Project setup
 ```
 npm install

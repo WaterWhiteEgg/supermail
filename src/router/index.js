@@ -37,6 +37,10 @@ const routes = [
     component: Detail,
 
   },
+  {
+    path: '/user',
+    component: User,
+  },
 ]
 
 const router = new VueRouter({
