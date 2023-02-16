@@ -43,9 +43,19 @@ export default {
     methods: {
         changeCar(istrue) {
             this.$emit("changeCar", istrue);
+            if (istrue) {
+                this.addtext();
+            } else {
+                this.deltext();
+            }
             this.$store.commit("openPopup");
         },
-        delcar() {},
+        deltext() {
+            this.popupText = "移除购物车";
+        },
+        addtext() {
+            this.popupText = "添加到购物车";
+        },
         callCM() {
             alert("反向打折，包吃包住，性感客服，在线跑路");
         },
