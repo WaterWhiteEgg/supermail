@@ -34,7 +34,7 @@
         </scroll>
         <in-back-top @click.native="BackTop" v-show="isShow"></in-back-top>
 
-        <detail-bottom-bar @addcar="addcar"></detail-bottom-bar>
+        <detail-bottom-bar @changeCar="changeCar"></detail-bottom-bar>
     </div>
 </template>
 
@@ -80,7 +80,7 @@ export default {
 
     data() {
         return {
-            iid: null,
+            iid: "",
             topImg: [],
             allGoodsItem: {},
             allShopInfo: {},
@@ -97,6 +97,10 @@ export default {
         };
     },
     watch: {
+        iid(newdata, olddata) {
+            this.$store.commit("needChangeShopcar", newdata);
+        },
+
         // "$refs.scroll": {
         //     handler(newValue, oldValue) {
         //         console.log(newValue, oldValue);
@@ -117,11 +121,7 @@ export default {
             ];
         },
     },
-    watch: {
-        // a:function(data){
-        //     console.log(data);
-        // }
-    },
+
     beforeDestroy() {
         // 当销毁前再次把vueX托管的值改变
         this.$store.commit("changeNeedTabber");
@@ -243,11 +243,20 @@ export default {
             this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
         },
 
-        addcar() {
-            // console.log(this.topImg, this.itemInfo);    
-            this.product = new Product(this.topImg, this.itemInfo);
-            this.$store.dispatch("shopcarData", this.product);
+        changeCar(istrue) {
+            // console.log(istrue);
+            if (istrue) {
+                this.product = new Product(this.topImg, this.itemInfo);
+                this.$store.dispatch("shopcarData", this.product);
+            } else {
+                this.$store.commit("delShopcar", this.iid);
+            }
+
+            this.$store.commit("needChangeShopcar", this.iid);
         },
+        // liveDetail(){
+        //     // console.log(1);
+        // }
     },
 };
 </script>

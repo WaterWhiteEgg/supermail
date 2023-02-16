@@ -3,7 +3,7 @@
         <span
             class="popup_children"
             :class="{ popup_children_change: $store.state.popup }"
-            @click="test"
+            @click="open"
             >{{ popupText }}
         </span>
     </div>
@@ -36,7 +36,7 @@ export default {
     },
 
     methods: {
-        test() {
+        open() {
             // console.log(this.start);
             // this.start = !this.start;
             this.$store.commit("openPopup");

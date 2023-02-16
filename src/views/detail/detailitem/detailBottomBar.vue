@@ -13,13 +13,13 @@
                 <div>收藏</div>
             </span>
         </div>
-        <div class="bottombar_car" v-if="1">
-            <button @click="addcar">加入购物车</button>
+        <div class="bottombar_car" v-if="$store.state.donChangeCar">
+            <button @click="changeCar(true)">加入购物车</button>
         </div>
         <div class="bottombar_car bottombar_car_off" v-else>
-            <button @click="addcarOff">删除购物车</button>
+            <button @click="changeCar(false)">删除购物车</button>
         </div>
-        <div class="bottombar_buy"><button @click="addcar">购买</button></div>
+        <div class="bottombar_buy"><button>购买</button></div>
     </div>
 </template>
 
@@ -36,17 +36,16 @@ export default {
             popupText: "添加到购物车",
         };
     },
+    computed: {},
 
     mounted() {},
 
     methods: {
-        addcar() {
-            this.$emit("addcar");
+        changeCar(istrue) {
+            this.$emit("changeCar", istrue);
             this.$store.commit("openPopup");
         },
-        addcarOff() {
-            console.log(2);
-        },
+        delcar() {},
         callCM() {
             alert("反向打折，包吃包住，性感客服，在线跑路");
         },
@@ -111,5 +110,9 @@ button {
 }
 .bottombar_icon_kefu {
     background-color: #ffedf7;
+}
+.bottombar_car_off button {
+    background-color: red !important;
+    color: #ffffff;
 }
 </style>
