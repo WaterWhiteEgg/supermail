@@ -32,7 +32,7 @@ export default {
     },
 
     mounted() {
-        this.$store.dispatch("shopcarData", this.product);
+        // this.$store.dispatch("shopcarData", this.product);
     },
 
     methods: {

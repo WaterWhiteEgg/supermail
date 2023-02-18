@@ -34,7 +34,10 @@
         </scroll>
         <in-back-top @click.native="BackTop" v-show="isShow"></in-back-top>
 
-        <detail-bottom-bar @changeCar="changeCar"></detail-bottom-bar>
+        <detail-bottom-bar
+            @changeCar="changeCar"
+            @changeStar="changeStar"
+        ></detail-bottom-bar>
     </div>
 </template>
 
@@ -99,6 +102,7 @@ export default {
     watch: {
         iid(newdata, olddata) {
             this.$store.commit("needChangeShopcar", newdata);
+            this.$store.commit("needChangeStar", newdata);
         },
 
         // "$refs.scroll": {
@@ -254,9 +258,16 @@ export default {
 
             this.$store.commit("needChangeShopcar", this.iid);
         },
-        // liveDetail(){
-        //     // console.log(1);
-        // }
+        changeStar(istrue) {
+            if(istrue){
+            this.$store.dispatch("changeStar", this.iid);
+            }else{
+                this.$store.commit("delStar", this.iid);
+
+            }
+            this.$store.commit("needChangeStar", this.iid);
+
+        },
     },
 };
 </script>

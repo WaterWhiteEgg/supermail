@@ -5,12 +5,24 @@
             <span class="bottombar_icon_kefu" @click="callCM">
                 <img src="~/assets/img/svg/detail/kefu.svg" alt="" />
                 <div>客服</div></span
-            ><span>
+            ><span class="bottombar_icon_shangpin">
                 <img src="~/assets/img/svg/detail/shangpin.svg" alt="" />
                 <div>店铺</div></span
-            ><span>
+            ><span
+                class="bottombar_icon_shoucang"
+                @click="changeStar(true)"
+                v-if="$store.state.donChangeStar"
+            >
                 <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
                 <div>收藏</div>
+            </span>
+            <span
+                class="bottombar_icon_shoucang bottombar_icon_shoucang_Off"
+                @click="changeStar(false)"
+                v-else
+            >
+                <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
+                <div>已收藏</div>
             </span>
         </div>
         <div class="bottombar_car" v-if="$store.state.donChangeCar">
@@ -43,12 +55,16 @@ export default {
     methods: {
         changeCar(istrue) {
             this.$emit("changeCar", istrue);
+            this.changeText(istrue);
+            this.$store.commit("openPopup");
+        },
+
+        changeText(istrue) {
             if (istrue) {
                 this.addtext();
             } else {
                 this.deltext();
             }
-            this.$store.commit("openPopup");
         },
         deltext() {
             this.popupText = "移除购物车";
@@ -58,6 +74,9 @@ export default {
         },
         callCM() {
             alert("你拨打的用户正在跑路中，请稍后再拨");
+        },
+        changeStar(istrue) {
+            this.$emit("changeStar", istrue);
         },
     },
 };
@@ -100,6 +119,7 @@ button {
 .bottombar .bottombar_buy {
     flex: 2.5;
 }
+
 .bottombar .bottombar_car button {
     background-color: #ffec5a;
 }
@@ -118,11 +138,17 @@ button {
 .bottombar .bottombar_icon span div {
     font-size: 12px;
 }
-.bottombar_icon_kefu {
+.bottombar .bottombar_icon .bottombar_icon_shangpin {
+    opacity: 0.5;
+}
+.bottombar .bottombar_icon .bottombar_icon_kefu {
     background-color: #ffedf7;
 }
 .bottombar_car_off button {
     background-color: red !important;
     color: #ffffff;
+}
+.bottombar_icon_shoucang_Off{
+    background-color: #ffae00cc;
 }
 </style>

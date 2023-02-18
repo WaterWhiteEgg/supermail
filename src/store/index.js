@@ -7,7 +7,10 @@ const store = new Vuex.Store({
   state: {
     needTabber: true,
     needCartPush: true,
+    needStarPush: true,
     donChangeCar: true,
+    donChangeStar: true,
+    iidStar: [],
     cartLists: [],
     popup: false,
   },
@@ -17,6 +20,7 @@ const store = new Vuex.Store({
     changeNeedTabber(state) {
       state.needTabber = !state.needTabber
     },
+
     noRepeatShopcar(state, payload) {
 
       if (payload == undefined) {
@@ -83,7 +87,48 @@ const store = new Vuex.Store({
 
         }
       }
+    },
+    noRepeatStar(state, payload) {
+      for (let i = 0; i <= state.iidStar.length; i++) {
+        // console.log(!(state.iidStar.length == 0 || state.iidStar[i] != payload));
+        if (!(state.iidStar.length == 0 || state.iidStar[i] != payload)) {
+          state.needStarPush = false
+        }
+      }
+    },
+    pushStar(state, payload) {
+      // console.log(state.iidStar);
+      if (state.needStarPush) {
+        state.iidStar.push(payload)
+      } else {
+        state.needCartPush = true
+      }
+    },
+    needChangeStar(state, payload) {
+      if (state.iidStar.length == 0) {
+        state.donChangeStar = true
+        return 0
+      }
+      for (let i = 0; i < state.iidStar.length; i++) {
+        if (state.iidStar[i] == payload) {
+          state.donChangeStar = false
+        } else {
+          state.donChangeStar = true
+        }
+      }
+
+    },
+    delStar(state, payload) {
+      for (let i = 0; i < state.iidStar.length; i++) {
+        if (state.iidStar[i] == payload) {
+          state.iidStar.splice(i, 1);
+          return 0
+
+        }
+      }
     }
+
+
   },
   actions: {
 
@@ -92,8 +137,11 @@ const store = new Vuex.Store({
       context.commit("noRepeatShopcar", payload)
       context.commit("pushShopcarData", payload)
       // context.commit("needChangeShopcar", payload)
-
-
+    },
+    changeStar(context, payload) {
+      // console.log(payload);
+      context.commit("noRepeatStar", payload)
+      context.commit("pushStar", payload)
 
     }
   },
