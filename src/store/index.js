@@ -26,6 +26,17 @@ const store = new Vuex.Store({
         return 0
       }
     },
+    delStateList(state, payload) {
+      for (let i = 0; i < state[payload.array].length; i++) {
+        console.log(state[payload.array][i]);
+        if (state[payload.array][i] == payload.delPayload ||
+          state[payload.array][i].iid == payload.delPayload) {
+          state[payload.array].splice(i, 1);
+          return 0
+
+        }
+      }
+    },
 
 
 
@@ -80,14 +91,9 @@ const store = new Vuex.Store({
       }
     },
     delShopcar(state, payload) {
-      for (let i = 0; i <= state.cartLists.length; i++) {
+      this.commit("delStateList", { array: "cartLists", delPayload: payload})
 
-        if (state.cartLists && state.cartLists[i] && payload == state.cartLists[i].iid) {
-          state.cartLists.splice(i, 1);
-          return 0
 
-        }
-      }
     },
     openPopup(state) {
       state.popup = true
@@ -116,7 +122,7 @@ const store = new Vuex.Store({
     needChangeStar(state, payload) {
       this.commit("donPushZero", { length: state.iidStar.length, donChangeState: "donChangeStar" });
       for (let i = 0; i < state.iidStar.length; i++) {
-        console.log(state.iidStar[i] == payload);
+        // console.log(state.iidStar[i] == payload);
         if (state.iidStar[i] == payload) {
           state.donChangeStar = false
           return 0
@@ -129,13 +135,8 @@ const store = new Vuex.Store({
 
     },
     delStar(state, payload) {
-      for (let i = 0; i < state.iidStar.length; i++) {
-        if (state.iidStar[i] == payload) {
-          state.iidStar.splice(i, 1);
-          return 0
+      this.commit("delStateList", { array: "iidStar", delPayload: payload })
 
-        }
-      }
     }
 
 
