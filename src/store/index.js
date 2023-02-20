@@ -20,6 +20,14 @@ const store = new Vuex.Store({
     changeNeedTabber(state) {
       state.needTabber = !state.needTabber
     },
+    donPushZero(state, payload) {
+      if (payload.length == 0) {
+        state[payload.donChangeState] = true
+        return 0
+      }
+    },
+
+
 
     noRepeatShopcar(state, payload) {
 
@@ -50,6 +58,27 @@ const store = new Vuex.Store({
       }
 
     },
+    needChangeShopcar(state, payload) {
+      // console.log(state.cartLists &&
+      //   state.cartLists[0] &&
+      //   state.cartLists[0].iid);
+      this.commit("donPushZero", { length: state.cartLists.length, donChangeState: "donChangeCar" })
+      // this.commit("searchRepeat", {
+      //   array: "cartLists", donChangeState: "donChangeCar",
+      //   changePayload: payload
+      // })
+      for (let i = 0; i < state.cartLists.length; i++) {
+        if (state.cartLists && state.cartLists[i] && payload == state.cartLists[i].iid) {
+          state.donChangeCar = false
+          // console.log(1);
+          return 0
+        } else {
+          // console.log(2);
+          state.donChangeCar = true
+
+        }
+      }
+    },
     delShopcar(state, payload) {
       for (let i = 0; i <= state.cartLists.length; i++) {
 
@@ -67,27 +96,7 @@ const store = new Vuex.Store({
       state.popup = false
     },
 
-    needChangeShopcar(state, payload) {
-      // console.log(state.cartLists &&
-      //   state.cartLists[0] &&
-      //   state.cartLists[0].iid);
-      if (state.cartLists.length == 0) {
-        state.donChangeCar = true
-        return 0
-      }
-      for (let i = 0; i <= state.cartLists.length; i++) {
 
-        if (state.cartLists && state.cartLists[i] && payload == state.cartLists[i].iid) {
-          state.donChangeCar = false
-          // console.log(1);
-          return 0
-        } else {
-          // console.log(2);
-          state.donChangeCar = true
-
-        }
-      }
-    },
     noRepeatStar(state, payload) {
       for (let i = 0; i <= state.iidStar.length; i++) {
         // console.log(!(state.iidStar.length == 0 || state.iidStar[i] != payload));
@@ -105,17 +114,18 @@ const store = new Vuex.Store({
       }
     },
     needChangeStar(state, payload) {
-      if (state.iidStar.length == 0) {
-        state.donChangeStar = true
-        return 0
-      }
+      this.commit("donPushZero", { length: state.iidStar.length, donChangeState: "donChangeStar" });
       for (let i = 0; i < state.iidStar.length; i++) {
+        console.log(state.iidStar[i] == payload);
         if (state.iidStar[i] == payload) {
           state.donChangeStar = false
+          return 0
         } else {
           state.donChangeStar = true
+
         }
       }
+
 
     },
     delStar(state, payload) {
@@ -136,7 +146,6 @@ const store = new Vuex.Store({
       // console.log(payload);
       context.commit("noRepeatShopcar", payload)
       context.commit("pushShopcarData", payload)
-      // context.commit("needChangeShopcar", payload)
     },
     changeStar(context, payload) {
       // console.log(payload);

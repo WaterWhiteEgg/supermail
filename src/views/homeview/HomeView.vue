@@ -23,7 +23,5 @@ export default {
 </script>
 
 <style scoped>
-.hight{
-    /* height: 300px; */
-}
+
 </style>
