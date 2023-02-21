@@ -1,5 +1,6 @@
 <template>
     <div class="detail">
+    
         <detail-navbar
             :navbarOffsetTop="navbarOffsetTop"
             ref="navbar"
@@ -101,6 +102,7 @@ export default {
     },
     watch: {
         iid(newdata, olddata) {
+            
             this.$store.commit("needChangeShopcar", newdata);
             this.$store.commit("needChangeStar", newdata);
         },
@@ -203,7 +205,6 @@ export default {
         scrollCheck(position) {
             // console.log(this.navbarOffsetTop.length==0);
             this.isShow = false;
-
             if (this.navbarOffsetTop.length === 0) {
                 this.navbarOffsetTop = this.offsetTop;
                 // console.log(this.navbarOffsetTop);
@@ -278,5 +279,6 @@ export default {
 }
 .scroll {
     height: calc(100% - 44px - 48px);
+    
 }
 </style>

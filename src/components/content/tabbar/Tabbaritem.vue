@@ -24,6 +24,7 @@ export default {
         this_router: {
             type: String,
             default: "",
+        
         },
     },
 };
@@ -32,6 +33,8 @@ export default {
 <style>
 .tabbaritem_style {
     flex: 1;
+    
+    
     height: 100%;
     width: 100%;
     text-align: center;
@@ -39,7 +42,8 @@ export default {
     /* 强制不换行 */
     overflow: hidden;
     border: 0.2px solid #bbbbbb11;
-    background-color: #f0f0f0;
+
+    background-color:#f0f0f0;
 }
 .tabbaritem_style > li {
     line-height: 2.85rem !important;

@@ -28,13 +28,21 @@ const store = new Vuex.Store({
     },
     delStateList(state, payload) {
       for (let i = 0; i < state[payload.array].length; i++) {
-        console.log(state[payload.array][i]);
+        // console.log(state[payload.array][i]);
         if (state[payload.array][i] == payload.delPayload ||
           state[payload.array][i].iid == payload.delPayload) {
           state[payload.array].splice(i, 1);
           return 0
 
         }
+      }
+    },
+    ifPushNeed(state, { data, ifname, pushname }) {
+      // console.log(data);
+      if (state[ifname]) {
+        state[pushname].push(data);
+      } else {
+        state[ifname] = true;
       }
     },
 
@@ -59,14 +67,11 @@ const store = new Vuex.Store({
       }
     },
     pushShopcarData(state, payload) {
+      this.commit("ifPushNeed", { data: payload, ifname: "needCartPush", pushname: "cartLists" })
+      // console.log(payload);
 
-      if (state.needCartPush) {
-        state.cartLists.push(payload);
-        // console.log(state.cartLists);
 
-      } else {
-        state.needCartPush = true;
-      }
+
 
     },
     needChangeShopcar(state, payload) {
@@ -91,7 +96,7 @@ const store = new Vuex.Store({
       }
     },
     delShopcar(state, payload) {
-      this.commit("delStateList", { array: "cartLists", delPayload: payload})
+      this.commit("delStateList", { array: "cartLists", delPayload: payload })
 
 
     },
@@ -112,12 +117,8 @@ const store = new Vuex.Store({
       }
     },
     pushStar(state, payload) {
-      // console.log(state.iidStar);
-      if (state.needStarPush) {
-        state.iidStar.push(payload)
-      } else {
-        state.needCartPush = true
-      }
+      this.commit("ifPushNeed", { data: payload, ifname: "needStarPush", pushname: "iidStar" })
+
     },
     needChangeStar(state, payload) {
       this.commit("donPushZero", { length: state.iidStar.length, donChangeState: "donChangeStar" });

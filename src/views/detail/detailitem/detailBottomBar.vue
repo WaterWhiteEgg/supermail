@@ -60,6 +60,7 @@ export default {
         },
 
         changeText(istrue) {
+            
             if (istrue) {
                 this.addtext();
             } else {

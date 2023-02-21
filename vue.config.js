@@ -4,10 +4,11 @@ module.exports = {
         resolve: {
             alias: {
                 // extensions: ['.js','.vue'],
-                    'assets': '@/assets',
-                    'components': '@/components',
+                'assets': '@/assets',
+                'components': '@/components',
 
             }
         }
     }
+
 }
