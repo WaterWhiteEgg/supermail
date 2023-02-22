@@ -54,6 +54,7 @@ export class Product {
         this.iid = info.iid;
         this.desc = info.desc;
         this.title = info.title;
-        this.price = info.lowNowPrice
+        this.price = info.lowNowPrice;
+        this.quantity = 1;
     }
 }

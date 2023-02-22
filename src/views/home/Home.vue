@@ -1,6 +1,6 @@
 <template>
     <div id="home">
-        <navbar class="home_navbar">
+        <navbar class="home_navbar" >
             <template #center>购物街破解版</template>
         </navbar>
         <tab-control
@@ -66,7 +66,6 @@ import { debounce } from "../../common/utils.js";
 import HomeFeature from "./homeComps/HomeFeature.vue";
 import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
-import InBackTop from "../../components/content/backtop/InBackTop.vue";
 
 export default {
     name: "Home",

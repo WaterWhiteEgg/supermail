@@ -251,7 +251,6 @@ export default {
         changeCar(istrue) {
             // console.log(istrue);
             if (istrue) {
-                this.product = new Product(this.topImg, this.itemInfo);
                 this.$store.dispatch("shopcarData", this.product);
             } else {
                 this.$store.commit("delShopcar", this.iid);

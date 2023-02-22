@@ -49,7 +49,7 @@ const store = new Vuex.Store({
 
 
     noRepeatShopcar(state, payload) {
-
+      // 这是为了防止一开始监听iid不需要时直接不需要循环了 
       if (payload == undefined) {
         state.needCartPush = false
         return 0
@@ -122,6 +122,7 @@ const store = new Vuex.Store({
     },
     needChangeStar(state, payload) {
       this.commit("donPushZero", { length: state.iidStar.length, donChangeState: "donChangeStar" });
+
       for (let i = 0; i < state.iidStar.length; i++) {
         // console.log(state.iidStar[i] == payload);
         if (state.iidStar[i] == payload) {
