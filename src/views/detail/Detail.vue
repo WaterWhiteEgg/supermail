@@ -1,6 +1,5 @@
 <template>
     <div class="detail">
-    
         <detail-navbar
             :navbarOffsetTop="navbarOffsetTop"
             ref="navbar"
@@ -102,7 +101,6 @@ export default {
     },
     watch: {
         iid(newdata, olddata) {
-            
             this.$store.commit("needChangeShopcar", newdata);
             this.$store.commit("needChangeStar", newdata);
         },
@@ -249,7 +247,11 @@ export default {
         },
 
         changeCar(istrue) {
-            // console.log(istrue);
+            // 如果没有内容的话就不执行了
+            if (Object.keys(this.product).length == 0) {
+                return 0;
+            }
+
             if (istrue) {
                 this.$store.dispatch("shopcarData", this.product);
             } else {
@@ -259,14 +261,12 @@ export default {
             this.$store.commit("needChangeShopcar", this.iid);
         },
         changeStar(istrue) {
-            if(istrue){
-            this.$store.dispatch("changeStar", this.iid);
-            }else{
+            if (istrue) {
+                this.$store.dispatch("changeStar", this.iid);
+            } else {
                 this.$store.commit("delStar", this.iid);
-
             }
             this.$store.commit("needChangeStar", this.iid);
-
         },
     },
 };
@@ -278,6 +278,5 @@ export default {
 }
 .scroll {
     height: calc(100% - 44px - 48px);
-    
 }
 </style>
