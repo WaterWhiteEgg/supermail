@@ -44,13 +44,10 @@ export default {
         // },
     },
     updated() {},
-    activated(){
-            this.$refs.scroll.bs.refresh();
-
+    activated() {
+        this.$refs.scroll.bs.refresh();
     },
-    methods: {
-
-    },
+    methods: {},
 };
 </script>
 

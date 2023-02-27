@@ -7,10 +7,7 @@
             :class="{ first_cartitem: index == 0 }"
         >
             <div class="cartitem_show">
-                <span
-                    class="cartitem_show_checkbox"
-                    :class="{ cartitem_show_checkbox_on: true }"
-                ></span>
+                <click-button></click-button>
                 <img :src="item.image" :alt="item.title" />
             </div>
             <div class="cartitem_data">
@@ -29,7 +26,9 @@
 </template>
 
 <script>
+import ClickButton from "../../../components/content/clickbutton/ClickButton.vue";
 export default {
+    components: { ClickButton },
     name: "SupermailCartItemData",
     props: {
         cartLists: {
@@ -51,17 +50,6 @@ export default {
 </script>
 
 <style  scoped>
-.cartitem_show_checkbox_on {
-    background-color: #0015ff !important;
-    border: 0 !important;
-    overflow: hidden;
-}
-.cartitem_show_checkbox_on::after {
-    content: "√";
-    font-size: 16px;
-    font-weight: 900;
-    color: #fff;
-}
 .first_cartitem {
     margin-top: 0 !important;
 }
@@ -80,15 +68,7 @@ export default {
     width: 70%;
     border-radius: 5px;
 }
-.cartitem .cartitem_show .cartitem_show_checkbox {
-    display: inline-block;
-    width: 0.8rem;
-    height: 0.8rem;
-    margin: 0 0.3rem;
-    border-radius: 35px;
-    border: 0.1px solid #000;
-    background: #f8f8f8;
-}
+
 .cartitem .cartitem_data {
     flex: 0.7;
     display: flex;

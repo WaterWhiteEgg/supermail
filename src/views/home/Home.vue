@@ -226,6 +226,7 @@ export default {
 <style scoped>
 #home {
     height: 100vh;
+    overflow: hidden;
 }
 .home_navbar {
     position: sticky;
