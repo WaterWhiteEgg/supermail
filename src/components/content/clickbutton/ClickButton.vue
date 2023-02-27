@@ -1,12 +1,18 @@
 <template>
     <div>
-        <span class="checkbox" :class="{ checkbox_on: true }"></span>
+        <span class="checkbox" :class="{ checkbox_on: isChecked }"></span>
     </div>
 </template>
 
 <script>
 export default {
     name: "ClickButton",
+    props: {
+        isChecked: {
+            type: Boolean,
+            default: false,
+        },
+    },
 
     data() {
         return {};
@@ -38,5 +44,4 @@ export default {
     border: 0.1px solid #000;
     background: #f8f8f8;
 }
-
 </style>

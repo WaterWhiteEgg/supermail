@@ -7,7 +7,7 @@
             :class="{ first_cartitem: index == 0 }"
         >
             <div class="cartitem_show">
-                <click-button></click-button>
+                <click-button :isChecked="item.isChecked"></click-button>
                 <img :src="item.image" :alt="item.title" />
             </div>
             <div class="cartitem_data">

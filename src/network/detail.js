@@ -56,5 +56,6 @@ export class Product {
         this.title = info.title;
         this.price = info.lowNowPrice;
         this.quantity = 1;
+        this.isChecked = true;
     }
 }
