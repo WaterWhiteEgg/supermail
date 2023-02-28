@@ -1,8 +1,9 @@
 <template>
     <div class="cartbottom">
         <div class="cartbottom_checked">
-            <click-button :isChecked="true"></click-button>
-            <span>全选</span>
+            <click-button :isChecked="true">
+                <template #text>全选</template>
+            </click-button>
         </div>
         <div></div>
         <div></div>

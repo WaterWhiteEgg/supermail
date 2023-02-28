@@ -5,6 +5,7 @@
             :class="{ checkbox_on: isChecked }"
             @click="changeChecked"
         ></span>
+        <slot name="text"></slot>
     </div>
 </template>
 
@@ -37,7 +38,7 @@ export default {
     background-color: #0059ff !important;
     border: 0 !important;
     overflow: hidden;
-
+    
 }
 .checkbox_on::after {
     content: "√";
