@@ -14,6 +14,7 @@
                 class="cart_list"
             ></cart-item-data>
         </scroll>
+        <cart-bottom-bar ></cart-bottom-bar>
     </div>
 </template>
 
@@ -22,10 +23,11 @@ import Scroll from "../../components/common/better_scroll/Scroll.vue";
 import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 import Navbar from "../../components/common/navbar/Navbar.vue";
 import CartItemData from "./cartitem/CartItemData.vue";
+import CartBottomBar from "./cartitem/CartBottomBar.vue";
 
 export default {
     name: "Cart",
-    components: { Scroll, Navbar, CartItemData },
+    components: { Scroll, Navbar, CartItemData, CartBottomBar },
     data() {
         return {
             cartLists: this.$store.state.cartLists,

@@ -1,6 +1,10 @@
 <template>
     <div>
-        <span class="checkbox" :class="{ checkbox_on: isChecked }"></span>
+        <span
+            class="checkbox"
+            :class="{ checkbox_on: isChecked }"
+            @click="changeChecked"
+        ></span>
     </div>
 </template>
 
@@ -20,7 +24,11 @@ export default {
 
     mounted() {},
 
-    methods: {},
+    methods: {
+        changeChecked() {
+            this.$emit("changeChecked");
+        },
+    },
 };
 </script>
 
@@ -28,6 +36,8 @@ export default {
 .checkbox_on {
     background-color: #0059ff !important;
     border: 0 !important;
+    overflow: hidden;
+
 }
 .checkbox_on::after {
     content: "√";
@@ -37,6 +47,7 @@ export default {
 }
 .checkbox {
     display: inline-block;
+    box-sizing:border-box;
     width: 0.8rem;
     height: 0.8rem;
     margin: 0 0.3rem;

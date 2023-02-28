@@ -5,7 +5,7 @@
             <template #left>
                 <span @click="back" class="navbar_left">＜</span>
             </template>
-            <template #center class="navbar_center"
+            <template #center 
                 ><span
                     v-for="(item, index) in navbarItem"
                     :key="item"
