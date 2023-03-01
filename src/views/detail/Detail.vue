@@ -275,6 +275,7 @@ export default {
 <style  scoped>
 .detail {
     height: 100vh;
+    overflow: hidden;
 }
 .scroll {
     height: calc(100% - 44px - 48px);
