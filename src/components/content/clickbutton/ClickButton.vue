@@ -42,7 +42,9 @@ export default {
 }
 .checkbox_on::after {
     content: "√";
-    font-size: 16px;
+    font-size: 15px;
+    position: relative;
+    top: 0;
     font-weight: 900;
     color: #fff;
 }
