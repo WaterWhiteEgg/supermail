@@ -2,7 +2,7 @@
     <div class="cartbottom">
         <div class="cartbottom_checked">
             <click-button
-                :isChecked="isChecked"
+                :isChecked="isChecked "
                 class="cartbottom_checked_on"
                 @click.native="changeChecked"
             >
@@ -14,7 +14,7 @@
         </div>
         <div class="cartbottom_buy">
             <span class="cartbottom_buy_button"
-                >去计算:{{ $store.state.cartLists.length }}</span
+                >去计算:{{ toIsChecked.length }}</span
             >
         </div>
     </div>
@@ -28,26 +28,28 @@ export default {
 
     data() {
         return {
-            isChecked: true,
+            isChecked: this.$store.state.isAllCartListsCheck,
         };
     },
 
     mounted() {},
     computed: {
+        toIsChecked() {
+            return this.$store.state.cartLists.filter((item) => {
+                return item.isChecked;
+            });
+        },
         totalPrice() {
-            return this.$store.state.cartLists
-                .filter((item) => {
-                    return item.isChecked;
-                })
-                .reduce((preValue, item) => {
-                    return (preValue += item.price * item.quantity);
-                }, 0);
+            return this.toIsChecked.reduce((preValue, item) => {
+                return (preValue += item.price * item.quantity);
+            }, 0);
         },
     },
 
     methods: {
         changeChecked() {
             this.isChecked = !this.isChecked;
+
         },
     },
 };

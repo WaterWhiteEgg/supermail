@@ -10,6 +10,7 @@ const store = new Vuex.Store({
     needStarPush: true,
     donChangeCar: true,
     donChangeStar: true,
+    isAllCartListsCheck: true,
     iidStar: [],
     cartLists: [],
     popup: false,
@@ -139,8 +140,27 @@ const store = new Vuex.Store({
     delStar(state, payload) {
       this.commit("delStateList", { array: "iidStar", delPayload: payload })
 
-    }
+    },
 
+    isTrueChecked(state) {
+      for (let item of state.cartLists) {
+        item.isChecked = true;
+      }
+    },
+    isFalseChecked(state) {
+      for (let item of state.cartLists) {
+        item.isChecked = false;
+      }
+    },
+    checkIsChecked(state, payload) {
+      if (!payload) {
+        state.isAllCartListsCheck = false;
+        return false
+      } else {
+        state.isAllCartListsCheck = true;
+      }
+
+    },
 
   },
   actions: {
@@ -155,7 +175,16 @@ const store = new Vuex.Store({
       context.commit("noRepeatStar", payload)
       context.commit("pushStar", payload)
 
+    },
+    cartListsChecked(context, payload) {
+      if (payload) {
+        context.commit("isTrueChecked");
+      } else {
+        context.commit("isFalseChecked");
+
+      }
     }
+
   },
   modules: {
 

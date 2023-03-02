@@ -9,7 +9,7 @@
             <div class="cartitem_show">
                 <click-button
                     :isChecked="item.isChecked"
-                    @changeChecked="changeChecked($event,item)"
+                    @changeChecked="changeChecked($event, item)"
                 ></click-button>
                 <img :src="item.image" :alt="item.title" />
             </div>
@@ -49,9 +49,10 @@ export default {
     mounted() {},
 
     methods: {
-        changeChecked(checkData,item) {
+        changeChecked(checkData, item) {
             // console.log(item);
             item.isChecked = !item.isChecked;
+            // this.$store.commit("checkIsChecked", item.isChecked);
         },
     },
 };
