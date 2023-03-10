@@ -2,7 +2,7 @@
     <div class="cartbottom">
         <div class="cartbottom_checked">
             <click-button
-                :isChecked="isChecked "
+                :isChecked="$store.state.isAllCartListsCheck"
                 class="cartbottom_checked_on"
                 @click.native="changeChecked"
             >
@@ -27,9 +27,7 @@ export default {
     name: "CartBottomBar",
 
     data() {
-        return {
-            isChecked: this.$store.state.isAllCartListsCheck,
-        };
+        return {};
     },
 
     mounted() {},
@@ -48,8 +46,7 @@ export default {
 
     methods: {
         changeChecked() {
-            this.isChecked = !this.isChecked;
-
+            this.$store.commit("changeIsAllCartListsCheck");
         },
     },
 };

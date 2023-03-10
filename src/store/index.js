@@ -134,35 +134,41 @@ const store = new Vuex.Store({
 
         }
       }
-
-
     },
     delStar(state, payload) {
       this.commit("delStateList", { array: "iidStar", delPayload: payload })
 
     },
 
-    isTrueChecked(state) {
-      for (let item of state.cartLists) {
-        item.isChecked = true;
-      }
-    },
-    isFalseChecked(state) {
-      for (let item of state.cartLists) {
-        item.isChecked = false;
-      }
-    },
+
     checkIsChecked(state, payload) {
-      if (!payload) {
-        state.isAllCartListsCheck = false;
-        return false
-      } else {
-        state.isAllCartListsCheck = true;
+      for (let item of state.cartLists) {
+        if (!item.isChecked) {
+          state.isAllCartListsCheck = false;
+          return 0;
+        } else {
+          state.isAllCartListsCheck = true;
+
+        }
       }
+    },
+    changeIsAllCartListsCheck(state, payload) {
+      state.isAllCartListsCheck = !state.isAllCartListsCheck;
+      this.commit("doChangeIsAllCartListsCheck", state.isAllCartListsCheck);
 
     },
 
+    doChangeIsAllCartListsCheck(state, payload) {
+      for (let item of state.cartLists) {
+        if (payload) {
+          item.isChecked = true;
+        } else {
+          item.isChecked = false;
+        }
+      }
+    },
   },
+
   actions: {
 
     shopcarData(context, payload) {
@@ -176,14 +182,7 @@ const store = new Vuex.Store({
       context.commit("pushStar", payload)
 
     },
-    cartListsChecked(context, payload) {
-      if (payload) {
-        context.commit("isTrueChecked");
-      } else {
-        context.commit("isFalseChecked");
 
-      }
-    }
 
   },
   modules: {

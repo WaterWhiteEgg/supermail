@@ -52,7 +52,7 @@ export default {
         changeChecked(checkData, item) {
             // console.log(item);
             item.isChecked = !item.isChecked;
-            // this.$store.commit("checkIsChecked", item.isChecked);
+            this.$store.commit("checkIsChecked", item.isChecked);
         },
     },
 };
