@@ -59,7 +59,7 @@ export default {
     position: relative;
     display: flex;
     height: 2rem;
-    bottom: 2.0625rem;
+    bottom: 5.2vh;
     /* line-height: 2rem; */
     align-items: center;
     text-align: center;

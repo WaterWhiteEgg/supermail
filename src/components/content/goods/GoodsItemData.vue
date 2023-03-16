@@ -1,7 +1,7 @@
 <template>
     <li class="goods_item_data">
         <a href="javascript:0" @click="itemLink">
-            <img :src="whatImg" :alt="goodsItemData.title" />
+            <img v-lazy="whatImg" :alt="goodsItemData.title" />
             <p class="title" :alt="goodsItemData.title">
                 {{ goodsItemData.title }}
             </p>
