@@ -207,7 +207,6 @@ export default {
         },
         scrollCheck(position) {
             // console.log(this.navbarOffsetTop.length==0);
-            this.isShow = false;
             if (this.navbarOffsetTop.length === 0) {
                 this.navbarOffsetTop = this.offsetTop;
                 // console.log(this.navbarOffsetTop);
@@ -227,6 +226,8 @@ export default {
             // 判断什么时候显示backtop
             if (this.navbarChange >= 1) {
                 this.isShow = true;
+            } else {
+                this.isShow = false;
             }
             // if (-position.y <= this.navbarOffsetTop[1]) {
             //     this.navbarChange = 0;
