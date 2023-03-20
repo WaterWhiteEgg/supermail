@@ -229,17 +229,17 @@ export default {
     overflow: hidden;
 }
 .home_navbar {
-    position: sticky;
+    position:relative;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 9;
-    box-shadow: 0px 3px #ababab18;
+    box-shadow: 0px 2px #efefef8f;
     background-color: #a5d6ff;
 }
 
 .scroll {
-    height: calc(100% - 93px);
+    height: calc(100% -  5.8125rem);
     z-index: 1;
 }
 .tab_control_hide {

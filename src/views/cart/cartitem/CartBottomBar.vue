@@ -59,7 +59,7 @@ export default {
     position: relative;
     display: flex;
     height: 2rem;
-    bottom: 5.2vh;
+    bottom: 5.83vh;
     /* line-height: 2rem; */
     align-items: center;
     text-align: center;
@@ -75,7 +75,14 @@ export default {
 .cartbottom_buy {
     flex: 0.4;
     height: 100%;
-    line-height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #0084ff;
+    font-size: 1rem;
+
+}
+.cartbottom_buy_button {
+color: #ffffff;
 }
 </style>

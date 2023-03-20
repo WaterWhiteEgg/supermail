@@ -32,18 +32,15 @@ export default {
 <style>
 .tabbaritem_style {
     display: flex;
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
     flex: 1;
-    text-align: center;
-    white-space: nowrap;
-    /* 强制不换行 */
-    overflow: hidden;
-    border: 0.2px solid #bbbbbb11;
 
+    white-space: nowrap;  
+    /* 强制不换行 */
     background-color: #f0f0f0;
 }
 .tabbaritem_style > li {
-font-size: 1.375rem ;
+    font-size: 1.375rem;
 }
 </style>

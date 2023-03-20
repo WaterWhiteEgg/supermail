@@ -18,8 +18,8 @@
             <p>{{ title }}</p>
         </div>
         <div class="goodinfo_image">
-            <a :href="item" v-for="(item,index) in image" :key="index+item">
-                <img :src="item" :alt="item" />
+            <a :href="item" v-for="(item, index) in image" :key="index + item">
+                <img :src="item" :alt="item" @load="loadItem" />
             </a>
         </div>
     </div>
@@ -60,7 +60,11 @@ export default {
     },
     mounted() {},
 
-    methods: {},
+    methods: {
+        loadItem() {
+            this.$emit("loadGoodsInfo");
+        },
+    },
 };
 </script>
 

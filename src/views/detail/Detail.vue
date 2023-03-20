@@ -21,7 +21,10 @@
                 ref="basedata"
             ></detail-basedata>
             <detail-shop-info :allShopInfo="allShopInfo"></detail-shop-info>
-            <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
+            <detail-goods-info
+                :detailInfo="detailInfo"
+                @loadGoodsInfo="loadGoodsInfo"
+            ></detail-goods-info>
             <detail-goods-param
                 :goodsParams="goodsParams"
                 ref="param"
@@ -97,6 +100,7 @@ export default {
             navbarOffsetTop: [],
             navbarChange: 0,
             popup: false,
+            RecalculateScroll: 0,
         };
     },
     watch: {
@@ -114,6 +118,7 @@ export default {
     },
     computed: {
         offsetTop() {
+            --this.RecalculateScroll;
             return [
                 this.$refs.swiper && this.$refs.swiper.$el.offsetTop,
                 this.$refs.param && this.$refs.param.$el.offsetTop,
@@ -141,7 +146,7 @@ export default {
     created() {
         // this.$store.state.needTabber = false;
         this.$store.commit("changeNeedTabber");
-        // 改变vueX的needTabber使其不显示
+        // 改变vueX的needTab    其不显示
 
         // if (!(this.iid === this.$route.query.iid)) {
         // 如果iid已经相同则不需要再次请求网络
@@ -267,6 +272,9 @@ export default {
                 this.$store.commit("delStar", this.iid);
             }
             this.$store.commit("needChangeStar", this.iid);
+        },
+        loadGoodsInfo() {
+            ++this.RecalculateScroll;
         },
     },
 };

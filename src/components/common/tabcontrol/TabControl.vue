@@ -43,7 +43,6 @@ export default {
 <style  scoped>
 .tabcontrol {
     display: flex;
-    height: 38px;
     line-height: 38px;
     text-align: center;
     background-color: #d7fffc;
