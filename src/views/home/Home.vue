@@ -1,6 +1,6 @@
 <template>
     <div id="home">
-        <navbar class="home_navbar" >
+        <navbar class="home_navbar">
             <template #center>购物街破解版</template>
         </navbar>
         <tab-control
@@ -60,7 +60,7 @@ import HomeRecommend from "./homeComps/HomeRecommend.vue";
 import TabControl from "components/common/tabcontrol/TabControl.vue";
 
 import { getHomeData, getGoodsHome } from "../../network/home";
-import { sorollRefresh ,mixinBackTop} from "../../common/mixin.js";
+import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 
 import { debounce } from "../../common/utils.js";
 import HomeFeature from "./homeComps/HomeFeature.vue";
@@ -69,7 +69,7 @@ import Scroll from "../../components/common/better_scroll/Scroll.vue";
 
 export default {
     name: "Home",
-    mixins: [sorollRefresh,mixinBackTop],
+    mixins: [sorollRefresh, mixinBackTop],
     data() {
         return {
             banner: [],
@@ -122,12 +122,13 @@ export default {
         // 活跃时触发
         this.$refs.scroll.bs.refresh();
         this.$refs.scroll.ToScrollY(this.toScrollY);
+        // console.log(this.$refs.scroll.$el.offsetTop);
+        // console.log(this.toScrollY.y);
     },
     deactivated() {
         // 不活跃时触发
         // 可以利用这个记录离开时scroll y的高度，到达活跃时再次使用这个高度
-        // console.log(this.$refs.scroll.ToScrollY());
-        this.toScrollY = this.$refs.scroll.$el.offsetTop;
+        this.toScrollY = this.$refs.scroll.ToScrollY();
     },
     methods: {
         // 这里放主要逻辑，看起来分工明显点
@@ -189,8 +190,6 @@ export default {
             this.$refs.tabControlShow.isactive = index;
         },
 
-       
-
         scrollCheck(position) {
             // 检查InBackTop
             -position.y > 1000 ? (this.isShow = true) : (this.isShow = false);
@@ -205,12 +204,13 @@ export default {
             debounce(() => {
                 console.log("down");
                 // console.log(this.goods[this.baseGoodsType].list);
-            }, 10);
+            }, 300);
         },
 
         pullingUp() {
             debounce(() => {
                 this.togetGoodsHome(this.baseGoodsType);
+                console.log("下拉");
             }, 300);
         },
 
@@ -229,7 +229,7 @@ export default {
     overflow: hidden;
 }
 .home_navbar {
-    position:relative;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -239,7 +239,7 @@ export default {
 }
 
 .scroll {
-    height: calc(100% -  5.8125rem);
+    height: calc(100% - 5.8125rem);
     z-index: 1;
 }
 .tab_control_hide {
