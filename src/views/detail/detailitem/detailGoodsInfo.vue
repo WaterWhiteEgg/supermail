@@ -38,7 +38,7 @@ export default {
     },
     computed: {
         title() {
-            // 容错处理
+            // 短路算法容错处理
             return (
                 this.detailInfo.detailImage &&
                 this.detailInfo.detailImage[0].key
