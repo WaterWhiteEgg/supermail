@@ -15,4 +15,4 @@
     port:"路由，默认3306"
  })
 
-如果你缺少mysql的表，可以
+如果你缺少mysql的表，可以从db/static/mysqlCSV里面找到对应表格并导入数据
