@@ -12,6 +12,7 @@
     "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.3",
+    "nodemailer": "^6.9.2",
     "nodemon": "^2.0.22"
   },
   "scripts": {

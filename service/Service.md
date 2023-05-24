@@ -11,8 +11,12 @@
     host: '你的服务器ip地址，默认开启本地sql服务器', 
     user: 'mysql的账户号，默认root',
     password: 'mysql的密码，默认123456',
-    database: "链接的库，默认user",
+    database: "链接的库，默认users",
     port:"路由，默认3306"
  })
 
 如果你缺少mysql的表，可以从db/static/mysqlCSV里面找到对应表格并导入数据
+
+## 开启邮箱验证码服务(qq邮箱)
+请注意，你需要去qq邮箱里申请POP3/SMTP/IMAP4/Exchange/CardDAV/CalDAV服务才可以使用发送验证码信息
+详情进入/email/nodemailer.js 根据提示尝试操作
