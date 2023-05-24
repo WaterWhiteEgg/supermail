@@ -1,9 +1,11 @@
 import axios from 'axios'
 
+import URLtoken from './URLtoken'
+// 为了保护接口的商务协议，不提供接口地址
 
 export function requestHome(config) {
     const ins1 = axios.create({
-        baseURL: "http://123.207.32.32:7888/api/hy66/",
+        baseURL: URLtoken,
         timeout: 10000,
 
         // 如果不能用了请试试http://123.207.32.32:8000

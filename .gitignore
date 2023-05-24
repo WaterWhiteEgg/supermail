@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+/src/network/URLtoken.js
 /service/email/token.js
 
 # local env files
