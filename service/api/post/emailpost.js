@@ -15,8 +15,8 @@ const { emailTest } = require('../../middleware/joi')
 // （还有一种利用缓存记录判断的，不过没怎么学所以就单纯用数据库就好）
 // 同时，请参考数据库想要格式的数据，需要code(同时加密),创建时间,用户邮箱
 
-
-const code = "baidan"
+// 随机生成一个验证码
+const code = crypto.randomInt(100000,999999)
 router.post("/email/post", expressjoi(emailTest), (req, res) => {
     // 处理邮件发送请求
     // 提交的文本格式
@@ -28,15 +28,18 @@ router.post("/email/post", expressjoi(emailTest), (req, res) => {
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
+        // info是一个回调函数，包含发送成功的一些信息
         if (error) {
             res.cc(error)
         } else {
 
-            console.log('邮件已发送，请留意你的邮箱（若有必要可以看看垃圾箱里有没有）');
+            // console.log(info.messageId);
             res.send('邮件已发送，请留意你的邮箱（若有必要可以看看垃圾箱里有没有）')
 
         }
     });
+    // 同时进行数据库操作，将这些信息给数据库，用于验证
+    
 })
 
 
