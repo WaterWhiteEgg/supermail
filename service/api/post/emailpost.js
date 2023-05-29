@@ -1,11 +1,21 @@
 const express = require('express')
 const expressjoi = require('@escook/express-joi')
+// 特别解释一下这个包，crypto是node内置的包，提供了一些加密和哈希算法，我使用它是为了用它的
+// crypto.randomBytes(length)生产一定长的的随机字符串
+// crypto.randomInt(length)提供一定长的随机数字
+const crypto = require("crypto")
 
 const router = express.Router()
 
 const transporter = require("../../email/nodemailer")
 
 const { emailTest } = require('../../middleware/joi')
+// 利用这个crypto生成随机验证码
+// 然后通过数据库储存这个让用户去验证
+// （还有一种利用缓存记录判断的，不过没怎么学所以就单纯用数据库就好）
+// 同时，请参考数据库想要格式的数据，需要code(同时加密),创建时间,用户邮箱
+
+
 const code = "baidan"
 router.post("/email/post", expressjoi(emailTest), (req, res) => {
     // 处理邮件发送请求
