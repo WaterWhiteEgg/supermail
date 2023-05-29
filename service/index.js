@@ -5,6 +5,7 @@ const app = express()
 const cors = require('cors')
 // 路由的包
 const register = require("./api/post/register")
+const email = require("./api/post/emailpost")
 // 中间件的包
 const error = require('./middleware/error')
 
@@ -23,7 +24,7 @@ app.use(cors())
 
 
 // 引入需要的路由
-app.use(register)
+app.use(register,email)
 
 
 
