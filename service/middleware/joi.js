@@ -25,3 +25,15 @@ module.exports.registerText = {
         password
     }
 }
+module.exports.loginTest = {
+    body: {
+        username,
+        password,
+        email
+    }
+}
+module.exports.emailTest = {
+    body:{
+        email
+    }
+}
