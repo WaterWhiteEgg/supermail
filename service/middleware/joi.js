@@ -13,8 +13,9 @@ const emReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 // string()匹配字符,number()匹配数字,regex()加入正则,required()不能为空,min()max()最大/最小长度
 const password = joi.string().regex(pwReg).required()
 const username = joi.string().regex(umReg).required()
-const uid = joi.number().min(1)
+const id = joi.number().min(1)
 const email = joi.string().regex(emReg).required()
+const code = joi.number().integer().min(100000).max(999999).required()
 
 
 
@@ -33,7 +34,13 @@ module.exports.loginTest = {
     }
 }
 module.exports.emailTest = {
-    body:{
+    body: {
         email
+    }
+}
+module.exports.emailCodeTest = {
+    body: {
+        email,
+        code
     }
 }

@@ -68,24 +68,93 @@ const SQLrecordEmail = function (useremail, code) {
 
         // 解密码是不可能的了。。。但是能通过bcrypt.compareSync(test,token)的布尔值来判断是不是这个密码
         // 加进邮件表里面
-        let nowdate = dayjs().format("YYYY-MM-DD HH:mm:ss")
-        // console.log(nowdate);
-        db.query("insert into emailcode(email,code,start_time) values (?,?,?)",
-            [useremail, hashCode, nowdate],
-            (err, result) => {
-                if (err) { reject(err) }
-                // 如果修改了行数是一的话那就是修改成功了
-                if (result.affectedRows === 1) {
-                    resolve(
-                        {
-                            status: 0,
-                            message: '添加成功',
+        // 这是我又想到了，如果邮箱重复的话有一堆请求以及code
+        // 所以为了避免重复，如果已经发送过了还要发(他奶奶的)，就把他改成修改code
+        // 所以先搜索有没有重复邮箱,我觉得直接修改邮箱先，没有的话就证明需要添加
+        // 但是可能有bug？所以还是搜了先吧
+        db.query("select * from emailcode where email=? ", useremail, (err, result) => {
+            if (err) { reject(err) }
+            // 长度为1的话那就是已经有了，直接改这个值就行
+            if (result.length === 1) {
+                db.query("update emailcode SET code = ?,start_time = ? WHERE email = ?",
+                    [hashCode, dayjs().format("YYYY-MM-DD HH:mm:ss"), useremail],
+                    (uperr, upresult) => {
+                        if (uperr) { reject(uperr) }
+                        // 修改行数为1的话那就证明成功了
+                        // console.log(upresult);
+                        if (upresult.affectedRows === 1) {
+                            resolve({
+                                status: 0,
+                                message: "修改成功"
+                            })
+                        } else {
+                            reject("服务器获取code失败")
                         }
-                    )
+                        return 0
+                    }
+                )
+            } else {
+                // 如果没有result.length === 1 ，也就不会执行更新语句，直接执行添加
+                db.query("insert into emailcode(email,code,start_time) values (?,?,?)",
+                    [useremail, hashCode, dayjs().format("YYYY-MM-DD HH:mm:ss")],
+                    (err, result) => {
+                        if (err) { reject(err) }
+                        // 如果修改了行数是一的话那就是修改成功了
+                        if (result.affectedRows === 1) {
+                            resolve(
+                                {
+                                    status: 0,
+                                    message: '添加成功',
+                                }
+                            )
+                        } else {
+                            reject("添加数据库失败")
+                        }
+                    })
+            }
+        })
+
+    })
+}
+
+const SQLemailCode = function (body) {
+    // 处理用户code是否与数据库一致的请求
+    return new Promise((resolve, reject) => {
+        // 检查是哪个邮箱发送的
+        db.query("select * from emailcode where email=?", body.email, (err, result) => {
+            if (err) { reject(err) }
+            // 如果成功了的长度应该是1
+            if (result.length === 1) {
+                // 找到唯一值后也要检测验证码是否对
+                // 需要用bcrypt.compareSync(new，old)方式解密返回布尔值
+                let flag = bcrypt.compareSync(body.code.toString(), result[0].code)
+                if (flag) {
+                    // 成功
+                    // 但是你想想，一般情况下，时间太久code也能用，这好吗，这不好
+                    // 所以，想要验证成功，得在现在的时间与在数据库内被记录的世界相同才行
+                    // 使用dayjs更方便的操作他们！diff() 函数计算它们之间的时间差
+                    let diffInSeconds = dayjs().diff(result[0].start_time, "second")
+                    // console.log(diffInSeconds);
+                    // 如果diffInSeconds大于300s(也就是5分钟)就算对了也不能对
+                    if (diffInSeconds <= 300) {
+                        resolve({
+                            status: 0,
+                            message: "查询成功"
+                        })
+                    } else {
+                        reject("验证码超时！")
+                    }
+
                 } else {
-                    reject("添加数据库失败")
+                    reject("验证码不准确！")
                 }
-            })
+
+
+
+            } else {
+                reject("查询失败！")
+            }
+        })
     })
 }
 
@@ -117,5 +186,6 @@ const SQLregister = function (body) {
 module.exports.SQLusername = SQLusername
 module.exports.SQLrecord = SQLrecord
 module.exports.SQLrecordEmail = SQLrecordEmail
+module.exports.SQLemailCode = SQLemailCode
 
 module.exports.SQLregister = SQLregister

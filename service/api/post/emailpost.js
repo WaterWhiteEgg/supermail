@@ -9,16 +9,17 @@ const router = express.Router()
 
 const transporter = require("../../email/nodemailer")
 
-const { emailTest } = require('../../middleware/joi')
-const { SQLrecordEmail } = require("./tosql/sqlOperational")
+const { emailTest, emailCodeTest } = require('../../middleware/joi')
+const { SQLrecordEmail, SQLemailCode } = require("./tosql/sqlOperational")
 // 利用这个crypto生成随机验证码
 // 然后通过数据库储存这个让用户去验证
 // （还有一种利用缓存记录判断的，不过没怎么学所以就单纯用数据库就好）
 // 同时，请参考数据库想要格式的数据，需要code(同时加密),创建时间,用户邮箱
 
-// 随机生成一个验证码
-const code = crypto.randomInt(100000, 999999)
+
 router.post("/email/post", expressjoi(emailTest), (req, res) => {
+    // 随机生成一个验证码
+    const code = crypto.randomInt(100000, 999999)
     // 处理邮件发送请求
     // 提交的文本格式
     const mailOptions = {
@@ -38,8 +39,8 @@ router.post("/email/post", expressjoi(emailTest), (req, res) => {
             SQLrecordEmail(req.body.email, code).then((result) => {
                 // 执行成功后
                 res.send('邮件已发送，请留意你的邮箱（若有必要可以看看垃圾箱里有没有）')
+
             }).catch((err) => {
-                console.log(3);
                 res.cc(err)
             })
 
@@ -47,6 +48,15 @@ router.post("/email/post", expressjoi(emailTest), (req, res) => {
         }
     });
     // 同时进行数据库操作，将这些信息给数据库，用于验证
+
+})
+
+router.post("/email/code", expressjoi(emailCodeTest), (req, res) => {
+    SQLemailCode(req.body).then((result) => {
+        res.send("验证成功")
+    }).catch((err) => {
+        res.cc(err)
+    })
 
 })
 
