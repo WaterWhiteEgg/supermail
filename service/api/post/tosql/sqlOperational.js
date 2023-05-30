@@ -6,6 +6,8 @@ const db = require('../../../db/mysql')
 
 // 加密模块，保护数据库密码的安全
 const bcrypt = require("bcryptjs")
+// 时间模块，更方便的获取时间戳
+const dayjs = require("dayjs")
 
 // 处理是否查到唯一一个用户名
 const SQLusername = function (body) {
@@ -33,7 +35,7 @@ const SQLusername = function (body) {
 
 }
 const SQLrecord = function (body) {
-    // 处理添加数据库请求
+    // 处理添加用户数据库请求
     return new Promise((resolve, reject) => {
         // 把密码加密
         let hashPassword = bcrypt.hashSync(body.password, 10)
@@ -56,6 +58,37 @@ const SQLrecord = function (body) {
             })
     })
 }
+
+const SQLrecordEmail = function (useremail, code) {
+    // 处理添加邮件数据库请求，因为我觉得模块传值有风险，所以封装就算了
+    return new Promise((resolve, reject) => {
+        // 把验证码加密
+        let hashCode = bcrypt.hashSync(code.toString(), 10)
+        // console.log(hashCode);
+
+        // 解密码是不可能的了。。。但是能通过bcrypt.compareSync(test,token)的布尔值来判断是不是这个密码
+        // 加进邮件表里面
+        let nowdate = dayjs().format("YYYY-MM-DD HH:mm:ss")
+        // console.log(nowdate);
+        db.query("insert into emailcode(email,code,start_time) values (?,?,?)",
+            [useremail, hashCode, nowdate],
+            (err, result) => {
+                if (err) { reject(err) }
+                // 如果修改了行数是一的话那就是修改成功了
+                if (result.affectedRows === 1) {
+                    resolve(
+                        {
+                            status: 0,
+                            message: '添加成功',
+                        }
+                    )
+                } else {
+                    reject("添加数据库失败")
+                }
+            })
+    })
+}
+
 
 const SQLregister = function (body) {
     // 处理登录请求
@@ -83,5 +116,6 @@ const SQLregister = function (body) {
 
 module.exports.SQLusername = SQLusername
 module.exports.SQLrecord = SQLrecord
+module.exports.SQLrecordEmail = SQLrecordEmail
 
 module.exports.SQLregister = SQLregister
