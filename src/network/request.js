@@ -19,18 +19,25 @@ export function requestHome(config) {
 // 前端只要担心用户提交的问题
 export function requestSelfAPI(config) {
     const ins2 = axios.create({
-        baseURL: "http://localhost/",
+        baseURL: "http://127.0.0.1:8080",
         timeout: 3000
     })
 
     return ins2(config)
 
 }
-export function requestSelfPostAPI(url, data, config) {
+export function requestSelfPostAPI(config) {
     const ins3 = axios.create({
-        baseURL: "http://localhost/",
+        method: 'post',
+        // 默认就是post方法
+        baseURL: "http://127.0.0.1:8080",
         timeout: 3000,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+
+
+        }
     })
-    return ins3.post(url, data, config)
+    return ins3(config)
 
 }

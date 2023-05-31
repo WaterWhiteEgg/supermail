@@ -19,7 +19,7 @@ export default {
         postText() {
             userpost().then((res) => {
                 console.log(res);
-            });
+            }).catch((err)=>{console.log(err);})
         },
     },
 };
