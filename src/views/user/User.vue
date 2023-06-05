@@ -36,7 +36,7 @@ export default {
                 {
                     name: "会员了解一下",
                     iconame: "vip",
-                },
+                },  
             ],
             stepExtendFromData: [
                 {

@@ -46,11 +46,13 @@ export default {
     height: 8vh;
     display: flex;
     position:absolute;
-    bottom: 0;
+    bottom: -1px;
     left: 0;
     list-style: none;
     font-size: 18px;
     vertical-align: middle;
+    background-color: #f0f0f0;
+
     
 }
 </style>

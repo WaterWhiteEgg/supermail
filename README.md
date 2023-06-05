@@ -1,5 +1,5 @@
 # supermail练习
-目前home的模块制作已经完毕，当然购物车栏，用户栏，列表栏都没有制作
+-- 一个个人搭建，需要接口coderwhy老师提供接口的项目，以及自建立的qq邮箱申请开放服务后的验证码(具体看nodemailer.js)
 ## Project setup
 ```
 npm install

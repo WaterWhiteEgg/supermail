@@ -38,7 +38,6 @@ export default {
 
     white-space: nowrap;  
     /* 强制不换行 */
-    background-color: #f0f0f0;
 }
 .tabbaritem_style > li {
     font-size: 1.375rem;
