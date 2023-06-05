@@ -5,10 +5,8 @@
         </navbar>
         <userlogin></userlogin>
         <usershowbox></usershowbox>
-        <step-form
-            :stepFromData="stepFromData"
-            :iconPath="iconPath"
-        ></step-form>
+        <step-form :stepFromData="stepFromData" :iconPath="iconPath"></step-form>
+        <step-form :stepFromData="stepExtendFromData" :iconPath="iconPath"></step-form>
     </div>
 </template>
 
@@ -38,6 +36,15 @@ export default {
                 {
                     name: "会员了解一下",
                     iconame: "vip",
+                },
+            ],
+            stepExtendFromData: [
+                {
+                    name: "我的购物车",
+                    iconame: "shopcar",
+                }, {
+                    name: "下载零元购app",
+                    iconame: "shopping_bag",
                 },
             ],
             iconPath: "assets/img/svg/user/",

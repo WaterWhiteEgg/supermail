@@ -51,16 +51,19 @@ export default {
     padding-bottom: 1vh;
 }
 .user_login .user_login_ico {
-    padding: 2vh 5vw;
+    padding: 3.5vh 5vw 0 5vw;
 }
 .user_login .user_login_ico img {
     width: 15vw;
-    border-radius: 35px;
+    max-width: 100px;
+    border-radius: 50%;
 }
 .user_login_set{
    padding: 5vh 4vw; 
+   font-size: 1.5rem;
 }
 .user_login_email_iphone {
     width: 4vw;
+    max-width: 20px;
 }
 </style>

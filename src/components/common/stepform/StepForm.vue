@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="stepform">
         <div v-for="item in stepFromData" :key="item.name" class="stepform">
             <div class="stepform_box">
                 <img :src="getImageUrl(item.iconame)" alt="" class="stepform_box_ico" />
@@ -42,6 +42,10 @@ export default {
 </script>
 
 <style  scoped>
+#stepform{
+    margin-bottom:2vh ;
+
+}
 .stepform{
     display: flex;
     background-color: #ffffff;
@@ -55,6 +59,7 @@ export default {
 }
 .stepform_box_ico{
     padding: 1vh 2vw;
+    max-width: 38px;
 }
 .stepform_box .stepform_box_title{
     margin: 0;
