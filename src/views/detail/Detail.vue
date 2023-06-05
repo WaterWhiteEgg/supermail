@@ -144,7 +144,6 @@ export default {
     },
 
     created() {
-        // this.$store.state.needTabber = false;
         this.$store.commit("changeNeedTabber");
         // 改变vueX的needTab    其不显示
 

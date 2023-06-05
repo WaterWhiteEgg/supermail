@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <keep-alive exclude="Detail">
+        <keep-alive exclude="Detail,Request">
             <router-view />
         </keep-alive>
         <Tabbar v-show="$store.state.needTabber"></Tabbar>
@@ -8,12 +8,10 @@
 </template>
 
 <script>
-
 import Tabbar from "components/common/tabbar/Tabbar.vue";
 export default {
     name: "App",
-    created(){
-    },
+    created() {},
     components: {
         Tabbar,
     },
