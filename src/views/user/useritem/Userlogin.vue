@@ -4,7 +4,7 @@
             <span class="user_login_ico"
                 ><img src="~assets/img/none.jpeg" alt=""
             /></span>
-            <span class="user_login_name">
+            <span class="user_login_name" @click="toRequest">
                 <h4>点击注册/登录</h4>
                 <span class="user_login_name_email"
                     ><img
@@ -13,7 +13,7 @@
                     />未查询到邮箱</span
                 >
             </span>
-            <span class="user_login_set">
+            <span class="user_login_set"  @click="toRequest">
                 <span>&gt;</span>
             </span>
             <!-- <button @click="postText">登录</button> -->
@@ -31,7 +31,11 @@ export default {
 
     mounted() {},
 
-    methods: {},
+    methods: {
+        toRequest() {
+            this.$router.push("/request");
+        },
+    },
 };
 </script>
 
@@ -58,9 +62,9 @@ export default {
     max-width: 100px;
     border-radius: 50%;
 }
-.user_login_set{
-   padding: 5vh 4vw; 
-   font-size: 1.5rem;
+.user_login_set {
+    padding: 5vh 4vw;
+    font-size: 1.5rem;
 }
 .user_login_email_iphone {
     width: 4vw;

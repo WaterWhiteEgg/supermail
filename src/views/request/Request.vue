@@ -1,9 +1,13 @@
 <template>
-    <div>登录</div>
+    <div class="request">
+        <requestbox></requestbox>
+    </div>
 </template>
 
 <script>
+import Requestbox from './requestitem/Requestbox.vue';
 export default {
+    components: { Requestbox },
     name: "Request",
 
     data() {
@@ -23,4 +27,10 @@ export default {
 </script>
 
 <style  scoped>
+.request{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 </style>
