@@ -5,8 +5,14 @@
         </navbar>
         <userlogin></userlogin>
         <usershowbox></usershowbox>
-        <step-form :stepFromData="stepFromData" :iconPath="iconPath"></step-form>
-        <step-form :stepFromData="stepExtendFromData" :iconPath="iconPath"></step-form>
+        <step-form
+            :stepFromData="stepFromData"
+            :iconPath="iconPath"
+        ></step-form>
+        <step-form
+            :stepFromData="stepExtendFromData"
+            :iconPath="iconPath"
+        ></step-form>
     </div>
 </template>
 
@@ -14,7 +20,6 @@
 import Navbar from "../../components/common/navbar/Navbar.vue";
 import Userlogin from "./useritem/Userlogin.vue";
 import Usershowbox from "./useritem/Usershowbox.vue";
-import { userGet, userpost } from "../../network/user";
 import StepForm from "../../components/common/stepform/StepForm.vue";
 export default {
     components: { Navbar, Userlogin, Usershowbox, StepForm },
@@ -36,13 +41,14 @@ export default {
                 {
                     name: "会员了解一下",
                     iconame: "vip",
-                },  
+                },
             ],
             stepExtendFromData: [
                 {
                     name: "我的购物车",
                     iconame: "shopcar",
-                }, {
+                },
+                {
                     name: "下载零元购app",
                     iconame: "shopping_bag",
                 },
@@ -50,22 +56,7 @@ export default {
             iconPath: "assets/img/svg/user/",
         };
     },
-    methods: {
-        getText() {
-            userGet().then((res) => {
-                console.log(res);
-            });
-        },
-        postText() {
-            userpost()
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        },
-    },
+    methods: {},
 };
 </script>
 

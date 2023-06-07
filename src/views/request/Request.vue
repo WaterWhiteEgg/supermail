@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Requestbox from './requestitem/Requestbox.vue';
+import Requestbox from "./requestitem/Requestbox.vue";
 export default {
     components: { Requestbox },
     name: "Request",
@@ -27,10 +27,10 @@ export default {
 </script>
 
 <style  scoped>
-.request{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+.request {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 </style>

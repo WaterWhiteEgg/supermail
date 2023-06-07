@@ -6,7 +6,7 @@ export function userGet() {
         url: "/"
     })
 }
-export function userpost() {
+export function requestSelfPost() {
     // 首先后端有这个处理才可以使用，提交给body处理
     return requestSelfPostAPI({
         url: "/register",
