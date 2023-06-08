@@ -17,7 +17,7 @@
                     type="text"
                     name="username"
                     autocomplete="username"
-                    v-model="userRequestForm.username"
+                    v-model="userLoginForm.username"
                 />
             </span>
 
@@ -32,7 +32,7 @@
                     name="password"
                     autocomplete="new-password"
                     aria-describedby="username"
-                    v-model="userRequestForm.password"
+                    v-model="userLoginForm.password"
                 />
             </span>
             <span v-show="!isLogin">
@@ -42,7 +42,7 @@
                     type="password"
                     name="again_password"
                     autocomplete="new-password"
-                    v-model="userRequestForm.again_password"
+                    v-model="userLoginForm.again_password"
                 />
             </span>
 
@@ -53,7 +53,7 @@
                 ><input
                     type="email"
                     name="email"
-                    v-model="userRequestForm.email"
+                    v-model="userLoginForm.email"
                 />
                 <form method="post" class="requestbox_data_email_code">
                     <button disabled>发送验证码</button>
@@ -62,25 +62,30 @@
 
             <span class="requestbox_data_code" v-show="!isLogin">
                 <label for="code">邮箱验证码：</label
-                ><input
-                    type="text"
-                    name="code"
-                    v-model="userRequestForm.code"
-                />
+                ><input type="text" name="code" v-model="userLoginForm.code" />
             </span>
             <input
                 type="submit"
                 name="commit"
-                :value="chengeRequestTitle"
+                value="登录"
                 class="requestbox_data_submit"
                 @click="rboxRequestSelfPost"
+                v-if="isLogin"
+            />
+            <input
+                v-else
+                type="submit"
+                name="commit"
+                value="注册"
+                class="requestbox_data_submit"
+                @click="rboxLoginSelfPost"
             />
         </form>
     </div>
 </template>
 
 <script>
-import { requestSelfPost } from "../../../network/user";
+import { requestSelfPost, loginSelfPost } from "../../../network/user";
 import ALLCONST from "../../../common/const";
 import { debounce } from "../../../common/utils";
 
@@ -92,11 +97,11 @@ export default {
             isPassword: false,
             isEmail: false,
             isAgainPassword: false,
-            userLoginForm: {
+            userRequestForm: {
                 username: null,
                 password: null,
             },
-            userRequestForm: {
+            userLoginForm: {
                 username: null,
                 password: null,
                 again_password: null,
@@ -122,15 +127,12 @@ export default {
             // 之前说过的，直接拿注册的数据同步给登录表单，不过先看看有没有
             // 先验证数据是否为空，为空的话别交了，同时再看看前端的表单验证有没有问题，有的话也是
             // 同步输入的表单
-            if (
-                this.userRequestForm.username &&
-                this.userRequestForm.password
-            ) {
+            if (this.userLoginForm.username && this.userLoginForm.password) {
                 // 判断格式错误没有
                 if (!this.isPassword && !this.isUsername) {
                     // 将这两个值赋给登录表单
-                    this.userLoginForm.password = this.userRequestForm.password;
-                    this.userLoginForm.username = this.userRequestForm.username;
+                    this.userRequestForm.password = this.userLoginForm.password;
+                    this.userRequestForm.username = this.userLoginForm.username;
                     return true;
                 }
             }
@@ -141,7 +143,7 @@ export default {
             debounce(async () => {
                 // 处理登录,规则函数验证成功后返回true
                 if (this.requestRules()) {
-                    requestSelfPost(this.userLoginForm)
+                    requestSelfPost(this.userRequestForm)
                         .then((res) => {
                             console.log(res);
                         })
@@ -154,27 +156,34 @@ export default {
                 }
             });
         },
+        rboxLoginSelfPost() {
+            // 为了减少连续点击的繁忙，用防抖比较好
+            debounce(async () => {
+                // 处理登录,规则函数验证成功后返回true
+                loginSelfPost(this.userLoginForm).then().catch();
+            });
+        },
     },
     watch: {
         // 需要注意的事，我们不能相信前端的表单验证，所以后端也会处理这些格式到底对不对
         // 这个更重要用于减少服务器压力以及给用户好果子吃
         // 由于登录对象需要的用户名与密码与注册表单的一毛一样，我就直接拿需要的值放进去就好了
-        "userRequestForm.username"(value, oldValue) {
+        "userLoginForm.username"(value, oldValue) {
             debounce(() => {
                 this.changeInput(ALLCONST.regExps.umReg, value, "isUsername");
             });
         },
-        "userRequestForm.password"(value) {
+        "userLoginForm.password"(value) {
             debounce(() => {
                 this.changeInput(ALLCONST.regExps.pwReg, value, "isPassword");
             });
         },
-        "userRequestForm.email"(value) {
+        "userLoginForm.email"(value) {
             debounce(() => {
                 this.changeInput(ALLCONST.regExps.emReg, value, "isEmail");
             });
         },
-        "userRequestForm.again_password"(value) {
+        "userLoginForm.again_password"(value) {
             debounce(() => {
                 if (value != this.password) {
                     this.isAgainPassword = true;
