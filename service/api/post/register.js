@@ -8,7 +8,7 @@ const { registerText, loginTest } = require('../../middleware/joi')
 // 利用express建立一个路由
 const router = express.Router()
 
-const { SQLusername, SQLregister, SQLrecord } = require("./tosql/sqlOperational")
+const { SQLusername, SQLregister, SQLrecord, SQLemailCode } = require("./tosql/sqlOperational")
 router.post("/register", expressjoi(registerText), (req, res) => {
     // 处理登录，通过表单验证的数据都是可以过了的
 
@@ -29,16 +29,24 @@ router.post("/login", expressjoi(loginTest), (req, res) => {
         res.cc("检测到重复的用户名")
 
     }).catch(() => {
-        
-        SQLrecord(req.body).then((resolve) => {
-            res.send(resolve)
-        }).catch((err) => {
-            res.cc(err)
-        }
-        )
-    }
         // 这里的报错处理反过来变正确的事了
         // 没有重复后添加
+        // 现在又加了一条规则，必须邮箱验证码成功对应才能继续处理登录请求
+        SQLemailCode(req.body).then((resolve) => {
+            // 这里是code验证码对比处理成功后
+            // 处理成功后就可以执行这个
+            SQLrecord(req.body).then((resolve) => {
+                res.send(resolve)
+            }).catch((err) => {
+                res.cc(err)
+            }
+            )
+        }).catch((err) => {
+            res.cc(err)
+        })
+
+    }
+
 
 
     )

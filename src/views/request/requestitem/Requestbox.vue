@@ -55,14 +55,31 @@
                     name="email"
                     v-model="userLoginForm.email"
                 />
-                <form method="post" class="requestbox_data_email_code">
-                    <button disabled>发送验证码</button>
+                <form
+                    method="post"
+                    class="requestbox_data_email_code"
+                    @submit.prevent
+                >
+                    <input
+                        type="submit"
+                        value="提交验证码"
+                        @click="postEmail"
+                        :disabled="isForEmail"
+                    />
                 </form>
             </span>
 
             <span class="requestbox_data_code" v-show="!isLogin">
+                <span v-show="isCode" class="red requestbox_data_code_error"
+                    >验证码错误！</span
+                >
                 <label for="code">邮箱验证码：</label
-                ><input type="text" name="code" v-model="userLoginForm.code" />
+                ><input
+                    type="text"
+                    name="code"
+                    v-model="userLoginForm.code"
+                    :disabled="isForEmail"
+                />
             </span>
             <input
                 type="submit"
@@ -85,7 +102,12 @@
 </template>
 
 <script>
-import { requestSelfPost, loginSelfPost } from "../../../network/user";
+import {
+    requestSelfPost,
+    loginSelfPost,
+    codeSelfPost,
+    postCodeSelfPost,
+} from "../../../network/user";
 import ALLCONST from "../../../common/const";
 import { debounce } from "../../../common/utils";
 
@@ -97,6 +119,8 @@ export default {
             isPassword: false,
             isEmail: false,
             isAgainPassword: false,
+            isCode: false,
+
             userRequestForm: {
                 username: null,
                 password: null,
@@ -123,6 +147,18 @@ export default {
                 this[isName] = true;
             }
         },
+        postEmail() {
+            // 处理发送email的 code请求
+            debounce(() => {
+                postCodeSelfPost(this.userLoginForm)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }, 500);
+        },
         requestRules() {
             // 之前说过的，直接拿注册的数据同步给登录表单，不过先看看有没有
             // 先验证数据是否为空，为空的话别交了，同时再看看前端的表单验证有没有问题，有的话也是
@@ -138,6 +174,8 @@ export default {
             }
         },
         rboxRequestSelfPost() {
+            // tips：表单验证错误时会返回服务器错误500
+
             // 为了减少连续点击的繁忙，用防抖比较好
             // 这个要套个异步函数，不然会requestSelfPost的promise本身是不会等待你的定时器的，要异步处理
             debounce(async () => {
@@ -152,7 +190,7 @@ export default {
                         });
                 } else {
                     // 这里最好加个弹窗
-                    console.log("失败");
+                    console.log("发送失败");
                 }
             });
         },
@@ -160,7 +198,13 @@ export default {
             // 为了减少连续点击的繁忙，用防抖比较好
             debounce(async () => {
                 // 处理登录,规则函数验证成功后返回true
-                loginSelfPost(this.userLoginForm).then().catch();
+                loginSelfPost(this.userLoginForm)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             });
         },
     },
@@ -181,22 +225,50 @@ export default {
         "userLoginForm.email"(value) {
             debounce(() => {
                 this.changeInput(ALLCONST.regExps.emReg, value, "isEmail");
-            });
+            }, 300);
         },
         "userLoginForm.again_password"(value) {
             debounce(() => {
-                if (value != this.password) {
+                if (value != this.userLoginForm.password) {
                     this.isAgainPassword = true;
                 } else {
                     this.isAgainPassword = false;
                 }
             }, 300);
         },
+        "userLoginForm.code"(value) {
+            debounce(() => {
+                // 当写入code时，判断这个code长度是不是6时再网络请求code
+                console.log(2);
+                if (ALLCONST.regExps.code.test(value)) {
+                    // 验证code是否正确
+                    codeSelfPost(this.userLoginForm)
+                        .then((res) => {
+                            // 如果res.status是1的话，那就是有问题，后台也有信息
+                            if (!res.data.status) {
+                                this.isCode = false;
+                            } else {
+                                console.log(res.data.message);
+                                this.isCode = true;
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    this.isCode = false;
+                }
+            }, 600);
+        },
     },
 
     computed: {
         chengeRequestTitle() {
             return this.isLogin ? "登录" : "注册";
+        },
+        isForEmail() {
+            // 判断是否邮箱的值是空以及格式错误
+            return this.userLoginForm.email == null || this.isEmail == true;
         },
     },
 };
@@ -265,7 +337,7 @@ span input[type="password"] {
     margin: 1vh 2vw;
 }
 .requestbox_data_submit,
-.requestbox_data_email form button {
+.requestbox_data_email form input[type="submit"] {
     width: 10vw;
     height: 5vh;
     min-width: 105px;
@@ -286,5 +358,8 @@ span input[type="password"] {
 .requestbox_data_code label {
     width: 25vw;
     min-width: 100px;
+}
+.requestbox_data_code_error {
+    min-width: 90px;
 }
 </style>

@@ -24,3 +24,22 @@ export function loginSelfPost(data) {
 
     })
 }
+
+export function codeSelfPost(data) {
+    // 首先后端有这个处理才可以使用，提交给body处理
+    // 处理code在服务器对比的正确性
+    return requestSelfPostAPI({
+        url: "/email/code",
+        data,
+
+    })
+}
+export function postCodeSelfPost(data) {
+    // 首先后端有这个处理才可以使用，提交给body处理
+    // 处理发送code
+    return requestSelfPostAPI({
+        url: "/email/post",
+        data,
+
+    })
+}

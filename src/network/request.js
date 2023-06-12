@@ -20,7 +20,8 @@ export function requestHome(config) {
 export function requestSelfAPI(config) {
     const ins2 = axios.create({
         baseURL: "http://127.0.0.1:8080",
-        timeout: 3000
+        timeout: 3000,
+
     })
 
     return ins2(config)

@@ -129,6 +129,7 @@ const SQLemailCode = function (body) {
                 // 需要用bcrypt.compareSync(new，old)方式解密返回布尔值
                 let flag = bcrypt.compareSync(body.code.toString(), result[0].code)
                 if (flag) {
+
                     // 成功
                     // 但是你想想，一般情况下，时间太久code也能用，这好吗，这不好
                     // 所以，想要验证成功，得在现在的时间与在数据库内被记录的世界相同才行

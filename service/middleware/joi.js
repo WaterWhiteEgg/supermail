@@ -30,7 +30,8 @@ module.exports.loginTest = {
     body: {
         username,
         password,
-        email
+        email,
+        code
     }
 }
 module.exports.emailTest = {
