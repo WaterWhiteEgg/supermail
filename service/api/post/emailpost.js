@@ -26,7 +26,7 @@ router.post("/email/post", expressjoi(emailTest), (req, res) => {
         from: "2733259150@qq.com", // 发件人邮箱地址
         to: req.body.email, // 收件人邮箱地址
         subject: '用于验证supermail的验证码', // 邮件主题
-        text: `Your 验证码 code is ${code}，please 保管好 ，别给怪 uncle 给 can can need 了` // 邮件正文
+        text: `Your 验证码 code is ${code}，验证码将在5分钟后失效，please 保管好 ，别给怪 uncle 给你偷了(^_^)` // 邮件正文
     };
 
     transporter.sendMail(mailOptions, (error, info) => {

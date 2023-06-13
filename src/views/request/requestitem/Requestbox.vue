@@ -62,9 +62,9 @@
                 >
                     <input
                         type="submit"
-                        value="提交验证码"
+                        value="发送验证码"
                         @click="postEmail"
-                        :disabled="isForEmail"
+                        :disabled="requestSetSecondInterval"
                     />
                 </form>
             </span>
@@ -109,7 +109,7 @@ import {
     postCodeSelfPost,
 } from "../../../network/user";
 import ALLCONST from "../../../common/const";
-import { debounce } from "../../../common/utils";
+import { debounce, setSecondInterval } from "../../../common/utils";
 
 export default {
     name: "Requestbox",
@@ -120,6 +120,7 @@ export default {
             isEmail: false,
             isAgainPassword: false,
             isCode: false,
+            emailCountdown: 0,
 
             userRequestForm: {
                 username: null,
@@ -149,7 +150,18 @@ export default {
         },
         postEmail() {
             // 处理发送email的 code请求
+
             debounce(() => {
+                // 重新赋值为30秒定时
+                this.emailCountdown = 30;
+                // 写个值让this.countdown需要这个值动态显示数字以及判断开关，由于次数也是根据这个值的
+                // 所以一定要在事先规定好这个值是多少
+                setSecondInterval(this.emailCountdown, (hasCountdown) => {
+                    // 通过回调函数，将每次定时器1000ms运行一次时就回调
+                    // console.log(hasCountdown);
+                    this.emailCountdown = hasCountdown;
+                });
+
                 postCodeSelfPost(this.userLoginForm)
                     .then((res) => {
                         console.log(res);
@@ -239,7 +251,6 @@ export default {
         "userLoginForm.code"(value) {
             debounce(() => {
                 // 当写入code时，判断这个code长度是不是6时再网络请求code
-                console.log(2);
                 if (ALLCONST.regExps.code.test(value)) {
                     // 验证code是否正确
                     codeSelfPost(this.userLoginForm)
@@ -269,6 +280,12 @@ export default {
         isForEmail() {
             // 判断是否邮箱的值是空以及格式错误
             return this.userLoginForm.email == null || this.isEmail == true;
+        },
+        requestSetSecondInterval() {
+            // 判断规则isForEmail以及倒数是否正确
+            // true就会隐藏，false才会可输入
+            // 我快被这玩意绕死了
+            return this.isForEmail || this.emailCountdown != 0;
         },
     },
 };

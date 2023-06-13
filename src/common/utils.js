@@ -9,6 +9,30 @@ export function debounce(fun, wait = 300) {
     timeout = setTimeout(fun, wait)
 
 }
+
+
+export function setSecondInterval(second, callback) {
+    let countdown = second
+    let timeout2 = null
+    // 由于用到了定时器异步拿值，所以要用Promise拿取值
+
+    // 首个值展示
+        callback(countdown)
+        
+    timeout2 = setInterval(() => {
+
+        if (countdown > 1) {
+            countdown--;
+            callback(countdown)
+        } else {
+            clearInterval(timeout2)
+            callback(0)
+        }
+    }, 1000);
+
+
+
+}
 /**
 * 分析parseTime
 *param1｛（对象|字符串|数字）｝时间time
