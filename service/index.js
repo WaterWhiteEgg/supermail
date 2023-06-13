@@ -8,6 +8,11 @@ const register = require("./api/post/register")
 const email = require("./api/post/emailpost")
 // 中间件的包
 const error = require('./middleware/error')
+// 防止请求次数过多的三方包，封装在别的文件里
+const limiter = require("./middleware/rateLimit");
+
+
+
 
 // 使用error中间件
 app.use(error)
@@ -17,6 +22,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // 允许所有跨域请求
 app.use(cors())
+// 使用防止请求次数过多
+app.use(limiter);
+
 
 
 
@@ -24,7 +32,7 @@ app.use(cors())
 
 
 // 引入需要的路由
-app.use(register,email)
+app.use(register, email)
 
 
 
@@ -32,6 +40,6 @@ app.use(register,email)
 
 
 app.listen("8080", () => {
-console.log("sussess");
+    console.log("sussess");
 })
 
