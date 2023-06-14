@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import { beforeEach } from "./guards"
+
 
 Vue.use(VueRouter)
 
@@ -52,5 +54,9 @@ const router = new VueRouter({
   routes,
   mode: "history"
 })
+// 路由守卫
+
+// 在这路由请求前触发
+router.beforeEach(beforeEach)
 
 export default router

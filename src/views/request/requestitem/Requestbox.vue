@@ -209,8 +209,8 @@ export default {
             debounce(async () => {
                 // 处理登录,规则函数验证成功后返回true
                 if (this.requestRules()) {
-                    this.isSubmitRequest = true;
-
+                    this.isSubmitRequest = false;
+                    
                     requestSelfPost(this.userRequestForm)
                         .then((res) => {
                             console.log(res);

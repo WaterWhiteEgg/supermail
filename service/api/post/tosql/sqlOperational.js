@@ -142,7 +142,7 @@ const SQLemailCode = function (body) {
                             status: 0,
                             message: "查询成功"
                         })
-                    } else {    
+                    } else {
                         reject("验证码超时！")
                     }
 
@@ -168,9 +168,14 @@ const SQLregister = function (body) {
             // 检测密码其对应的密码是否正确
             // console.log(body.password ,SQLusernameResolve.data[0].password);
             if (body.password === SQLusernameResolve.data[0].password) {
+                // 屏蔽掉password数据
+                const user = SQLusernameResolve.data[0];
+                delete user.password;
                 resolve({
                     status: 0,
                     message: '查询成功',
+                    data: user
+
                 })
             } else {
                 reject("密码错误")
