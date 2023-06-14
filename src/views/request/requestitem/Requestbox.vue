@@ -62,7 +62,11 @@
                 >
                     <input
                         type="submit"
-                        value="发送验证码"
+                        :value="
+                            !emailCountdown
+                                ? '发送验证码'
+                                : `等待${emailCountdown}秒`
+                        "
                         @click="postEmail"
                         :disabled="requestSetSecondInterval"
                     />
@@ -81,22 +85,31 @@
                     :disabled="isForEmail"
                 />
             </span>
-            <input
-                type="submit"
-                name="commit"
-                value="登录"
-                class="requestbox_data_submit"
-                @click="rboxRequestSelfPost"
-                v-if="isLogin"
-            />
-            <input
-                v-else
-                type="submit"
-                name="commit"
-                value="注册"
-                class="requestbox_data_submit"
-                @click="rboxLoginSelfPost"
-            />
+            <div v-if="isLogin" class="requestbox_data_submit">
+                <input
+                    type="submit"
+                    name="commit"
+                    value="登录"
+                    class="requestbox_data_submit"
+                    @click="rboxRequestSelfPost"
+                />
+                <span v-show="isSubmitRequest" class="red"
+                    >未达成条件,不能提交</span
+                >
+            </div>
+
+            <div v-else class="requestbox_data_submit">
+                <input
+                    type="submit"
+                    name="commit"
+                    value="注册"
+                    class="requestbox_data_submit"
+                    @click="rboxLoginSelfPost"
+                />
+                <span v-show="isSubmitLogin" class="red"
+                    >未达成条件,不能提交</span
+                >
+            </div>
         </form>
     </div>
 </template>
@@ -120,6 +133,8 @@ export default {
             isEmail: false,
             isAgainPassword: false,
             isCode: false,
+            isSubmitLogin: false,
+            isSubmitRequest: false,
             emailCountdown: 0,
 
             userRequestForm: {
@@ -171,6 +186,7 @@ export default {
                     });
             }, 500);
         },
+
         requestRules() {
             // 之前说过的，直接拿注册的数据同步给登录表单，不过先看看有没有
             // 先验证数据是否为空，为空的话别交了，同时再看看前端的表单验证有没有问题，有的话也是
@@ -193,6 +209,8 @@ export default {
             debounce(async () => {
                 // 处理登录,规则函数验证成功后返回true
                 if (this.requestRules()) {
+                    this.isSubmitRequest = true;
+
                     requestSelfPost(this.userRequestForm)
                         .then((res) => {
                             console.log(res);
@@ -201,22 +219,38 @@ export default {
                             console.log(err);
                         });
                 } else {
-                    // 这里最好加个弹窗
-                    console.log("发送失败");
+                    // 验证失败就显示
+                    this.isSubmitRequest = true;
                 }
             });
         },
         rboxLoginSelfPost() {
             // 为了减少连续点击的繁忙，用防抖比较好
             debounce(async () => {
-                // 处理登录,规则函数验证成功后返回true
-                loginSelfPost(this.userLoginForm)
-                    .then((res) => {
-                        console.log(res);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                // 首先得看一下是否值都是空
+                // 这段if是将userLoginForm对象的所有值作为数组，然后使用includes方法判断是否包含null
+                // 以及所有的需要is判断的变量
+                // 这段代码为false时userLoginForm里面都不为空（false）以及各个变量都为false
+
+                if (
+                    Object.values(this.userLoginForm).includes(null) ||
+                    this.isUsername ||
+                    this.isPassword ||
+                    this.isEmail ||
+                    this.isAgainPassword ||
+                    this.isCode
+                ) {
+                    this.isSubmitLogin = true;
+                } else {
+                    this.isSubmitLogin = false;
+                    loginSelfPost(this.userLoginForm)
+                        .then((res) => {
+                            console.log(res);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
             });
         },
     },
@@ -354,13 +388,17 @@ span input[type="password"] {
     margin: 1vh 2vw;
 }
 .requestbox_data_submit,
-.requestbox_data_email form input[type="submit"] {
+.requestbox_data_email form  input[type="submit"] {
     width: 10vw;
     height: 5vh;
     min-width: 105px;
     margin: 1vh auto 0 auto;
-    background-color: #ffffff30;
     font-size: 1rem;
+}
+.requestbox_data_submit input[type="submit"]{
+    background-color: #ffffff;
+
+
 }
 .requestbox_data_code {
     width: 25vw;
