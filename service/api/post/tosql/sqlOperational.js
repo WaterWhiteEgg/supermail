@@ -142,7 +142,7 @@ const SQLemailCode = function (body) {
                             status: 0,
                             message: "查询成功"
                         })
-                    } else {
+                    } else {    
                         reject("验证码超时！")
                     }
 

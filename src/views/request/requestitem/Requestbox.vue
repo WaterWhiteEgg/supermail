@@ -388,17 +388,16 @@ span input[type="password"] {
     margin: 1vh 2vw;
 }
 .requestbox_data_submit,
-.requestbox_data_email form  input[type="submit"] {
+.requestbox_data_email form input[type="submit"] {
     width: 10vw;
     height: 5vh;
     min-width: 105px;
     margin: 1vh auto 0 auto;
     font-size: 1rem;
 }
-.requestbox_data_submit input[type="submit"]{
-    background-color: #ffffff;
-
-
+.requestbox_data_submit input[type="submit"],
+.requestbox_data_email form input[type="submit"] {
+    background-color: #ffffff4a;
 }
 .requestbox_data_code {
     width: 25vw;
