@@ -163,6 +163,14 @@ export default {
                 this[isName] = true;
             }
         },
+        // 设置本地存储的数据
+        setUserData(data) {
+            window.localStorage.setItem(
+                "user",
+                JSON.stringify(data.data.data.user)
+            );
+            window.localStorage.setItem("token", data.data.data.token);
+        },
         postEmail() {
             // 处理发送email的 code请求
 
@@ -210,10 +218,12 @@ export default {
                 // 处理登录,规则函数验证成功后返回true
                 if (this.requestRules()) {
                     this.isSubmitRequest = false;
-                    
+
                     requestSelfPost(this.userRequestForm)
                         .then((res) => {
                             console.log(res);
+                            // 在登录成功后，数据放到本地存储里面
+                            this.setUserData(res)
                         })
                         .catch((err) => {
                             console.log(err);

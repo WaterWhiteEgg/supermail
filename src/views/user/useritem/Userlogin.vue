@@ -5,15 +5,18 @@
                 ><img src="~assets/img/none.jpeg" alt=""
             /></span>
             <span class="user_login_name" @click="toRequest">
-                <h4>点击注册/登录</h4>
+                <h4 v-if="!userdata">点击注册/登录</h4>
+                <h4 v-else>{{ userdata.username }}</h4>
                 <span class="user_login_name_email"
                     ><img
                         src="~assets/img/svg/user/iphone.svg"
                         class="user_login_email_iphone"
-                    />未查询到邮箱</span
-                >
+                    />
+                    <span v-if="!userdata">未查询到邮箱</span>
+                    <span v-else>{{userdata.email}}</span>
+                </span>
             </span>
-            <span class="user_login_set"  @click="toRequest">
+            <span class="user_login_set" @click="toRequest">
                 <span>&gt;</span>
             </span>
             <!-- <button @click="postText">登录</button> -->
@@ -26,7 +29,13 @@ export default {
     name: "Userlogin",
 
     data() {
-        return {};
+        return {
+            userdata: null,
+        };
+    },
+    // 创建时看看本地存储有没有东西
+    created() {
+        this.userdata = JSON.parse(window.localStorage.getItem("user"));
     },
 
     mounted() {},
