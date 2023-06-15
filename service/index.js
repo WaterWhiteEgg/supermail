@@ -10,6 +10,8 @@ const email = require("./api/post/emailpost")
 const error = require('./middleware/error')
 // 防止请求次数过多的三方包，封装在别的文件里
 const limiter = require("./middleware/rateLimit");
+// 生成token，用户账户安全，同时可以储在本地验证是否允许请求（你也可以在后端设置一些需要token才能进去的api）
+const { esjwt, token } = require("./middleware/jwt")
 
 
 
@@ -24,7 +26,8 @@ app.use(express.json());
 app.use(cors())
 // 使用防止请求次数过多
 app.use(limiter);
-
+// 使用token验证，排除一些不需要验证的
+app.use(esjwt({ secret: token, algorithms: ["HS256"] }).unless({ path: [/^\/email\//, "/login", "/register"] }))
 
 
 

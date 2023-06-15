@@ -2,7 +2,7 @@
 export const beforeEach = (to, from, next) => {
     // 在进入路由之前需要进行的操作
     // 比如身份验证、权限校验等
-
+    next()
     // to：即将要进入的目标路由对象。
     // from：当前导航正要离开的路由对象。
     // next：一个函数，用来 resolve 这个钩子。
@@ -14,5 +14,5 @@ export const beforeEach = (to, from, next) => {
 export const afterEach = (to, from) => {
     // 在离开路由之后需要进行的操作
     // 比如更新浏览历史记录、记录用户行为等
-    
+
 }

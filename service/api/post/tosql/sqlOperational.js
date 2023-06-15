@@ -9,6 +9,8 @@ const bcrypt = require("bcryptjs")
 // 时间模块，更方便的获取时间戳
 const dayjs = require("dayjs")
 
+// 加token验证，这里用于做token
+const { jwt, token } = require("../../../middleware/jwt")
 // 处理是否查到唯一一个用户名
 const SQLusername = function (body) {
     return new Promise((resolve, reject) => {
@@ -174,7 +176,10 @@ const SQLregister = function (body) {
                 resolve({
                     status: 0,
                     message: '查询成功',
-                    data: user
+                    data: {
+                        user,
+                        token: jwt.sign(user, token, { expiresIn: "60s" })
+                    }
 
                 })
             } else {

@@ -3,6 +3,8 @@
 const express = require('express')
 const expressjoi = require('@escook/express-joi')
 
+
+
 // 导入表单验证规则
 const { registerText, loginTest } = require('../../middleware/joi')
 // 利用express建立一个路由
