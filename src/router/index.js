@@ -19,10 +19,12 @@ VueRouter.prototype.push = function push(to) {
   return originalPush.call(this, to).catch(err => err)
 }
 // 取消重复路由不会报错代码
+
+
 const routes = [
   {
     path: '',
-    redirect: "/home"
+    redirect: "/home",
   },
   {
     path: '/home',
@@ -43,6 +45,10 @@ const routes = [
   {
     path: '/user',
     component: User,
+    meta: {
+      requireAuth: true  // 标记该路由需要进行身份验证
+    } 
+
   },
   {
     path: '/request',

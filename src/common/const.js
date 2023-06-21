@@ -12,7 +12,11 @@ const ALLCONST = {
         emReg: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         // 表示长度为6位的数字字符串
         code: /^\d{6}$/
-    }
+    },
+    codes: {
+        token: window.localStorage.getItem("token")
+    },
+
 }
 
 

@@ -6,6 +6,7 @@ const cors = require('cors')
 // 路由的包
 const register = require("./api/post/register")
 const email = require("./api/post/emailpost")
+const validateToken = require("./api/post/validate_token")
 // 中间件的包
 const error = require('./middleware/error')
 // 防止请求次数过多的三方包，封装在别的文件里
@@ -35,7 +36,7 @@ app.use(esjwt({ secret: token, algorithms: ["HS256"] }).unless({ path: [/^\/emai
 
 
 // 引入需要的路由
-app.use(register, email)
+app.use(register, email, validateToken)
 
 
 
