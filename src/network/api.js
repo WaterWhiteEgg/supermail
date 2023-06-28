@@ -4,6 +4,10 @@ import { requestSelfPostAPI } from "./request";
 export function validateToken(token) {
     return requestSelfPostAPI({
         url: "/api/validate-token",
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+            Authorization: `Bearer ${token}`,
+
+        },
+
     })
 }   

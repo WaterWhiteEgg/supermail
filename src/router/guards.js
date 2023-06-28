@@ -17,7 +17,6 @@ export const beforeEach = (to, from, next) => {
     // some() 方法就会立即返回 true，否则返回 false。
     // 也就是说，true就证明这里面有requireAuth值为true的
     if (to.matched.some(record => record.meta.requireAuth)) {
-        
         validateToken(ALLCONST.codes.token).then((res) => {
             // 这里是验证成功的
             console.log(res);

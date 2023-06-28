@@ -8,9 +8,11 @@ const db = require('../../../db/mysql')
 const bcrypt = require("bcryptjs")
 // 时间模块，更方便的获取时间戳
 const dayjs = require("dayjs")
+const crypto = require("crypto")
 
 // 加token验证，这里用于做token
-const { jwt, token } = require("../../../middleware/jwt")
+const { jwt } = require("../../../middleware/jwt")
+
 // 处理是否查到唯一一个用户名
 const SQLusername = function (body) {
     return new Promise((resolve, reject) => {
@@ -173,15 +175,27 @@ const SQLregister = function (body) {
                 // 屏蔽掉password数据
                 const user = SQLusernameResolve.data[0];
                 delete user.password;
-                resolve({
-                    status: 0,
-                    message: '查询成功',
-                    data: {
-                        user,
-                        token: jwt.sign(user, token, { expiresIn: "60s" })
+                // 处理成功将token的值固定出来并更新到数据库里
+                const datatoken = crypto.randomBytes(64).toString('hex');
+
+                db.query("update userdata SET token = ? where username = ?", [datatoken, SQLusernameResolve.data[0].username], (err, result) => {
+                    if (err) { reject(err) }
+                    if (result.affectedRows === 1) {
+                        resolve({
+                            status: 0,
+                            message: '查询成功',
+                            data: {
+                                user,
+                                token: jwt.sign(user, datatoken, { expiresIn: "8h" })
+                            }
+
+                        })
+                    } else {
+                        reject("传输token时错误")
                     }
 
                 })
+
             } else {
                 reject("密码错误")
             }
