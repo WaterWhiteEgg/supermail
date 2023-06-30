@@ -18,12 +18,20 @@ export const beforeEach = (to, from, next) => {
     // 也就是说，true就证明这里面有requireAuth值为true的
     if (to.matched.some(record => record.meta.requireAuth)) {
         validateToken(ALLCONST.codes.token).then((res) => {
-            // 这里是验证成功的
-            console.log(res);
-            next()
+            // 如果status是1，证明有错误
+            if (!res.data.status) {
+                // 这里是验证成功的
+                console.log(res);
+                next()
+
+            }else{
+                console.log(res.data.message);
+
+                next("/request");
+            }
 
         }).catch((err) => {
-            // 这里是验证失败的
+            // 这里是网络错误的的
             // 错误就被next重定向到登录界面
             next("/request");
         })

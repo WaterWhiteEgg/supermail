@@ -224,6 +224,8 @@ export default {
                             console.log(res);
                             // 在登录成功后，数据放到本地存储里面
                             this.setUserData(res)
+                            // 完成后刷新并跳转回user $router.go() 方法进行路由跳转 force: true表示强制刷新
+                            this.$router.go({ path: '/user', force: true }); 
                         })
                         .catch((err) => {
                             console.log(err);

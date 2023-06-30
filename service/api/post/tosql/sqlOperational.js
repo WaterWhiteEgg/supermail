@@ -186,7 +186,7 @@ const SQLregister = function (body) {
                             message: '查询成功',
                             data: {
                                 user,
-                                token: jwt.sign(user, datatoken, { expiresIn: "8h" })
+                                token: jwt.sign(user, datatoken, { expiresIn: "60s" })
                             }
 
                         })
