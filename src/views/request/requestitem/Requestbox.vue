@@ -176,7 +176,7 @@ export default {
 
             debounce(() => {
                 // 重新赋值为30秒定时
-                this.emailCountdown = 30;
+                this.emailCountdown = 60;
                 // 写个值让this.countdown需要这个值动态显示数字以及判断开关，由于次数也是根据这个值的
                 // 所以一定要在事先规定好这个值是多少
                 setSecondInterval(this.emailCountdown, (hasCountdown) => {
@@ -223,9 +223,9 @@ export default {
                         .then((res) => {
                             console.log(res);
                             // 在登录成功后，数据放到本地存储里面
-                            this.setUserData(res)
-                            // 完成后刷新并跳转回user $router.go() 方法进行路由跳转 force: true表示强制刷新
-                            this.$router.go({ path: '/user', force: true }); 
+                            this.setUserData(res);
+                            // 完成后刷新并跳转回user $router.push() 方法进行路由跳转 force: true表示强制刷新
+                            this.$router.push({ path: "/home", force: true });
                         })
                         .catch((err) => {
                             console.log(err);
@@ -237,12 +237,12 @@ export default {
             });
         },
         rboxLoginSelfPost() {
-            // 为了减少连续点击的繁忙，用防抖比较好
+            // 为了减少连续点击的繁忙，用防抖
             debounce(async () => {
-                // 首先得看一下是否值都是空
                 // 这段if是将userLoginForm对象的所有值作为数组，然后使用includes方法判断是否包含null
+                // 先得看一下是否值都是空
                 // 以及所有的需要is判断的变量
-                // 这段代码为false时userLoginForm里面都不为空（false）以及各个变量都为false
+                // 这段代码为false时userLoginForm里面都不为空（false）以及规则判断都为false
 
                 if (
                     Object.values(this.userLoginForm).includes(null) ||
@@ -254,10 +254,14 @@ export default {
                 ) {
                     this.isSubmitLogin = true;
                 } else {
+                    // 可以运行提交
                     this.isSubmitLogin = false;
                     loginSelfPost(this.userLoginForm)
                         .then((res) => {
                             console.log(res);
+                            this.setUserData(res);
+                            // 完成后刷新并跳转回user $router.push() 方法进行路由跳转 force: true表示强制刷新
+                            this.$router.push({ path: "/user", force: true });
                         })
                         .catch((err) => {
                             console.log(err);

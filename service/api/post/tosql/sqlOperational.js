@@ -13,6 +13,8 @@ const crypto = require("crypto")
 // 加token验证，这里用于做token
 const { jwt } = require("../../../middleware/jwt")
 
+
+
 // 处理是否查到唯一一个用户名
 const SQLusername = function (body) {
     return new Promise((resolve, reject) => {
@@ -38,22 +40,34 @@ const SQLusername = function (body) {
     })
 
 }
+// 处理添加用户数据库请求
 const SQLrecord = function (body) {
-    // 处理添加用户数据库请求
     return new Promise((resolve, reject) => {
         // 把密码加密
         let hashPassword = bcrypt.hashSync(body.password, 10)
-        // 解密码是不可能的了。。。但是能通过bcrypt.compareSync(test,token)的布尔值来判断是不是这个密码
-        db.query("insert into userdata(username,password,email) values (?,?,?)",
-            [body.username, hashPassword, body.email],
+        // 解密码是不可能的,但是能通过bcrypt.compareSync(test,token)的布尔值来判断是不是这个密码
+        // 加入默认提供的值，并在注册时给token
+        const datatoken = crypto.randomBytes(64).toString('hex');
+
+        db.query("insert into userdata(username,password,email,token) values (?,?,?,?)",
+            [body.username, hashPassword, body.email, datatoken],
             (err, result) => {
                 if (err) { reject(err) }
                 // 如果修改了行数是一的话那就是修改成功了
                 if (result.affectedRows === 1) {
+                    // 将一些要显示的数据封装对象
+                    let user = {
+                        username: body.username,
+                        email: body.email
+                    }
                     resolve(
                         {
                             status: 0,
                             message: '添加成功',
+                            data: {
+                                user,
+                                token: jwt.sign(user, datatoken, { expiresIn: "60s" })
+                            }
                         }
                     )
                 } else {
@@ -176,8 +190,8 @@ const SQLregister = function (body) {
                 const user = SQLusernameResolve.data[0];
                 delete user.password;
                 // 处理成功将token的值固定出来并更新到数据库里
+                // 一个随机的密钥token
                 const datatoken = crypto.randomBytes(64).toString('hex');
-
                 db.query("update userdata SET token = ? where username = ?", [datatoken, SQLusernameResolve.data[0].username], (err, result) => {
                     if (err) { reject(err) }
                     if (result.affectedRows === 1) {
