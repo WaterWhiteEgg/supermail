@@ -236,6 +236,7 @@ export default {
                 }
             });
         },
+        
         rboxLoginSelfPost() {
             // 为了减少连续点击的繁忙，用防抖
             debounce(async () => {
