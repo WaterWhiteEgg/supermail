@@ -10,4 +10,10 @@ export function validateToken(token) {
         },
 
     })
+}
+export function loginUsername(data) {
+    return requestSelfPostAPI({
+        url: "/login/username",
+        data,
+    })
 }   

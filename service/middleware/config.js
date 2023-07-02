@@ -1,6 +1,6 @@
 // config.js
 
-const excludedPaths = [/^\/email\//, '/login', '/register'];
+const excludedPaths = [/^\/email\//, /^\/login\//, '/register'];
 
 
 

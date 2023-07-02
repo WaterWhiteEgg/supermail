@@ -11,7 +11,10 @@
         <form class="requestbox_data" @submit.prevent>
             <!-- 阻止默认表单的跳转操作，因为我使用了axios执行提交跳转，这个form只需要收集信息 -->
             <span>
-                <span v-show="isUsername" class="red">格式错误</span>
+                <span v-show="isUsername" class="red"> 格式错误 </span>
+                <span v-show="isDuplicateUsername" class="red"
+                    >重复的用户名</span
+                >
                 <label for="username">用户名：</label
                 ><input
                     type="text"
@@ -121,6 +124,7 @@ import {
     codeSelfPost,
     postCodeSelfPost,
 } from "../../../network/user";
+import { loginUsername } from "../../../network/api";
 import ALLCONST from "../../../common/const";
 import { debounce, setSecondInterval } from "../../../common/utils";
 
@@ -135,6 +139,7 @@ export default {
             isCode: false,
             isSubmitLogin: false,
             isSubmitRequest: false,
+            isDuplicateUsername: false,
             emailCountdown: 0,
 
             userRequestForm: {
@@ -170,6 +175,20 @@ export default {
                 JSON.stringify(data.data.data.user)
             );
             window.localStorage.setItem("token", data.data.data.token);
+        },
+        postUsername(value) {
+            let formUsername = {
+                username: value,
+            };
+
+            loginUsername(formUsername).then((res) => {
+                // 处理如果status等于1时证明找到重复的名字
+                // console.log(res);
+                // 等于1代表重复了
+                res.data.status === 1
+                    ? (this.isDuplicateUsername = true)
+                    : (this.isDuplicateUsername = false);
+            });
         },
         postEmail() {
             // 处理发送email的 code请求
@@ -236,7 +255,7 @@ export default {
                 }
             });
         },
-        
+
         rboxLoginSelfPost() {
             // 为了减少连续点击的繁忙，用防抖
             debounce(async () => {
@@ -251,7 +270,8 @@ export default {
                     this.isPassword ||
                     this.isEmail ||
                     this.isAgainPassword ||
-                    this.isCode
+                    this.isCode ||
+                    this.isDuplicateUsername
                 ) {
                     this.isSubmitLogin = true;
                 } else {
@@ -278,7 +298,13 @@ export default {
         "userLoginForm.username"(value, oldValue) {
             debounce(() => {
                 this.changeInput(ALLCONST.regExps.umReg, value, "isUsername");
-            });
+                // 为了检测用户名是否重复，还要检查用户名是否重复
+                // 如果是false时就可以执行
+                if (!this.isUsername) {
+                    // 将value的值封装成对象传入
+                    this.postUsername(value)
+                }
+            }, 1000);
         },
         "userLoginForm.password"(value) {
             debounce(() => {
@@ -355,6 +381,7 @@ label {
     margin: 0.5vh 0;
 }
 .red {
+    padding: 0 0.1vw;
     text-decoration: underline red;
     font-weight: 900;
     font-size: 0.9rem !important;

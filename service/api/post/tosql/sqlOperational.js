@@ -32,8 +32,16 @@ const SQLusername = function (body) {
                     data: result
                 })
             } else {
+                // 这里返回不直接用res.cc处理，catch要分析是否需要处理别的事
+                // 这里的报错处理反过来变正确的事了,要注意由于网络报错也可能这样错
+                
+                reject(
+                    {
+                        status: 1,
+                        message: '没有查询到准确的用户名',
+                    }
 
-                reject("没有查询到准确的用户名")
+                )
             }
 
         })
