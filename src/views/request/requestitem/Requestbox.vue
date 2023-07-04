@@ -283,7 +283,7 @@ export default {
                             console.log(res);
                             this.setUserData(res);
                             // 完成后刷新并跳转回user $router.push() 方法进行路由跳转 force: true表示强制刷新
-                            this.$router.push({ path: "/user", force: true });
+                            this.$router.push({ path: "/user"});
                         })
                         .catch((err) => {
                             console.log(err);
