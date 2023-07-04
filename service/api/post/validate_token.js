@@ -29,14 +29,12 @@ router.post("/login/username", expressjoi(usernameTest), (req, res) => {
 
     }).catch((err) => {
         // 这里的报错处理反过来变正确的事了,要注意由于网络报错也可能这样错
-        if (err.status === 1) {
+        err.status === 1 ?
             res.send({
                 status: 0,
                 message: err.message
-            })
-        } else {
-            res.cc("网络错误")
-        }
+            }) : res.cc("网络错误")
+
 
     }
 

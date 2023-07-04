@@ -19,20 +19,29 @@ export const beforeEach = (to, from, next) => {
     if (to.matched.some(record => record.meta.requireAuth)) {
         validateToken(ALLCONST.codes.token).then((res) => {
             // 如果status是1，证明有错误
+            // 由于存在延迟，所以先刷新再进行跳转
             if (!res.data.status) {
                 // 这里是验证成功的
                 console.log(res);
                 next()
 
-            }else{
+            } else {
                 console.log(res.data.message);
+                window.location.reload(); // 刷新页面
 
-                next("/request");
+                setTimeout(() => {
+                    if (to.path === '/request') {
+                        next();
+                    } else {
+                        next("/request");
+                    }
+                }, 100); // 延时执行跳转操作
             }
 
         }).catch((err) => {
             // 这里是网络错误的的
             // 错误就被next重定向到登录界面
+            console.log(err);
             next("/request");
         })
     }
@@ -49,5 +58,7 @@ export const beforeEach = (to, from, next) => {
 export const afterEach = (to, from) => {
     // 在离开路由之后需要进行的操作
     // 比如更新浏览历史记录、记录用户行为等
+    // 如果是需要token验证的，在时候都要刷新一下
+
 
 }

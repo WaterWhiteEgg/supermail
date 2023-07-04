@@ -8,7 +8,6 @@
     const bcrypt = require("bcryptjs")
 
     // 处理查询token值并返回给token
-    // 处理查询token值并返回给token
     module.exports.sqlToken = function (username) {
         return new Promise((resolve, reject) => {
             db.query("select * from userdata where username = ?", username, (err, result) => {
@@ -19,6 +18,8 @@
                         message:"查找成功",
                         data: result[0].token
                     })
+                }else{
+                    reject("查找失败")
                 }
 
             })

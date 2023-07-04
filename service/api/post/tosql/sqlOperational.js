@@ -74,7 +74,7 @@ const SQLrecord = function (body) {
                             message: '添加成功',
                             data: {
                                 user,
-                                token: jwt.sign(user, datatoken, { expiresIn: "60s" })
+                                token: jwt.sign(user, datatoken, { expiresIn: "8h" })
                             }
                         }
                     )
@@ -208,7 +208,7 @@ const SQLregister = function (body) {
                             message: '查询成功',
                             data: {
                                 user,
-                                token: jwt.sign(user, datatoken, { expiresIn: "60s" })
+                                token: jwt.sign(user, datatoken, { expiresIn: "8h" })
                             }
 
                         })

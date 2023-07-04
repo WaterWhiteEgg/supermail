@@ -7,7 +7,7 @@ const cors = require('cors')
 const register = require("./api/post/register")
 const email = require("./api/post/emailpost")
 const validateToken = require("./api/post/validate_token")
-// 中间件的包
+// 自定义处理错误的包，加了个res.cc的方法   
 const error = require('./middleware/error')
 // 防止请求次数过多的三方包，封装在别的文件里
 const limiter = require("./middleware/rateLimit");

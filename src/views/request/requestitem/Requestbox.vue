@@ -12,7 +12,7 @@
             <!-- 阻止默认表单的跳转操作，因为我使用了axios执行提交跳转，这个form只需要收集信息 -->
             <span>
                 <span v-show="isUsername" class="red"> 格式错误 </span>
-                <span v-show="isDuplicateUsername" class="red"
+                <span v-show="isDuplicateUsername && !isLogin" class="red"
                     >重复的用户名</span
                 >
                 <label for="username">用户名：</label
@@ -243,8 +243,9 @@ export default {
                             console.log(res);
                             // 在登录成功后，数据放到本地存储里面
                             this.setUserData(res);
-                            // 完成后刷新并跳转回user $router.push() 方法进行路由跳转 force: true表示强制刷新
-                            this.$router.push({ path: "/home", force: true });
+                            // 完成后刷新并跳转回user $router.push()
+                            this.$router.push({ path: "/" });
+
                         })
                         .catch((err) => {
                             console.log(err);
@@ -302,7 +303,7 @@ export default {
                 // 如果是false时就可以执行
                 if (!this.isUsername) {
                     // 将value的值封装成对象传入
-                    this.postUsername(value)
+                    this.postUsername(value);
                 }
             }, 1000);
         },

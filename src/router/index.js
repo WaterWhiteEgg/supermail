@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import { beforeEach } from "./guards"
+import { beforeEach, afterEach } from "./guards"
 
 
 Vue.use(VueRouter)
@@ -47,7 +47,7 @@ const routes = [
     component: User,
     meta: {
       requireAuth: true  // 标记该路由需要进行身份验证
-    } 
+    }
 
   },
   {
@@ -64,5 +64,8 @@ const router = new VueRouter({
 
 // 在这路由请求前触发
 router.beforeEach(beforeEach)
+
+// 路由请求之后触发
+router.afterEach(afterEach)
 
 export default router
