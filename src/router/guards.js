@@ -23,19 +23,15 @@ export const beforeEach = (to, from, next) => {
             if (!res.data.status) {
                 // 这里是验证成功的
                 console.log(res);
+
+
                 next()
+
 
             } else {
                 console.log(res.data.message);
-                window.location.reload(); // 刷新页面
 
-                setTimeout(() => {
-                    if (to.path === '/request') {
-                        next();
-                    } else {
-                        next("/request");
-                    }
-                }, 100); // 延时执行跳转操作
+                next("/request");
             }
 
         }).catch((err) => {

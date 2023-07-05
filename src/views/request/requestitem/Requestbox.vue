@@ -244,7 +244,8 @@ export default {
                             // 在登录成功后，数据放到本地存储里面
                             this.setUserData(res);
                             // 完成后刷新并跳转回user $router.push()
-                            this.$router.push({ path: "/" });
+                            window.location.reload(); // 刷新页面
+                            // this.$router.push({ path: "/" });
 
                         })
                         .catch((err) => {
@@ -282,8 +283,9 @@ export default {
                         .then((res) => {
                             console.log(res);
                             this.setUserData(res);
+                            window.location.reload(); // 刷新页面
                             // 完成后刷新并跳转回user $router.push() 方法进行路由跳转 force: true表示强制刷新
-                            this.$router.push({ path: "/user"});
+                            // this.$router.push({ path: "/user" });
                         })
                         .catch((err) => {
                             console.log(err);

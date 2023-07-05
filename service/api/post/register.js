@@ -35,7 +35,7 @@ router.post("/login", expressjoi(loginTest), (req, res) => {
         // 这里的报错处理反过来变正确的事了,要注意由于网络报错也可能这样错
         // 没有重复后添加
         // 现在又加了一条规则，必须邮箱验证码成功对应才能继续处理登录请求
-        if (err.status === 1) {
+        if (catcherr.status === 1) {
             
             SQLemailCode(req.body).then((resolve) => {
                 // 这里是code验证码对比处理成功后

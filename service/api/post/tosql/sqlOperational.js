@@ -34,7 +34,7 @@ const SQLusername = function (body) {
             } else {
                 // 这里返回不直接用res.cc处理，catch要分析是否需要处理别的事
                 // 这里的报错处理反过来变正确的事了,要注意由于网络报错也可能这样错
-                
+
                 reject(
                     {
                         status: 1,
@@ -192,8 +192,10 @@ const SQLregister = function (body) {
     return new Promise((resolve, reject) => {
         SQLusername(body).then((SQLusernameResolve) => {
             // 检测密码其对应的密码是否正确
-            // console.log(body.password ,SQLusernameResolve.data[0].password);
-            if (body.password === SQLusernameResolve.data[0].password) {
+            // 使用加密模块
+            let passwordFlag = bcrypt.compareSync(body.password, SQLusernameResolve.data[0].password)
+
+            if (passwordFlag) {
                 // 屏蔽掉password数据
                 const user = SQLusernameResolve.data[0];
                 delete user.password;
