@@ -32,22 +32,28 @@ export default {
         padding-right: 0vw !important;
         min-width: 20px;
         /* border-radius: 0% !important; */
+        background: linear-gradient(#ffffff8c, #1139ffaf, #34dff24b);
     }
     .request_back_item {
         height: 100% !important;
-
         padding: 0;
     }
 }
 .request_back {
     font-size: 1rem;
-    height: 10vh;
-    max-width: 30px;
+    height: 23vh;
+    max-width: 40px;
     text-align: center;
-    padding-right: 30vw;
+    padding-right: 40vw;
 }
 .request_back_item {
-    background: linear-gradient(#ffffff8c, #1139ffaf, #34dff24b);
+        background: #dff8fb8a!important;
+    
+
     border-right: 0.2px solid #00000037;
+}
+.request_back_item span {
+    display: block;
+    padding: 8vh 1vw;
 }
 </style>
