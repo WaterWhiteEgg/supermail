@@ -1,5 +1,7 @@
 <template>
     <div class="requestbox">
+        <!-- 弹窗显示 -->
+        <popup class="popup" :popupText="popupText"></popup>
         <span class="requestbox_title"
             ><h2>
                 {{ chengeRequestTitle
@@ -8,8 +10,10 @@
                 >
             </h2></span
         >
+
         <form class="requestbox_data" @submit.prevent>
             <!-- 阻止默认表单的跳转操作，因为我使用了axios执行提交跳转，这个form只需要收集信息 -->
+
             <span>
                 <span v-show="isUsername" class="red"> 格式错误 </span>
                 <span v-show="isDuplicateUsername && !isLogin" class="red"
@@ -127,9 +131,12 @@ import {
 import { loginUsername } from "../../../network/api";
 import ALLCONST from "../../../common/const";
 import { debounce, setSecondInterval } from "../../../common/utils";
-
+import popup from "../../../components/common/popup/Popup.vue";
 export default {
     name: "Requestbox",
+    components: {
+        popup,
+    },
     data() {
         return {
             isUsername: false,
@@ -155,6 +162,8 @@ export default {
             },
 
             isLogin: false,
+
+            popupText: "",
         };
     },
     methods: {
@@ -175,6 +184,16 @@ export default {
                 JSON.stringify(data.data.data.user)
             );
             window.localStorage.setItem("token", data.data.data.token);
+        },
+        // 执行弹窗，数据存储以及刷新页面
+        updateRequest(res) {
+            // 在登录成功后，数据放到本地存储里面
+            this.setUserData(res);
+            // 打开弹窗界面
+            this.popupText = "登录成功";
+            this.$store.commit("openPopup");
+            // 刷新页面
+            window.location.reload();
         },
         postUsername(value) {
             let formUsername = {
@@ -241,12 +260,8 @@ export default {
                     requestSelfPost(this.userRequestForm)
                         .then((res) => {
                             console.log(res);
-                            // 在登录成功后，数据放到本地存储里面
-                            this.setUserData(res);
-                            // 完成后刷新并跳转回user $router.push()
-                            window.location.reload(); // 刷新页面
+                            this.updateRequest(res);
                             // this.$router.push({ path: "/" });
-
                         })
                         .catch((err) => {
                             console.log(err);
@@ -282,10 +297,8 @@ export default {
                     loginSelfPost(this.userLoginForm)
                         .then((res) => {
                             console.log(res);
-                            this.setUserData(res);
-                            window.location.reload(); // 刷新页面
+                            this.updateRequest(res);
                             // 完成后刷新并跳转回user $router.push() 方法进行路由跳转 force: true表示强制刷新
-                            // this.$router.push({ path: "/user" });
                         })
                         .catch((err) => {
                             console.log(err);
@@ -389,6 +402,9 @@ label {
     font-weight: 900;
     font-size: 0.9rem !important;
     color: red !important;
+}
+.popup {
+    top: 5%;
 }
 .requestbox_title {
     text-align: center;

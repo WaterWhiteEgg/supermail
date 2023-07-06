@@ -1,13 +1,15 @@
 <template>
     <div class="request">
+        <request-back></request-back>
         <requestbox></requestbox>
     </div>
 </template>
 
 <script>
+import RequestBack from "./requestitem/RequestBack.vue";
 import Requestbox from "./requestitem/Requestbox.vue";
 export default {
-    components: { Requestbox },
+    components: { Requestbox, RequestBack },
     name: "Request",
 
     data() {
@@ -27,8 +29,15 @@ export default {
 </script>
 
 <style  scoped>
+@media screen and (max-width: 768px) {
+    .request {
+        flex-direction: row !important;
+    }
+}
 .request {
     display: flex;
+    flex-direction: column;
+
     justify-content: center;
     align-items: center;
     height: 100vh;

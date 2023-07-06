@@ -1,15 +1,17 @@
 <template>
-    <div class="popup" >
+    <div class="popup" :class="{ popup_children_change: $store.state.popup }">
         <span
             class="popup_children"
-            :class="{ popup_children_change: $store.state.popup }"
-            @click="open"
+         
             >{{ popupText }}
         </span>
     </div>
 </template>
 
 <script>
+// 使用this.$store.commit("openPopup");来触发弹窗，请自行调整在使用的地方调整样式
+// this.$store.commit("openPopup");
+
 import { debounce } from "../../../common/utils";
 export default {
     name: "Popup",
@@ -46,23 +48,32 @@ export default {
 </script>
 
 <style  scoped>
-
-.popup_children {
-    position: absolute;
-    opacity: 0;
-    height: 16px;
-    padding: 1px 8px;
-    z-index: 999;
+.popup {
+    display: none;
+    position: relative;
     left: 50%;
     top: 40%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 999;
+    height: 16px;
+    opacity: 0;
+    transition: 1s;
+
+
+}
+.popup_children {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    padding: 1px 8px;
     transition: 1s;
     border-radius: 35px;
     font-size: 14px;
-    transform: translateX(-50%) translateY(-50%);
     background-color: #0066ffb7;
     color: #ffffffd2;
 }
 .popup_children_change {
+    display: block;
     opacity: 1;
 }
 </style>
