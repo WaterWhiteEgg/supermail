@@ -9,7 +9,7 @@
 import RequestBack from "./requestitem/RequestBack.vue";
 import Requestbox from "./requestitem/Requestbox.vue";
 export default {
-    components: { Requestbox, RequestBack },
+    components: { Requestbox, RequestBack},
     name: "Request",
 
     data() {
@@ -37,7 +37,6 @@ export default {
 .request {
     display: flex;
     flex-direction: column;
-
     justify-content: center;
     align-items: center;
     height: 100vh;

@@ -35,11 +35,13 @@ export default {
     justify-content: center;
     align-items: center;
     flex: 1;
+    height: 65px;
 
-    white-space: nowrap;  
+    white-space: nowrap;
     /* 强制不换行 */
 }
 .tabbaritem_style > li {
     font-size: 1.375rem;
+
 }
 </style>

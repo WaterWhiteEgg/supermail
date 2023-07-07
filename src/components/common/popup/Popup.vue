@@ -1,10 +1,6 @@
 <template>
     <div class="popup" :class="{ popup_children_change: $store.state.popup }">
-        <span
-            class="popup_children"
-         
-            >{{ popupText }}
-        </span>
+        <span class="popup_children">{{ popupText }} </span>
     </div>
 </template>
 
@@ -58,8 +54,6 @@ export default {
     height: 16px;
     opacity: 0;
     transition: 1s;
-
-
 }
 .popup_children {
     position: absolute;

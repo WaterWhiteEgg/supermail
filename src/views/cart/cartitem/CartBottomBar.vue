@@ -58,8 +58,8 @@ export default {
 .cartbottom {
     position: relative;
     display: flex;
-    height: 2rem;
-    bottom: 5.83vh;
+    height: 48px;
+    bottom:0;
     /* line-height: 2rem; */
     align-items: center;
     text-align: center;

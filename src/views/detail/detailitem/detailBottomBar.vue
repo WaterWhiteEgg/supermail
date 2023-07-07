@@ -60,7 +60,6 @@ export default {
         },
 
         changeText(istrue) {
-            
             if (istrue) {
                 this.addtext();
             } else {
@@ -86,12 +85,11 @@ export default {
 
 <style scoped>
 .popup {
-    transform: translate(0, -50vh);
+    box-sizing: border-box;
+    transform: translate(-15vw, -50vh);
     /* display: none; */
     position: absolute;
-    width: 100vh;
-    width: 100vw;
-    box-sizing: border-box;
+    padding: 0px 100px;
 
     z-index: 999;
 }
@@ -106,6 +104,7 @@ button {
     display: flex;
     position: absolute;
     height: 48px;
+    width: 100%;
     bottom: 0;
     background-color: #fff;
 }
@@ -149,7 +148,7 @@ button {
     background-color: red !important;
     color: #ffffff;
 }
-.bottombar_icon_shoucang_Off{
+.bottombar_icon_shoucang_Off {
     background-color: #ffae00cc;
 }
 </style>

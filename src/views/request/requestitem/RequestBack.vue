@@ -1,5 +1,8 @@
 <template>
     <div class="request_back">
+        <div @click="requestReturn" class="request_back_return">
+            <span class="request_back_return_item">返回</span>
+        </div>
         <div class="request_back_item" @click="backHome">
             <span>返回主页</span>
         </div>
@@ -20,6 +23,9 @@ export default {
         backHome() {
             this.$router.push("/");
         },
+        requestReturn() {
+            this.$router.go(-1);
+        },
     },
 };
 </script>
@@ -38,22 +44,38 @@ export default {
         height: 100% !important;
         padding: 0;
     }
+    .request_back_item span {
+        max-width: 30px;
+    }
+    .request_back_return_item {
+        display: block;
+        padding: 1vh 1vw;
+        max-width: 30px;
+    }
 }
 .request_back {
-    font-size: 1rem;
-    height: 23vh;
+    height: 15vh;
     max-width: 40px;
-    text-align: center;
     padding-right: 40vw;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    text-align: center;
 }
 .request_back_item {
-        background: #dff8fb8a!important;
-    
-
+    background: #dff8fb8a !important;
     border-right: 0.2px solid #00000037;
 }
 .request_back_item span {
     display: block;
     padding: 8vh 1vw;
+}
+.request_back_return {
+    padding: 1vh 0.5vw;
+    border: 0.1px #7b7b7b70 solid;
+
+    background-color: #fff;
+    color: #0054d2;
+    font-weight: 900;
 }
 </style>

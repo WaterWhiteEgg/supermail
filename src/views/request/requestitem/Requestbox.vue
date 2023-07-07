@@ -421,7 +421,7 @@ label {
     display: flex;
     flex-direction: column;
     background: linear-gradient(#ffffff8c, #1139ffaf, #34dff24b);
-    border-radius: 15%;
+    border-radius: 5%;
 }
 .requestbox_data {
     display: flex;
