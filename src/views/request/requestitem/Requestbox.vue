@@ -1,7 +1,6 @@
 <template>
     <div class="requestbox">
         <!-- 弹窗显示 -->
-        <popup class="popup" :popupText="popupText"></popup>
         <span class="requestbox_title"
             ><h2>
                 {{ chengeRequestTitle
@@ -189,11 +188,16 @@ export default {
         updateRequest(res) {
             // 在登录成功后，数据放到本地存储里面
             this.setUserData(res);
-            // 打开弹窗界面
+            // console.log(res);
+
+            // 判断进入提交弹窗界面
+
             this.popupText = "登录成功";
+
+            this.$emit("pushPopupText", this.popupText);
             this.$store.commit("openPopup");
             // 刷新页面
-            window.location.reload();
+            // window.location.reload();
         },
         postUsername(value) {
             let formUsername = {

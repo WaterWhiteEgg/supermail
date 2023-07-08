@@ -86,10 +86,12 @@ export default {
 <style scoped>
 .popup {
     box-sizing: border-box;
-    transform: translate(-15vw, -50vh);
+    top: 0;
+    left: 0;
+    /* position: absolute; */
+    transform: translate( calc(50vw - 50%), -50vh);
     /* display: none; */
-    position: absolute;
-    padding: 0px 100px;
+    padding: 0px 10px;
 
     z-index: 999;
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="popup" :class="{ popup_children_change: $store.state.popup }">
-        <span class="popup_children">{{ popupText }} </span>
+        {{ popupText }}
     </div>
 </template>
 
@@ -24,8 +24,9 @@ export default {
     watch: {
         "$store.state.popup"(newdata, olddata) {
             debounce(() => {
+                console.log(2);
                 this.$store.commit("closePopup");
-            }, 1000);
+            }, 300);
         },
     },
 
@@ -45,15 +46,21 @@ export default {
 
 <style  scoped>
 .popup {
-    display: none;
-    position: relative;
-    left: 50%;
-    top: 40%;
+    /* display: none; */
+    position: absolute;
+    left: 50vw;
+    top: 50vh;
+    padding: 1px 8px;
     transform: translateX(-50%) translateY(-50%);
     z-index: 999;
     height: 16px;
     opacity: 0;
     transition: 1s;
+    font-size: 14px;
+    border-radius: 35px;
+
+    background-color: #0066ff7e;
+    color: #ffffffd2;
 }
 .popup_children {
     position: absolute;
@@ -63,8 +70,6 @@ export default {
     transition: 1s;
     border-radius: 35px;
     font-size: 14px;
-    background-color: #0066ffb7;
-    color: #ffffffd2;
 }
 .popup_children_change {
     display: block;

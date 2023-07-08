@@ -48,11 +48,7 @@ export default {
 
 <style>
 @media screen and (max-width: 768px) {
-.scroll {
-    /* height: calc(100% - 43px - 50.5px - 32px); */
-    /* height: 100px; */
-    /* background-color: red; */
-}
+
 }
 .cart {
     height: 100vh;
@@ -63,6 +59,5 @@ export default {
     /* height: 100px; */
     /* background-color: red; */
 }
-.cart_list {
-}
+
 </style>

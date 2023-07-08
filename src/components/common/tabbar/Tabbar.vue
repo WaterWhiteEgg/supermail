@@ -52,6 +52,5 @@ export default {
     vertical-align: middle;
     background-color: #f0f0f0;
 }
-.tabbar_style  {
-}
+
 </style>
