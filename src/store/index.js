@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     iidStar: [],
     cartLists: [],
     popup: false,
+    isRequest: true,
   },
   getters: {
   },
@@ -167,7 +168,14 @@ const store = new Vuex.Store({
         }
       }
     },
+
+    chengeIsRequest(state, payload) {
+      state.isRequest = payload
+    }
+
+
   },
+
 
   actions: {
 

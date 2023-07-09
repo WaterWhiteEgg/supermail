@@ -197,7 +197,7 @@ export default {
             this.$emit("pushPopupText", this.popupText);
             this.$store.commit("openPopup");
             // 刷新页面
-            // window.location.reload();
+            window.location.reload();
         },
         postUsername(value) {
             let formUsername = {

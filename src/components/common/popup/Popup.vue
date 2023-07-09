@@ -24,9 +24,8 @@ export default {
     watch: {
         "$store.state.popup"(newdata, olddata) {
             debounce(() => {
-                console.log(2);
                 this.$store.commit("closePopup");
-            }, 300);
+            }, 1000);
         },
     },
 

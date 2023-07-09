@@ -13,13 +13,15 @@
 import RequestBack from "./requestitem/RequestBack.vue";
 import Requestbox from "./requestitem/Requestbox.vue";
 import Popup from "../../components/common/popup/Popup.vue";
+import ALLCONST from "../../common/const";
+import { validateToken } from "../../../src/network/api";
 export default {
     components: { Requestbox, RequestBack, Popup },
     name: "Request",
 
     data() {
         return {
-            popupText: "验证失败，请重新登录",
+            popupText: "",
         };
     },
     methods: {
@@ -41,7 +43,18 @@ export default {
     mounted() {
         // 挂载好后将弹窗显示
         // 弹窗显示
-        this.$store.commit("openPopup");
+        // 判断是否token验证成功，只要是false就是登录成功的
+        validateToken(ALLCONST.codes.token)
+            .then((res) => {
+                this.$store.commit("chengeIsRequest", false);
+
+                this.pushPopupText("已经登录成功");
+            })
+            .catch((err) => {
+                this.$store.commit("chengeIsRequest", true);
+
+                this.pushPopupText("验证失败，请重新登录");
+            });
     },
 };
 </script>

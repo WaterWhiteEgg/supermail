@@ -1,6 +1,9 @@
 import { validateToken } from "../network/api"
 import ALLCONST from "../common/const";
 
+// 路由配置文件
+import store from '../store/index';
+
 // 这里制作路由的方法
 
 
@@ -22,7 +25,9 @@ export const beforeEach = (to, from, next) => {
             // 由于存在延迟，所以先刷新再进行跳转
             if (!res.data.status) {
                 // 这里是验证成功的
-                console.log(res);
+                // console.log(res);
+                // 改变vuex的值使别人知道是成功的
+                // 注意这里是直接引入vuex的因为这里没有vue实例
 
 
                 next()
@@ -30,6 +35,7 @@ export const beforeEach = (to, from, next) => {
 
             } else {
                 console.log(res.data.message);
+                // 改变vuex的值使别人知道是失败的
 
                 next("/request");
             }
