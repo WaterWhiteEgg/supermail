@@ -30,6 +30,10 @@ export default {
             this.popupText = text;
             this.$store.commit("openPopup");
         },
+        commitToken(bal, text) {
+            this.$store.commit("chengeIsRequest", bal);
+            this.pushPopupText(text);
+        },
     },
     created() {
         this.$store.commit("changeNeedTabber");
@@ -46,14 +50,16 @@ export default {
         // 判断是否token验证成功，只要是false就是登录成功的
         validateToken(ALLCONST.codes.token)
             .then((res) => {
-                this.$store.commit("chengeIsRequest", false);
+                // 状态码为1的时候有错误
 
-                this.pushPopupText("已经登录成功");
+                if (res.data.status) {
+                    this.commitToken(true, res.data.message);
+                } else {
+                    this.commitToken(false, res.data.message);
+                }
             })
             .catch((err) => {
-                this.$store.commit("chengeIsRequest", true);
-
-                this.pushPopupText("验证失败，请重新登录");
+                this.commitToken(true, "登录失败，请重新登录");
             });
     },
 };
