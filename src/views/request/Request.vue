@@ -71,8 +71,7 @@ export default {
         flex-direction: row !important;
     }
 }
-.popup {
-}
+
 .request {
     display: flex;
     flex-direction: column;
