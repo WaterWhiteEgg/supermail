@@ -41,8 +41,10 @@ router.post("/login", expressjoi(loginTest), (req, res) => {
                 // 这里是code验证码对比处理成功后
                 // 处理成功后就可以执行这个
                 SQLrecord(req.body).then((resolve) => {
-                    res.send(resolve)
+                    console.log(resolve);
+                    res.send(resolve[0])
                 }).catch((err) => {
+                    console.log(err);
                     res.cc(err)
                 }
                 )

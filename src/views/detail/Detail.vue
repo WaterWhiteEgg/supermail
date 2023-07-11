@@ -16,7 +16,7 @@
             probeType:2
         >
             <detail-swiper :topImg="topImg" ref="swiper"></detail-swiper>
-            <detail-basedata
+            <detail-basedata    
                 :allGoodsItem="allGoodsItem"
                 ref="basedata"
             ></detail-basedata>

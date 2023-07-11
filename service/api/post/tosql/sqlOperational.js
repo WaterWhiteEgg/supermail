@@ -48,8 +48,38 @@ const SQLusername = function (body) {
     })
 
 }
-// 处理添加用户数据库请求
-const SQLrecord = function (body) {
+const SQLpushCartlists = function (body) {
+    // 处理建立新cartlists列请求
+    return new Promise((resolve, reject) => {
+        db.query("INSERT INTO cartlists(username) VALUES (?)", body.username, (err, result) => {
+            if (err) { reject(err) }
+            // 如果修改了行数是一的话那就是修改成功了
+            if (result.affectedRows === 1) {
+                resolve({
+                    status: 0,
+                    message: "添加成功"
+                })
+            }
+        })
+    })
+}
+const SQLpushCartlistStars = function (body) {
+    // 处理建立新cartlistStars列请求
+    return new Promise((resolve, reject) => {
+        db.query("INSERT INTO cartliststars(username) VALUES (?)", body.username, (err, result) => {
+            if (err) { reject(err) }
+            // 如果修改了行数是一的话那就是修改成功了
+            if (result.affectedRows === 1) {
+                resolve({
+                    status: 0,
+                    message: "添加成功"
+                })
+            }
+        })
+    })
+}
+
+const doSQLrecord = function (body) {
     return new Promise((resolve, reject) => {
         // 把密码加密
         let hashPassword = bcrypt.hashSync(body.password, 10)
@@ -83,6 +113,17 @@ const SQLrecord = function (body) {
                 }
             })
     })
+
+}
+
+// 处理添注册请求
+const SQLrecord = function (body) {
+    const promise1 = doSQLrecord(body);
+    const promise2 = SQLpushCartlistStars(body);
+    const promise3 = SQLpushCartlists(body);
+    return Promise.all([
+        promise1, promise2, promise3
+    ])
 }
 
 const SQLrecordEmail = function (useremail, code) {

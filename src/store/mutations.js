@@ -49,7 +49,7 @@ const mutations = {
         }
     },
     pushShopcarData(state, payload) {
-        this.commit("ifPushNeed", { data: payload, ifname: "needCartPush", pushname: "cartLists" })
+        this.commit("ifPushNeed", { data: payload, ifname: "needCartPush", pushname: "  " })
         // console.log(payload);
 
 
@@ -60,6 +60,7 @@ const mutations = {
         // console.log(state.cartLists &&
         //   state.cartLists[0] &&
         //   state.cartLists[0].iid);
+        console.log(state.cartLists);
         this.commit("donPushZero", { length: state.cartLists.length, donChangeState: "donChangeCar" })
         // this.commit("searchRepeat", {
         //   array: "cartLists", donChangeState: "donChangeCar",

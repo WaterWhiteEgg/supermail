@@ -45,7 +45,7 @@ export default {
 
     data() {
         return {
-            popupText: "添加到购物车",
+            popupText: "",
         };
     },
     computed: {},
