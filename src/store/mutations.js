@@ -49,7 +49,7 @@ const mutations = {
         }
     },
     pushShopcarData(state, payload) {
-        this.commit("ifPushNeed", { data: payload, ifname: "needCartPush", pushname: "  " })
+        this.commit("ifPushNeed", { data: payload, ifname: "needCartPush", pushname: "cartLists" })
         // console.log(payload);
 
 
