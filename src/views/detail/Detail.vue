@@ -67,6 +67,8 @@ import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import { debounce } from "../../common/utils.js";
 import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 import DetailBottomBar from "./detailitem/detailBottomBar.vue";
+import { cartListsPush } from "../../network/cart";
+import ALLCONST from "../../common/const";
 export default {
     name: "Detail",
     // 移除了保持活跃
@@ -256,7 +258,14 @@ export default {
             if (Object.keys(this.product).length == 0) {
                 return 0;
             }
-
+                // 提交到数据库
+            cartListsPush(ALLCONST.codes.token,this.product)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
             if (istrue) {
                 this.$store.dispatch("shopcarData", this.product);
             } else {

@@ -271,11 +271,58 @@ const SQLregister = function (body) {
 }
 
 // 验证cartlists里面的数据是否重复
-SQLcartListsRepeat = function(tokendata){
-    return new Promise((resolve,reject)=>{
-        // 判断是否为0
-        tokendata
+const SQLcartListsRepeat = function (username, data) {
+    return new Promise((resolve, reject) => {
+        // 搜寻是否有该用户名
+        db.query("select * from cartlists where username = ?", username, (err, result) => {
+            if (err) { reject(err) }
+            // 如果长度为1就证明有
+            if (result.length === 1) {
+                // 这时候把数据发送
+                // 首先判断json是否有值
+                // 如果是空，创建一个新数组存储数据变成json存上去
 
+                let arr = []
+                // console.log(result[0].data);
+                if (result[0].data.length != 0) {
+                    arr = result[0].data
+                }
+                arr.push(data)
+
+                // 存上去
+                SQLcartListsUpdate(arr, username).then((res) => {
+                    resolve(res)
+                }).catch((err) => {
+                    reject(err)
+                })
+
+            } else {
+                reject("未能查询到该用户的数据")
+            }
+            // console.log(result);
+        })
+    })
+}
+
+// 存储cartlists数据
+const SQLcartListsUpdate = function (arr, username) {
+    return new Promise((resolve, reject) => {
+        // 存储cartlists的购物车数据
+        // console.log(arr);
+        db.query("update cartlists SET data = ? where username = ?", [JSON.stringify(arr), username], (err, result) => {
+            if (err) { reject(err) }
+
+            if (result.affectedRows === 1) {
+                // 这里代表执行成功
+                resolve({
+                    status: 0,
+                    message: "执行成功"
+                })
+            } else {
+                reject("执行失败")
+            }
+
+        })
     })
 }
 
@@ -288,3 +335,4 @@ module.exports.SQLrecordEmail = SQLrecordEmail
 module.exports.SQLemailCode = SQLemailCode
 
 module.exports.SQLregister = SQLregister
+module.exports.SQLcartListsRepeat = SQLcartListsRepeat
