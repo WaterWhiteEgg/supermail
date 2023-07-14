@@ -37,6 +37,8 @@
 
 <script>
 import Popup from "../../../components/common/popup/Popup.vue";
+import { cartListsPush } from "../../../network/cart";
+import ALLCONST from "../../../common/const";
 export default {
     name: "DetailBottomBar",
     components: {
@@ -55,6 +57,15 @@ export default {
     methods: {
         changeCar(istrue) {
             this.$emit("changeCar", istrue);
+
+            cartListsPush(ALLCONST.codes.token)
+                .then((res) => {
+                    console.log(res);
+                    console.log(2);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
             this.changeText(istrue);
             this.$store.commit("openPopup");
         },
@@ -89,7 +100,7 @@ export default {
     top: 0;
     left: 0;
     /* position: absolute; */
-    transform: translate( calc(50vw - 50%), -50vh);
+    transform: translate(calc(50vw - 50%), -50vh);
     /* display: none; */
     padding: 0px 10px;
 

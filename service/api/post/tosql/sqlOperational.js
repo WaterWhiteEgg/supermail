@@ -270,6 +270,15 @@ const SQLregister = function (body) {
     })
 }
 
+// 验证cartlists里面的数据是否重复
+SQLcartListsRepeat = function(tokendata){
+    return new Promise((resolve,reject)=>{
+        // 判断是否为0
+        tokendata
+
+    })
+}
+
 
 
 

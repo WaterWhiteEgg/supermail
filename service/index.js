@@ -7,6 +7,7 @@ const cors = require('cors')
 const register = require("./api/post/register")
 const email = require("./api/post/emailpost")
 const validateToken = require("./api/post/validate_token")
+const cartLists = require("./api/post/cartLists")
 // 自定义处理错误的包，加了个res.cc的方法   
 const error = require('./middleware/error')
 // 防止请求次数过多的三方包，封装在别的文件里
@@ -45,7 +46,7 @@ app.use(authenticateToken)
 
 
 // 引入需要的路由
-app.use(register, email, validateToken)
+app.use(register, email, validateToken, cartLists)
 // 排除特定的路径
 
 

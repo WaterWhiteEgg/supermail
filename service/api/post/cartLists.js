@@ -9,8 +9,12 @@ const crypto = require("crypto")
 const router = express.Router()
 
 
-router.post("/shop/pushdata", expressjoi(cartListsTest), (req, res) => {
-        
+router.post("/shop/pushdata",(req, res) => {
+        console.log(req.auth.username);
+        res.send({
+            status:0,
+            data:req.auth
+        })
 })
 
 
