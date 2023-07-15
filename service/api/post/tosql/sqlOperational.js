@@ -270,37 +270,45 @@ const SQLregister = function (body) {
     })
 }
 
-// 验证cartlists里面的数据是否重复
-const SQLcartListsRepeat = function (username, data) {
+const SQLcartListsSelect = function (username) {
     return new Promise((resolve, reject) => {
-        // 搜寻是否有该用户名
+
         db.query("select * from cartlists where username = ?", username, (err, result) => {
             if (err) { reject(err) }
             // 如果长度为1就证明有
             if (result.length === 1) {
-                // 这时候把数据发送
-                // 首先判断json是否有值
-                // 如果是空，创建一个新数组存储数据变成json存上去
-
-                let arr = []
-                // console.log(result[0].data);
-                if (result[0].data.length != 0) {
-                    arr = result[0].data
-                }
-                arr.push(data)
-
-                // 存上去
-                SQLcartListsUpdate(arr, username).then((res) => {
-                    resolve(res)
-                }).catch((err) => {
-                    reject(err)
-                })
-
+                resolve({ status: 0, message: "查询成功", data: result })
             } else {
                 reject("未能查询到该用户的数据")
             }
-            // console.log(result);
         })
+    })
+
+}
+// 验证cartlists里面的数据是否重复
+const SQLcartListsRepeat = function (username, data) {
+    return new Promise((resolve, reject) => {
+        // 搜寻是否有该用户名
+        SQLcartListsSelect(username).then((res1) => {
+            // 执行搜寻成功的
+            let arr = []
+            // console.log(result[0].data);
+            if (res1.data[0].data.length != 0) {
+                arr = res1.data[0].data
+            }
+            arr.push(data)
+
+            // 存上去
+            SQLcartListsUpdate(arr, username).then((res2) => {
+                resolve(res2)
+            })
+        }).catch((err) => {
+            reject(err)
+        })
+
+
+
+        // console.log(result);
     })
 }
 
