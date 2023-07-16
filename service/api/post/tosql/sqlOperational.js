@@ -270,26 +270,10 @@ const SQLregister = function (body) {
     })
 }
 
-const SQLcartListsSelect = function (username) {
-    return new Promise((resolve, reject) => {
-
-        db.query("select * from cartlists where username = ?", username, (err, result) => {
-            if (err) { reject(err) }
-            // 如果长度为1就证明有
-            if (result.length === 1) {
-                resolve({ status: 0, message: "查询成功", data: result })
-            } else {
-                reject("未能查询到该用户的数据")
-            }
-        })
-    })
-
-}
-// 验证cartlists里面的数据是否重复
 const SQLcartListsRepeat = function (username, data) {
     return new Promise((resolve, reject) => {
         // 搜寻是否有该用户名
-        SQLcartListsSelect(username).then((res1) => {
+        SQLcartListsSelect(username, data).then((res1) => {
             // 执行搜寻成功的
             let arr = []
             // console.log(result[0].data);
@@ -311,7 +295,40 @@ const SQLcartListsRepeat = function (username, data) {
         // console.log(result);
     })
 }
+// 验证cartlists里面的数据是否重复
 
+const SQLcartListsSelect = function (username, data) {
+    return new Promise((resolve, reject) => {
+
+        db.query("select * from cartlists where username = ?", username, (err, result) => {
+            if (err) { reject(err) }
+            // 如果长度为1就证明有
+            if (result.length === 1) {
+                // 使用集合（Set）进行查重操作具有以下几个优势，这也是它在效率上比较高的原因：
+
+                // 快速查找：集合内部使用哈希表实现，查找操作的时间复杂度为 O(1)，即无论集合中有多少元素，查找所需的时间都是恒定的。
+
+                // 自动去重：集合本身的特性就是不允许存在重复元素，因此向集合中添加元素时，会自动去除重复项，确保集合中的元素是唯一的。
+
+                // 这里查询 result[0].data的数据...
+                // 新建一个集合对象
+                const uniqueData = new Set();
+                for (const item of result[0].data) {
+                    // 循环遍历数据库的data，同时对比data，如果显示重复就提出异常
+                    // console.log(uniqueData.has(data.iid));
+                    (!uniqueData.has(data.iid)) ?
+                        uniqueData.add(item.iid) :
+                        reject("重复的添加")
+                }
+                // uniqueData 中存储了去重后的数据
+                resolve({ status: 0, message: "查询成功", data: result })
+            } else {
+                reject("未能查询到该用户的数据")
+            }
+        })
+    })
+
+}
 // 存储cartlists数据
 const SQLcartListsUpdate = function (arr, username) {
     return new Promise((resolve, reject) => {
