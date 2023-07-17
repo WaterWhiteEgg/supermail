@@ -14,11 +14,15 @@ const { SQLusername, SQLregister, SQLrecord, SQLemailCode } = require("./tosql/s
 router.post("/register", expressjoi(registerText), (req, res) => {
     // 处理登录，通过表单验证的数据都是可以过了的
 
-    SQLregister(req.body).then((resolve) => {
-        res.send(resolve)
-    }).catch((err) => {
-        res.cc(err)
+    SQLusername(req.body).then((resolve) => {
+        // 查询成功时证明找到唯一的username
+        SQLregister(req.body, resolve).then((resolve) => {
+            res.send(resolve)
+        }).catch((err) => {
+            res.cc(err)
+        })
     })
+
 
 })
 
@@ -36,18 +40,14 @@ router.post("/login", expressjoi(loginTest), (req, res) => {
         // 没有重复后添加
         // 现在又加了一条规则，必须邮箱验证码成功对应才能继续处理登录请求
         if (catcherr.status === 1) {
-            
+
             SQLemailCode(req.body).then((resolve) => {
                 // 这里是code验证码对比处理成功后
                 // 处理成功后就可以执行这个
                 SQLrecord(req.body).then((resolve) => {
-                    console.log(resolve);
+                    // console.log(resolve);
                     res.send(resolve[0])
-                }).catch((err) => {
-                    console.log(err);
-                    res.cc(err)
-                }
-                )
+                })
             }).catch((err) => {
                 res.cc(err)
             })

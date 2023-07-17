@@ -227,46 +227,41 @@ const SQLemailCode = function (body) {
 }
 
 
-const SQLregister = function (body) {
+
+const SQLregister = function (body, SQLusernameResolve) {
     // 处理登录请求
-    // 检测是否是唯一的用户名
     return new Promise((resolve, reject) => {
-        SQLusername(body).then((SQLusernameResolve) => {
-            // 检测密码其对应的密码是否正确
-            // 使用加密模块
-            let passwordFlag = bcrypt.compareSync(body.password, SQLusernameResolve.data[0].password)
+        // 检测密码其对应的密码是否正确
+        // 使用加密模块
+        let passwordFlag = bcrypt.compareSync(body.password, SQLusernameResolve.data[0].password)
 
-            if (passwordFlag) {
-                // 屏蔽掉password数据
-                const user = SQLusernameResolve.data[0];
-                delete user.password;
-                // 处理成功将token的值固定出来并更新到数据库里
-                // 一个随机的密钥token
-                const datatoken = crypto.randomBytes(64).toString('hex');
-                db.query("update userdata SET token = ? where username = ?", [datatoken, SQLusernameResolve.data[0].username], (err, result) => {
-                    if (err) { reject(err) }
-                    if (result.affectedRows === 1) {
-                        resolve({
-                            status: 0,
-                            message: '查询成功',
-                            data: {
-                                user,
-                                token: jwt.sign(user, datatoken, { expiresIn: "8h" })
-                            }
+        if (passwordFlag) {
+            // 屏蔽掉password数据
+            const user = SQLusernameResolve.data[0];
+            delete user.password;
+            // 处理成功将token的值固定出来并更新到数据库里
+            // 一个随机的密钥token
+            const datatoken = crypto.randomBytes(64).toString('hex');
+            db.query("update userdata SET token = ? where username = ?", [datatoken, SQLusernameResolve.data[0].username], (err, result) => {
+                if (err) { reject(err) }
+                if (result.affectedRows === 1) {
+                    resolve({
+                        status: 0,
+                        message: '查询成功',
+                        data: {
+                            user,
+                            token: jwt.sign(user, datatoken, { expiresIn: "8h" })
+                        }
 
-                        })
-                    } else {
-                        reject("传输token时错误")
-                    }
+                    })
+                } else {
+                    reject("传输token时错误")
+                }
+            })
+        } else {
+            reject("密码错误")
+        }
 
-                })
-
-            } else {
-                reject("密码错误")
-            }
-        }).catch((err) => {
-            reject(err)
-        })
     })
 }
 
@@ -281,7 +276,6 @@ const SQLcartListsRepeat = function (username, data) {
                 arr = res1.data[0].data
             }
             arr.push(data)
-
             // 存上去
             SQLcartListsUpdate(arr, username).then((res2) => {
                 resolve(res2)
