@@ -23,6 +23,19 @@ router.post("/shop/pushdata", (req, res) => {
     // console.log(req.auth);
 
 })
+router.post("/shop/removedata", (req, res) => {
+    SQLcartListsRepeat(req.auth.username, req.body).then((resolve) => {
+        // console.log(res);
+        res.send({
+            status:0,
+            message:"加入购物车成功"
+        })
+    }).catch((err) => {
+        res.cc(err)
+    })
+    // console.log(req.auth);
+
+})
 
 
 

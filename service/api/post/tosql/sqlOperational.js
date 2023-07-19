@@ -308,11 +308,12 @@ const SQLcartListsSelect = function (username, data) {
                 // 新建一个集合对象
                 const uniqueData = new Set();
                 for (const item of result[0].data) {
-                    // 循环遍历数据库的data，同时对比data，如果显示重复就提出异常
+                    // 循环遍历添加数据库的item，同时对比发送过来的data.iid，如果显示重复就提出异常
+                    uniqueData.add(item.iid)
                     // console.log(uniqueData.has(data.iid));
-                    (!uniqueData.has(data.iid)) ?
-                        uniqueData.add(item.iid) :
+                    if (uniqueData.has(data.iid)) {
                         reject("重复的添加")
+                    }
                 }
                 // uniqueData 中存储了去重后的数据
                 resolve({ status: 0, message: "查询成功", data: result })
@@ -344,6 +345,25 @@ const SQLcartListsUpdate = function (arr, username) {
         })
     })
 }
+// 更改cartlists里面的data数据，重点是删除里面相同的iid达到删除某个值的效果
+const SQLcartListsRemoveUpdate = function (username, data) {
+    return new Promise((resolve, reject) => {
+        // 搜索username相同的data
+
+        // 将数据库的data搜索出相同iid是数据
+
+        // 将这个数据删除，可以这样遍历
+        // for (let i = arr.length - 1; i >= 0; i--) {
+        //     const currentIid = arr[i].iid;
+        //     for (let j = i - 1; j >= 0; j--) {
+        //       if (arr[j].iid === currentIid) {
+        //         arr.splice(i, 1);
+        //         break; // 找到重复项后跳出内层循环
+        //       }
+        //     }
+        //   }
+    })
+}
 
 
 
@@ -355,3 +375,4 @@ module.exports.SQLemailCode = SQLemailCode
 
 module.exports.SQLregister = SQLregister
 module.exports.SQLcartListsRepeat = SQLcartListsRepeat
+module.exports.SQLcartListsRemoveUpdate = SQLcartListsRemoveUpdate

@@ -5,7 +5,7 @@ export function cartListsPush(token,data) {
         url: "/shop/pushdata",
         headers: {
             Authorization: `Bearer ${token}`,
-        },
+        },  
         data
     })
 }
