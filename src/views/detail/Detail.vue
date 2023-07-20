@@ -16,7 +16,7 @@
             probeType:2
         >
             <detail-swiper :topImg="topImg" ref="swiper"></detail-swiper>
-            <detail-basedata    
+            <detail-basedata
                 :allGoodsItem="allGoodsItem"
                 ref="basedata"
             ></detail-basedata>
@@ -67,7 +67,7 @@ import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import { debounce } from "../../common/utils.js";
 import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 import DetailBottomBar from "./detailitem/detailBottomBar.vue";
-import { cartListsPush } from "../../network/cart";
+import { cartListsPush, cartListsRemove } from "../../network/cart";
 import ALLCONST from "../../common/const";
 export default {
     name: "Detail",
@@ -258,17 +258,26 @@ export default {
             if (Object.keys(this.product).length == 0) {
                 return 0;
             }
-                // 提交到数据库
-            cartListsPush(ALLCONST.codes.token,this.product)
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+
+            // 判断这是什么状态的提交
             if (istrue) {
+                // 提交到数据库
+                cartListsPush(ALLCONST.codes.token, this.product)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
                 this.$store.dispatch("shopcarData", this.product);
             } else {
+                cartListsRemove(ALLCONST.codes.token, this.product)
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
                 this.$store.commit("delShopcar", this.iid);
             }
 

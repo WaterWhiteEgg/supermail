@@ -9,3 +9,13 @@ export function cartListsPush(token,data) {
         data
     })
 }
+
+export function cartListsRemove(token,data) {
+    return requestSelfPostAPI({
+        url: "/shop/removedata",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },  
+        data
+    })
+}

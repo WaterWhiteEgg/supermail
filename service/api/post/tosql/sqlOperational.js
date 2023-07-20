@@ -264,7 +264,7 @@ const SQLregister = function (body, SQLusernameResolve) {
 
     })
 }
-
+// 执行添加购物车操作
 const SQLcartListsRepeat = function (username, data) {
     return new Promise((resolve, reject) => {
         // 搜寻是否有该用户名
@@ -298,6 +298,7 @@ const SQLcartListsSelect = function (username, data) {
             if (err) { reject(err) }
             // 如果长度为1就证明有
             if (result.length === 1) {
+
                 // 使用集合（Set）进行查重操作具有以下几个优势，这也是它在效率上比较高的原因：
 
                 // 快速查找：集合内部使用哈希表实现，查找操作的时间复杂度为 O(1)，即无论集合中有多少元素，查找所需的时间都是恒定的。
@@ -315,6 +316,7 @@ const SQLcartListsSelect = function (username, data) {
                         reject("重复的添加")
                     }
                 }
+
                 // uniqueData 中存储了去重后的数据
                 resolve({ status: 0, message: "查询成功", data: result })
             } else {
@@ -324,7 +326,7 @@ const SQLcartListsSelect = function (username, data) {
     })
 
 }
-// 存储cartlists数据
+// 存储更新cartlists数据
 const SQLcartListsUpdate = function (arr, username) {
     return new Promise((resolve, reject) => {
         // 存储cartlists的购物车数据
@@ -345,23 +347,46 @@ const SQLcartListsUpdate = function (arr, username) {
         })
     })
 }
+// 执行cartlists查询后将重复的数据去除然后提供新数组
+const SQLcartListsRemoveSelect = function (username, data) {
+    return new Promise((resolve, reject) => {
+
+        db.query("select * from cartlists where username = ?", username, (err, result) => {
+            if (err) { reject(err) }
+            // 如果长度为1就证明有
+            if (result.length === 1) {
+                let arr = result[0].data
+                // 将这个数据删除，可以这样遍历
+                for (let i = arr.length - 1; i >= 0; i--) {
+                    if (arr[i].iid === data.iid) {
+                        arr.splice(i, 1);
+                        break; // 找到重复项后跳出内层循环
+                    }
+                }
+                // 这个筛出来的arr就是删除后的数组
+                resolve({ status: 0, message: "删除成功", data: arr })
+            } else {
+                reject("未能查询到该用户的数据")
+            }
+        })
+    })
+
+}
+
 // 更改cartlists里面的data数据，重点是删除里面相同的iid达到删除某个值的效果
 const SQLcartListsRemoveUpdate = function (username, data) {
     return new Promise((resolve, reject) => {
-        // 搜索username相同的data
+        // 搜索username相同的data，然后去除相同的iid返回新arr
+        SQLcartListsRemoveSelect(username, data).then((res1) => {
+            // 更新cartlists
+            SQLcartListsUpdate(res1.data, username).then((res2) => {
+                resolve(res2.message)
+            })
 
+        }).catch(
+            (err) => { reject(err) }
+        )
         // 将数据库的data搜索出相同iid是数据
-
-        // 将这个数据删除，可以这样遍历
-        // for (let i = arr.length - 1; i >= 0; i--) {
-        //     const currentIid = arr[i].iid;
-        //     for (let j = i - 1; j >= 0; j--) {
-        //       if (arr[j].iid === currentIid) {
-        //         arr.splice(i, 1);
-        //         break; // 找到重复项后跳出内层循环
-        //       }
-        //     }
-        //   }
     })
 }
 
