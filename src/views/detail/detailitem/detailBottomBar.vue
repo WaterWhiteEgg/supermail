@@ -1,5 +1,6 @@
 <template>
     <div class="bottombar">
+        <div id="loading-spinner"></div>
         <popup class="popup" :popupText="popupText"></popup>
         <div class="bottombar_icon">
             <span class="bottombar_icon_kefu" @click="callCM">
@@ -86,6 +87,7 @@ export default {
 
 
 <style scoped>
+@import url("~assets/css/loader.css");
 .popup {
     box-sizing: border-box;
     top: 0;
