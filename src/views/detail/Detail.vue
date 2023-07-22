@@ -89,6 +89,7 @@ export default {
     data() {
         return {
             iid: "",
+            status: 1,
             topImg: [],
             allGoodsItem: {},
             allShopInfo: {},
@@ -253,36 +254,55 @@ export default {
             this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
         },
 
-        changeCar(istrue) {
+        changeCar(istrue, callbackStatus, callbackLoadState) {
             // 如果没有内容的话就不执行了
             if (Object.keys(this.product).length == 0) {
                 return 0;
             }
+            // 防抖
+            debounce(() => {
+                callbackLoadState(true);
+                // 判断这是什么状态的提交
+                if (istrue) {
+                    // 提交到数据库
+                    // 状态默认是1，这个状态用于给子组件识别
+                    cartListsPush(ALLCONST.codes.token, this.product)
+                        .then((res) => {
+                            console.log(res);
+                            this.status = res.data.status;
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.status = err.status;
+                        })
+                        .finally(() => {
+                            callbackStatus(this.status);
+                            callbackLoadState(false);
+                        });
 
-            // 判断这是什么状态的提交
-            if (istrue) {
-                // 提交到数据库
-                cartListsPush(ALLCONST.codes.token, this.product)
-                    .then((res) => {
-                        console.log(res);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-                this.$store.dispatch("shopcarData", this.product);
-            } else {
-                cartListsRemove(ALLCONST.codes.token, this.product)
-                    .then((res) => {
-                        console.log(res);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-                this.$store.commit("delShopcar", this.iid);
-            }
+                    this.$store.dispatch("shopcarData", this.product);
+                } else {
+                    cartListsRemove(ALLCONST.codes.token, this.product)
+                        .then((res) => {
+                            console.log(res);
+                            this.status = res.data.status;
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.status = err.status;
+                        })
+                        .finally(() => {
+                            callbackStatus(this.status);
+                            callbackLoadState(false);
+                        });
+                    this.$store.commit("delShopcar", this.iid);
+                }
 
-            this.$store.commit("needChangeShopcar", this.iid);
+                this.$store.commit("needChangeShopcar", this.iid);
+            }, 300);
+            // 加载事件
         },
+
         changeStar(istrue) {
             if (istrue) {
                 this.$store.dispatch("changeStar", this.iid);

@@ -60,7 +60,7 @@ const mutations = {
         // console.log(state.cartLists &&
         //   state.cartLists[0] &&
         //   state.cartLists[0].iid);
-        console.log(state.cartLists);
+        // console.log(state.cartLists);
         this.commit("donPushZero", { length: state.cartLists.length, donChangeState: "donChangeCar" })
         // this.commit("searchRepeat", {
         //   array: "cartLists", donChangeState: "donChangeCar",

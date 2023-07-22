@@ -1,6 +1,6 @@
 <template>
     <div class="bottombar">
-        <div id="loading-spinner"></div>
+        <div id="loading-spinner" v-show="loadState"></div>
         <popup class="popup" :popupText="popupText"></popup>
         <div class="bottombar_icon">
             <span class="bottombar_icon_kefu" @click="callCM">
@@ -26,7 +26,7 @@
                 <div>已收藏</div>
             </span>
         </div>
-        <div class="bottombar_car" v-if="$store.state.donChangeCar">
+        <div class="bottombar_car" v-if="isChangeCar">
             <button @click="changeCar(true)">加入购物车</button>
         </div>
         <div class="bottombar_car bottombar_car_off" v-else>
@@ -44,10 +44,12 @@ export default {
     components: {
         Popup,
     },
-
+    props: {},
     data() {
         return {
             popupText: "",
+            loadState: false,
+            isChangeCar: true,
         };
     },
     computed: {},
@@ -55,13 +57,29 @@ export default {
     mounted() {},
 
     methods: {
+        // 判断是否需要切换按钮，以及需要进行的操作是添加或者删除
         changeCar(istrue) {
-            this.$emit("changeCar", istrue);
-
-            this.changeText(istrue);
-            this.$store.commit("openPopup");
+            this.$emit(
+                "changeCar",
+                istrue,
+                this.changeCarCallback,
+                this.changeLoadStateCallback
+            );
         },
-
+        // 用于回调父组件成功或者失败的状态并执行
+        changeCarCallback(status) {
+            // console.log(status);
+            status
+                ? (this.popupText = "操作失败")
+                : this.changeText(this.isChangeCar);
+            this.$store.commit("openPopup");
+            // 切换添加或删除按钮
+            this.isChangeCar = !this.isChangeCar;
+        },
+        changeLoadStateCallback(loadState) {
+            // 显示加载判断
+            this.loadState = loadState;
+        },
         changeText(istrue) {
             if (istrue) {
                 this.addtext();
@@ -76,7 +94,7 @@ export default {
             this.popupText = "添加到购物车";
         },
         callCM() {
-            alert("你拨打的用户正在跑路中，请稍后再拨");
+            // alert("你拨打的用户正在跑路中，请稍后再拨");
         },
         changeStar(istrue) {
             this.$emit("changeStar", istrue);
