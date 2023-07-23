@@ -261,6 +261,7 @@ export default {
             }
             // 防抖
             debounce(() => {
+                // 加载动画播放
                 callbackLoadState(true);
                 // 判断这是什么状态的提交
                 if (istrue) {
@@ -273,7 +274,7 @@ export default {
                         })
                         .catch((err) => {
                             console.log(err);
-                            this.status = err.status;
+                            this.status = 1;
                         })
                         .finally(() => {
                             callbackStatus(this.status);
@@ -289,7 +290,7 @@ export default {
                         })
                         .catch((err) => {
                             console.log(err);
-                            this.status = err.status;
+                            this.status =1;
                         })
                         .finally(() => {
                             callbackStatus(this.status);

@@ -27,10 +27,10 @@
             </span>
         </div>
         <div class="bottombar_car" v-if="isChangeCar">
-            <button @click="changeCar(true)">加入购物车</button>
+            <button @click="changeCar(isChangeCar)">加入购物车</button>
         </div>
         <div class="bottombar_car bottombar_car_off" v-else>
-            <button @click="changeCar(false)">删除购物车</button>
+            <button @click="changeCar(isChangeCar)">删除购物车</button>
         </div>
         <div class="bottombar_buy"><button>购买</button></div>
     </div>
@@ -68,13 +68,15 @@ export default {
         },
         // 用于回调父组件成功或者失败的状态并执行
         changeCarCallback(status) {
-            // console.log(status);
-            status
-                ? (this.popupText = "操作失败")
-                : this.changeText(this.isChangeCar);
+            console.log(status);
+            if (status) {
+                this.popupText = "操作失败";
+            } else {
+                this.changeText(this.isChangeCar);
+                // 切换添加或删除按钮
+                this.isChangeCar = !this.isChangeCar;
+            }
             this.$store.commit("openPopup");
-            // 切换添加或删除按钮
-            this.isChangeCar = !this.isChangeCar;
         },
         changeLoadStateCallback(loadState) {
             // 显示加载判断
