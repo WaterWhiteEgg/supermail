@@ -20,6 +20,15 @@ const data = joi.string().required()
 const email = joi.string().regex(emReg).required()
 const code = joi.number().integer().min(100000).max(999999).required()
 
+const cartSchema = {
+    image: joi.string().required(),
+    iid: joi.string().required(),
+    desc: joi.string().required(),
+    title: joi.string().required(),
+    price: joi.number().required(),
+    quantity: joi.number().required(),
+    isChecked: joi.boolean().required()
+}
 
 
 // 这里规定要验证什么信息，并导出
@@ -55,8 +64,6 @@ module.exports.usernameTest = {
 }
 module.exports.cartListsTest = {
     body: {
-        username,
-        iid,
-        data
+        ...cartSchema
     }
 }

@@ -68,7 +68,6 @@ export default {
         },
         // 用于回调父组件成功或者失败的状态并执行
         changeCarCallback(status) {
-            console.log(status);
             if (status) {
                 this.popupText = "操作失败";
             } else {
