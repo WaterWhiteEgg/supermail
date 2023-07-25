@@ -21,6 +21,9 @@ export function requestSelfAPI(config) {
     const ins2 = axios.create({
         baseURL: "http://127.0.0.1:8080",
         timeout: 3000,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
 
     })
 
@@ -35,8 +38,6 @@ export function requestSelfPostAPI(config) {
         timeout: 3000,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-
-
         }
     })
     return ins3(config)

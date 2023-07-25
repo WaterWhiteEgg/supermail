@@ -67,7 +67,11 @@ import GoodsItem from "../../components/content/goods/GoodsItem.vue";
 import { debounce } from "../../common/utils.js";
 import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
 import DetailBottomBar from "./detailitem/detailBottomBar.vue";
-import { cartListsPush, cartListsRemove } from "../../network/cart";
+import {
+    cartListsPush,
+    cartListsRemove,
+    cartListsSelect,
+} from "../../network/cart";
 import ALLCONST from "../../common/const";
 export default {
     name: "Detail",
@@ -197,7 +201,11 @@ export default {
             });
         // }
     },
-    mounted() {},
+    mounted() {
+        cartListsSelect(ALLCONST.codes.token).then((res)=>{
+            console.log(res);
+        })
+    },
     activated() {},
 
     methods: {
@@ -290,7 +298,7 @@ export default {
                         })
                         .catch((err) => {
                             console.log(err);
-                            this.status =1;
+                            this.status = 1;
                         })
                         .finally(() => {
                             callbackStatus(this.status);

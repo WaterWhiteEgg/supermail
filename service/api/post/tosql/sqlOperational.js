@@ -268,7 +268,7 @@ const SQLregister = function (body, SQLusernameResolve) {
 const SQLcartListsRepeat = function (username, data) {
     return new Promise((resolve, reject) => {
         // 搜寻是否有该用户名
-        SQLcartListsSelect(username, data).then((res1) => {
+        SQLcartListsSelectRepeat(username, data).then((res1) => {
             // 执行搜寻成功的
             let arr = []
             // console.log(result[0].data);
@@ -291,7 +291,7 @@ const SQLcartListsRepeat = function (username, data) {
 }
 // 验证cartlists里面的数据是否重复
 
-const SQLcartListsSelect = function (username, data) {
+const SQLcartListsSelectRepeat = function (username, data) {
     return new Promise((resolve, reject) => {
 
         db.query("select * from cartlists where username = ?", username, (err, result) => {
@@ -389,6 +389,8 @@ const SQLcartListsRemoveUpdate = function (username, data) {
         // 将数据库的data搜索出相同iid是数据
     })
 }
+
+
 
 
 

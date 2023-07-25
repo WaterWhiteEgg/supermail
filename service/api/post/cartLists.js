@@ -37,9 +37,7 @@ router.post("/shop/removedata",expressjoi(cartListsTest), (req, res) => {
 
 })
 
-router.post("/shop/selectdata", (req, res) => {
-    res.send("1")
-})
+
 
 
 module.exports = router

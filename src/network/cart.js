@@ -1,4 +1,4 @@
-import { requestSelfPostAPI } from "./request";
+import { requestSelfPostAPI ,requestSelfAPI} from "./request";
 
 export function cartListsPush(token,data) {
     return requestSelfPostAPI({
@@ -17,5 +17,13 @@ export function cartListsRemove(token,data) {
             Authorization: `Bearer ${token}`,
         },  
         data
+    })
+}
+export function cartListsSelect(token) {
+    return requestSelfAPI({
+        url: "/shop/selectdata",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },  
     })
 }
