@@ -40,6 +40,7 @@
         <detail-bottom-bar
             @changeCar="changeCar"
             @changeStar="changeStar"
+            :isIid="isIid"
         ></detail-bottom-bar>
     </div>
 </template>
@@ -108,6 +109,8 @@ export default {
             navbarChange: 0,
             popup: false,
             RecalculateScroll: 0,
+            cartListsData: [],
+            isIid: false,
         };
     },
     watch: {
@@ -115,7 +118,17 @@ export default {
             this.$store.commit("needChangeShopcar", newdata);
             this.$store.commit("needChangeStar", newdata);
         },
-
+        cartListsData(newval, oldval) {
+            // 将值循环判断是否有对应iid，有的话那就转化变删除按钮
+            for (let obj of newval) {
+                if (obj.iid === this.iid) {
+                    this.isIid = true;
+                    return 0;
+                } else {
+                    this.isIid = false;
+                }
+            }
+        },
         // "$refs.scroll": {
         //     handler(newValue, oldValue) {
         //         console.log(newValue, oldValue);
@@ -202,9 +215,8 @@ export default {
         // }
     },
     mounted() {
-        cartListsSelect(ALLCONST.codes.token).then((res)=>{
-            console.log(res);
-        })
+        // 查询购物车的数据
+        this.selectCartLists();
     },
     activated() {},
 
@@ -255,7 +267,15 @@ export default {
             //     this.navbarChange = 3;
             // }
         },
+        // 查询购物车的数据
+        selectCartLists() {
+            cartListsSelect(ALLCONST.codes.token).then((res) => {
+                // 发送给子元素
+                // console.log(res.data.data.data);
 
+                this.cartListsData = res.data.data.data;
+            });
+        },
         goOffsetTop(index) {
             this.navbarOffsetTop = this.offsetTop;
             // console.log(this.navbarOffsetTop);
@@ -287,6 +307,7 @@ export default {
                         .finally(() => {
                             callbackStatus(this.status);
                             callbackLoadState(false);
+                            this.selectCartLists();
                         });
 
                     this.$store.dispatch("shopcarData", this.product);
@@ -303,6 +324,7 @@ export default {
                         .finally(() => {
                             callbackStatus(this.status);
                             callbackLoadState(false);
+                            this.selectCartLists();
                         });
                     this.$store.commit("delShopcar", this.iid);
                 }

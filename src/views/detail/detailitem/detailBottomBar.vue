@@ -44,7 +44,17 @@ export default {
     components: {
         Popup,
     },
-    props: {},
+    props: {
+        isIid: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    watch: {
+        isIid(newval,oldval){
+            this.isChangeCar = !newval
+        }
+    },
     data() {
         return {
             popupText: "",
@@ -58,10 +68,10 @@ export default {
 
     methods: {
         // 判断是否需要切换按钮，以及需要进行的操作是添加或者删除
-        changeCar(istrue) {
+        changeCar(isChangeCar) {
             this.$emit(
                 "changeCar",
-                istrue,
+                isChangeCar,
                 this.changeCarCallback,
                 this.changeLoadStateCallback
             );
@@ -72,8 +82,6 @@ export default {
                 this.popupText = "操作失败";
             } else {
                 this.changeText(this.isChangeCar);
-                // 切换添加或删除按钮
-                this.isChangeCar = !this.isChangeCar;
             }
             this.$store.commit("openPopup");
         },
