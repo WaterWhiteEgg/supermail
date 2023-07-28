@@ -95,6 +95,7 @@ export default {
         return {
             iid: "",
             status: 1,
+            cartListsStatus: 0,
             topImg: [],
             allGoodsItem: {},
             allShopInfo: {},
@@ -272,8 +273,12 @@ export default {
             cartListsSelect(ALLCONST.codes.token).then((res) => {
                 // 发送给子元素
                 // console.log(res.data.data.data);
-
-                this.cartListsData = res.data.data.data;
+                // 记录状态
+                this.cartListsStatus = res.data.status;
+                if (!res.data.status) {
+                    this.cartListsData = res.data.data.data;
+                } else {
+                }
             });
         },
         goOffsetTop(index) {
@@ -283,10 +288,17 @@ export default {
         },
 
         changeCar(istrue, callbackStatus, callbackLoadState) {
-            // 如果没有内容的话就不执行了
+            // 如果没有内容的话以及来自搜索出错就不执行了
             if (Object.keys(this.product).length == 0) {
                 return 0;
             }
+            // 以及来自搜索出错就不执行还有跳转
+            if (this.cartListsStatus) {
+                // 跳转到登录
+                this.$router.push("/request");
+                return 0;
+            }
+
             // 防抖
             debounce(() => {
                 // 加载动画播放
