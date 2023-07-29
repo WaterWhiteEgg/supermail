@@ -9,7 +9,7 @@
             <div class="cartitem_show">
                 <click-button
                     :isChecked="item.isChecked"
-                    @changeChecked="changeChecked($event, item)"
+                    @changeChecked="changeChecked(cartLists, item)"
                 ></click-button>
                 <img :src="item.image" :alt="item.title" />
             </div>
@@ -49,10 +49,23 @@ export default {
     mounted() {},
 
     methods: {
+        // 切换选择的状态，这个状态不会保留
         changeChecked(checkData, item) {
             // console.log(item);
+            // 切换当前数组的状态
             item.isChecked = !item.isChecked;
-            this.$store.commit("checkIsChecked", item.isChecked);
+            // 遍历后查看是否有false，如果有直接返回结果
+
+            for (let i of checkData) {
+                if (!i.isChecked) {
+                    // 给vuex提供数据
+                    this.$store.commit("checkIsChecked", false);
+                    return 0;
+                } else {
+                    this.$store.commit("checkIsChecked", true);
+                }
+            }
+            // this.$store.commit("checkIsChecked", item.isChecked);
         },
     },
 };

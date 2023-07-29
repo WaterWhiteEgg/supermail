@@ -124,15 +124,8 @@ const mutations = {
 
 
     checkIsChecked(state, payload) {
-        for (let item of state.cartLists) {
-            if (!item.isChecked) {
-                state.isAllCartListsCheck = false;
-                return 0;
-            } else {
-                state.isAllCartListsCheck = true;
-
-            }
-        }
+        // 循环遍历找出cartLists是否全选
+                state.isAllCartListsCheck = payload;
     },
     changeIsAllCartListsCheck(state, payload) {
         state.isAllCartListsCheck = !state.isAllCartListsCheck;

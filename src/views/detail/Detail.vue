@@ -277,6 +277,7 @@ export default {
                 this.cartListsStatus = res.data.status;
                 if (!res.data.status) {
                     this.cartListsData = res.data.data.data;
+                    
                 } else {
                 }
             });

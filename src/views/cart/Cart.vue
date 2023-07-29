@@ -7,13 +7,19 @@
                 class="cart_list"
             ></cart-item-data>
         </scroll>
-        <cart-bottom-bar></cart-bottom-bar>
+        <cart-bottom-bar :cartLists="cartLists"></cart-bottom-bar>
     </div>
 </template>
 
 <script>
 import Scroll from "../../components/common/better_scroll/Scroll.vue";
 import { sorollRefresh, mixinBackTop } from "../../common/mixin.js";
+import {
+    cartListsPush,
+    cartListsRemove,
+    cartListsSelect,
+} from "../../network/cart";
+import ALLCONST from "../../common/const";
 import CartItemData from "./cartitem/CartItemData.vue";
 import CartBottomBar from "./cartitem/CartBottomBar.vue";
 import CartNavbar from "./cartitem/CartNavbar.vue";
@@ -23,7 +29,7 @@ export default {
     components: { Scroll, CartItemData, CartBottomBar, CartNavbar },
     data() {
         return {
-            cartLists: this.$store.state.cartLists,
+            cartLists: [],
         };
     },
     mixins: [sorollRefresh, mixinBackTop],
@@ -42,13 +48,30 @@ export default {
     activated() {
         this.$refs.scroll.bs.refresh();
     },
-    methods: {},
+    mounted() {
+        // 开始时就请求购物列表
+        cartListsSelect(ALLCONST.codes.token)
+            .then((res) => {
+                if (!res.data.status) {
+                    // 验证成功后提供数组
+                    console.log(res);
+                    // console.log(res.data.data.data);
+                    this.cartLists = res.data.data.data;
+                } else {
+                    // 否则跳转到登录界面
+                    this.$router.push("/request");
+                }
+            })
+            .catch();
+    },
+    methods: {
+
+    },
 };
 </script>
 
 <style>
 @media screen and (max-width: 768px) {
-
 }
 .cart {
     height: 100vh;
@@ -59,5 +82,4 @@ export default {
     /* height: 100px; */
     /* background-color: red; */
 }
-
 </style>

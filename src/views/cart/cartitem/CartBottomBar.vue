@@ -29,13 +29,20 @@ export default {
     data() {
         return {};
     },
+    props: {
+        cartLists: {
+            type: Array,
+            default() {
+                return [];
+            },
+        },
+    },
 
     mounted() {},
     computed: {
         toIsChecked() {
-            return this.$store.state.cartLists.filter((item) => {
-                return item.isChecked;
-            });
+            // 计算选中的总数
+            return this.cartLists
         },
         totalPrice() {
             return this.toIsChecked.reduce((preValue, item) => {
@@ -46,7 +53,7 @@ export default {
 
     methods: {
         changeChecked() {
-            this.$store.commit("changeIsAllCartListsCheck");
+            // this.$store.commit("changeIsAllCartListsCheck");
         },
     },
 };
@@ -59,7 +66,7 @@ export default {
     position: relative;
     display: flex;
     height: 48px;
-    bottom:0;
+    bottom: 0;
     /* line-height: 2rem; */
     align-items: center;
     text-align: center;
@@ -80,9 +87,8 @@ export default {
     align-items: center;
     background-color: #0084ff;
     font-size: 1rem;
-
 }
 .cartbottom_buy_button {
-color: #ffffff;
+    color: #ffffff;
 }
 </style>
