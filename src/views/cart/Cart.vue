@@ -46,10 +46,8 @@ export default {
     },
     updated() {},
     activated() {
-        this.$refs.scroll.bs.refresh();
-    },
-    mounted() {
-        // 开始时就请求购物列表
+
+        // 活跃时就请求购物列表
         cartListsSelect(ALLCONST.codes.token)
             .then((res) => {
                 if (!res.data.status) {
@@ -64,9 +62,8 @@ export default {
             })
             .catch();
     },
-    methods: {
-
-    },
+    mounted() {},
+    methods: {},
 };
 </script>
 

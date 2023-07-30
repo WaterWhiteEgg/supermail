@@ -29,6 +29,7 @@ export default {
     data() {
         return {};
     },
+    
     props: {
         cartLists: {
             type: Array,
@@ -53,7 +54,7 @@ export default {
 
     methods: {
         changeChecked() {
-            // this.$store.commit("changeIsAllCartListsCheck");
+            this.$store.commit("changeIsAllCartListsCheck");
         },
     },
 };

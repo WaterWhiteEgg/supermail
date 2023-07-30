@@ -125,11 +125,15 @@ const mutations = {
 
     checkIsChecked(state, payload) {
         // 循环遍历找出cartLists是否全选
-                state.isAllCartListsCheck = payload;
+        state.isAllCartListsCheck = payload;
     },
+
     changeIsAllCartListsCheck(state, payload) {
+        // 切换全选按钮
         state.isAllCartListsCheck = !state.isAllCartListsCheck;
-        this.commit("doChangeIsAllCartListsCheck", state.isAllCartListsCheck);
+        // 切换子元素的选中
+        state.isCartListsAllSelected = !state.isCartListsAllSelected
+        // this.commit("doChangeIsAllCartListsCheck", state.isAllCartListsCheck);
 
     },
 

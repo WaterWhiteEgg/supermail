@@ -18,6 +18,7 @@ const store = new Vuex.Store({
     cartLists: [],
     popup: false,
     isRequest: true,
+    isCartListsAllSelected: true
   },
   mutations,
   getters,
