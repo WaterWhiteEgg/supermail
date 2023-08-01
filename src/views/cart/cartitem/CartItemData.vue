@@ -45,6 +45,7 @@ export default {
         "$store.state.isCartListsAllSelected"(newval, oldval) {
             // 获取在全局的全选按钮的布尔值切换所有被选择的item的状态
             for(let item of this.cartLists){
+                // 这样通过vuex响应按钮
                 item.isChecked = newval
 }
 
@@ -61,7 +62,6 @@ export default {
         changeChecked(checkData, item) {
             // console.log(item);
             // 切换当前数组的状态
-                console.log();
             item.isChecked = !item.isChecked;
             // 遍历后查看是否有false，如果有直接返回结果
 

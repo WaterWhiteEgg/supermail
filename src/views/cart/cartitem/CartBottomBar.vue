@@ -13,9 +13,7 @@
             <span>合计:{{ "￥" + totalPrice.toFixed(2) }}</span>
         </div>
         <div class="cartbottom_buy">
-            <span class="cartbottom_buy_button"
-                >去计算:{{ toIsChecked.length }}</span
-            >
+            <span class="cartbottom_buy_button">去计算:{{ toIsChecked }}</span>
         </div>
     </div>
 </template>
@@ -27,9 +25,11 @@ export default {
     name: "CartBottomBar",
 
     data() {
-        return {};
+        return {
+            checkedCartLists: [],
+        };
     },
-    
+
     props: {
         cartLists: {
             type: Array,
@@ -43,10 +43,16 @@ export default {
     computed: {
         toIsChecked() {
             // 计算选中的总数
-            return this.cartLists
+            this.checkedCartLists = [];
+            for (let item of this.cartLists) {
+                if (item.isChecked) {
+                    this.checkedCartLists.push(item);
+                }
+            }
+            return this.checkedCartLists.length;
         },
         totalPrice() {
-            return this.toIsChecked.reduce((preValue, item) => {
+            return this.checkedCartLists.reduce((preValue, item) => {
                 return (preValue += item.price * item.quantity);
             }, 0);
         },

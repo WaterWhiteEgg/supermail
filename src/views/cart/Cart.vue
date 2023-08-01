@@ -46,13 +46,12 @@ export default {
     },
     updated() {},
     activated() {
-
         // 活跃时就请求购物列表
         cartListsSelect(ALLCONST.codes.token)
             .then((res) => {
                 if (!res.data.status) {
                     // 验证成功后提供数组
-                    console.log(res);
+                    // console.log(res);
                     // console.log(res.data.data.data);
                     this.cartLists = res.data.data.data;
                 } else {
