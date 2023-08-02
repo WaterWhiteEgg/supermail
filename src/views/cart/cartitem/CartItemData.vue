@@ -22,6 +22,9 @@
                         item.quantity + "件"
                     }}</span>
                 </div>
+                <div class="cartitem_data_del" @click="cartitemDel(item)">
+                    <button>移除购物车</button>
+                </div>
             </div>
             <!-- {{ item }} -->
         </div>
@@ -44,11 +47,10 @@ export default {
     watch: {
         "$store.state.isCartListsAllSelected"(newval, oldval) {
             // 获取在全局的全选按钮的布尔值切换所有被选择的item的状态
-            for(let item of this.cartLists){
+            for (let item of this.cartLists) {
                 // 这样通过vuex响应按钮
-                item.isChecked = newval
-}
-
+                item.isChecked = newval;
+            }
         },
     },
     data() {
@@ -75,6 +77,11 @@ export default {
                 }
             }
             // this.$store.commit("checkIsChecked", item.isChecked);
+        },
+        cartitemDel(item) {
+            // console.log(item);
+            // 传给父组件item让其触发删除请求
+            this.$emit('removeCartitems', item);
         },
     },
 };
@@ -121,11 +128,20 @@ export default {
 .cartitem .cartitem_data .cartitem_data_price {
     display: flex;
     justify-content: space-between;
-    padding: 1rem 1rem 1rem 0;
+    padding: 1rem 1rem 0.5rem 0;
     color: red;
 }
 .cartitem .cartitem_data .cartitem_data_price .cartitem_data_price_price {
     color: #000;
     font-weight: 900;
+}
+.cartitem_data_del {
+    text-align: right;
+}
+.cartitem_data_del button {
+    padding: 0.2rem 1rem;
+    background-color: #f9dddd;
+    border: 0.2px solid #ff8686;
+    color: red;
 }
 </style>

@@ -4,6 +4,7 @@
         <scroll class="scroll" ref="scroll">
             <cart-item-data
                 :cartLists="cartLists"
+                @removeCartitems="removeCartitems"
                 class="cart_list"
             ></cart-item-data>
         </scroll>
@@ -62,7 +63,14 @@ export default {
             .catch();
     },
     mounted() {},
-    methods: {},
+    methods: {
+        removeCartitems(item) {
+            // 请求删除数据库的组件
+            cartListsRemove(ALLCONST.codes.token,item).then((result)=>{
+                console.log(result);
+            })
+        },
+    },
 };
 </script>
 
