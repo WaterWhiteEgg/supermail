@@ -23,7 +23,11 @@
                     }}</span>
                 </div>
                 <div class="cartitem_data_del" @click="cartitemDel(item)">
-                    <button>移除购物车</button>
+                    <button>
+                        <div id="loading-spinner" v-show="loadState"></div>
+
+                        移除购物车
+                    </button>
                 </div>
             </div>
             <!-- {{ item }} -->
@@ -54,7 +58,9 @@ export default {
         },
     },
     data() {
-        return {};
+        return {
+            loadState: false,
+        };
     },
 
     mounted() {},
@@ -80,14 +86,28 @@ export default {
         },
         cartitemDel(item) {
             // console.log(item);
+            // 加载动画
+            this.callbackChangeLoadState(true);
             // 传给父组件item让其触发删除请求
-            this.$emit('removeCartitems', item);
+            this.$emit("removeCartitems", item, this.callbackChangeLoadState);
+        },
+        callbackChangeLoadState(loadState) {
+            this.loadState = loadState;
         },
     },
 };
 </script>
 
 <style  scoped>
+@import url("~assets/css/loader.css");
+#loading-spinner {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 1vw;
+    height: 1vh;
+    margin: 0 5vw 0 0;
+}
 .first_cartitem {
     margin-top: 0 !important;
 }
@@ -136,9 +156,11 @@ export default {
     font-weight: 900;
 }
 .cartitem_data_del {
-    text-align: right;
+    margin-left: auto;
+    margin-right: 1vw;
 }
 .cartitem_data_del button {
+    display: flex;
     padding: 0.2rem 1rem;
     background-color: #f9dddd;
     border: 0.2px solid #ff8686;

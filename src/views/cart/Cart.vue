@@ -64,11 +64,18 @@ export default {
     },
     mounted() {},
     methods: {
-        removeCartitems(item) {
+        removeCartitems(item, callback) {
             // 请求删除数据库的组件
-            cartListsRemove(ALLCONST.codes.token,item).then((result)=>{
-                console.log(result);
-            })
+            cartListsRemove(ALLCONST.codes.token, item).then((result) => {
+                // console.log(result);
+                // 删除后再次cartListsSelect请求
+                cartListsSelect(ALLCONST.codes.token).then((result) => {
+                    // 不需要再次验证token的错误
+                    this.cartLists = result.data.data.data;
+                    // 回调状态
+                    callback(false);
+                });
+            });
         },
     },
 };
