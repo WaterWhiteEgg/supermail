@@ -389,7 +389,27 @@ const SQLcartListsRemoveUpdate = function (username, data) {
         // 将数据库的data搜索出相同iid是数据
     })
 }
-
+// 搜索收藏cartliststars里面的元素
+const selsctCartliststars = function (username) {
+    return new Promise((resolve, reject) => {
+        db.query("select * from cartliststars where username = ?", username, (err, result) => {
+            if (err) { reject(err) }
+            // 如果长度为1就证明有
+            if (result.length === 1) {
+                // uniqueData 中存储了去重后的数据
+                resolve({ status: 0, message: "查询成功", data: result })
+            } else {
+                reject("未能查询到该用户的数据")
+            }
+        })
+    })
+}
+// push收藏到数据库里
+const pushCartliststars = function (username,data) {
+    return new Promise((resolve,reject)=>{
+        resolve()
+    })
+}
 
 
 
@@ -403,3 +423,5 @@ module.exports.SQLemailCode = SQLemailCode
 module.exports.SQLregister = SQLregister
 module.exports.SQLcartListsRepeat = SQLcartListsRepeat
 module.exports.SQLcartListsRemoveUpdate = SQLcartListsRemoveUpdate
+
+module.exports.pushCartliststars = pushCartliststars

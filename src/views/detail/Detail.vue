@@ -73,6 +73,8 @@ import {
     cartListsRemove,
     cartListsSelect,
 } from "../../network/cart";
+import { favoriteStarsPush } from "../../network/favoriteStars";
+
 import ALLCONST from "../../common/const";
 export default {
     name: "Detail",
@@ -277,7 +279,6 @@ export default {
                 this.cartListsStatus = res.data.status;
                 if (!res.data.status) {
                     this.cartListsData = res.data.data.data;
-                    
                 } else {
                 }
             });
@@ -287,7 +288,6 @@ export default {
             // console.log(this.navbarOffsetTop);
             this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
         },
-
         changeCar(istrue, callbackStatus, callbackLoadState) {
             // 如果没有内容的话以及来自搜索出错就不执行了
             if (Object.keys(this.product).length == 0) {
@@ -299,7 +299,6 @@ export default {
                 this.$router.push("/request");
                 return 0;
             }
-
             // 防抖
             debounce(() => {
                 // 加载动画播放
@@ -325,6 +324,7 @@ export default {
 
                     this.$store.dispatch("shopcarData", this.product);
                 } else {
+                    // 如果是删除请求
                     cartListsRemove(ALLCONST.codes.token, this.product)
                         .then((res) => {
                             console.log(res);
@@ -348,6 +348,13 @@ export default {
         },
 
         changeStar(istrue) {
+            // 收藏提交
+            favoriteStarsPush(ALLCONST.codes.token, this.product).then(
+                (res) => {
+                    console.log(res);
+                }
+            );
+
             if (istrue) {
                 this.$store.dispatch("changeStar", this.iid);
             } else {
