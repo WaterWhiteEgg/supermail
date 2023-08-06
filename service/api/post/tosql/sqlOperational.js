@@ -397,17 +397,71 @@ const selsctCartliststars = function (username) {
             // 如果长度为1就证明有
             if (result.length === 1) {
                 // uniqueData 中存储了去重后的数据
-                resolve({ status: 0, message: "查询成功", data: result })
+                resolve({ status: 0, message: "查询成功", MYSQLdatas: result[0].data })
             } else {
                 reject("未能查询到该用户的数据")
             }
         })
     })
 }
+// 制作收藏接口的查重以及push到数据库里面
+const doPushCartliststars = function (MYSQLdatas, data, username) {
+    return new Promise((resolve, reject) => {
+        // 查重
+        let arr = []
+        // -长度为0时是空的，不需要查重
+        if (MYSQLdatas === null || MYSQLdatas.length === 0) {
+            // 添加进收藏
+            arr.push(data)
+
+        } else {
+            // -不是空的话，需要经历遍历保证里面的iid不唯一
+            const uniqueData = new Set();
+            for (const item of MYSQLdatas) {
+                // 循环遍历添加数据库的item，同时对比发送过来的data.iid，如果显示重复就提出异常
+                uniqueData.add(item.iid)
+                console.log(uniqueData.has(data.iid));
+                if (uniqueData.has(data.iid)) {
+                    reject("重复的添加")
+                }
+            }
+            // 查重通过后允许执行给数据库的数据push
+            arr = MYSQLdatas
+            arr.push(data)
+        }
+        db.query("update cartliststars SET data = ? where username = ?", [JSON.stringify(arr), username], (err, result) => {
+            if (err) { reject(err) }
+
+            if (result.affectedRows === 1) {
+                // 这里代表执行成功
+                resolve({
+                    status: 0,
+                    message: "执行成功"
+                })
+            } else {
+                reject("执行失败")
+            }
+
+        })
+
+
+    })
+}
+
 // push收藏到数据库里
-const pushCartliststars = function (username,data) {
-    return new Promise((resolve,reject)=>{
-        resolve()
+const pushCartliststars = function (username, data) {
+    return new Promise((resolve, reject) => {
+        selsctCartliststars(username).then((res) => {
+            doPushCartliststars(JSON.parse(res.MYSQLdatas), data, username).then((res2) => {
+                resolve(res2)
+
+            }).catch((err) => {
+                reject(err)
+            })
+        }).catch((err) => {
+            reject(err)
+        })
+
     })
 }
 
