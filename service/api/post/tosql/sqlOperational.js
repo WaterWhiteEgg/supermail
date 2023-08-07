@@ -381,7 +381,9 @@ const SQLcartListsRemoveUpdate = function (username, data) {
             // 更新cartlists
             SQLcartListsUpdate(res1.data, username).then((res2) => {
                 resolve(res2.message)
-            })
+            }).catch(
+                (err) => { reject(err) }
+            )
 
         }).catch(
             (err) => { reject(err) }
@@ -420,7 +422,7 @@ const doPushCartliststars = function (MYSQLdatas, data, username) {
             for (const item of MYSQLdatas) {
                 // 循环遍历添加数据库的item，同时对比发送过来的data.iid，如果显示重复就提出异常
                 uniqueData.add(item.iid)
-                console.log(uniqueData.has(data.iid));
+                // console.log(uniqueData.has(data.iid));
                 if (uniqueData.has(data.iid)) {
                     reject("重复的添加")
                 }
@@ -464,6 +466,55 @@ const pushCartliststars = function (username, data) {
 
     })
 }
+// 处理查找删除的对象以及更新数据库
+const doremoveCartliststars = function (MYSQLdatas, username, data) {
+    return new Promise((resolve, reject) => {
+        // 查询数据库数组哪个元素需要删除并且覆盖变为新数组
+        let arr = MYSQLdatas
+        // 将这个数据删除，可以这样遍历
+        for (let i = arr.length - 1; i >= 0; i--) {
+            if (arr[i].iid === data.iid) {
+                arr.splice(i, 1);
+                break; // 找到重复项后跳出内层循环
+            }
+        }
+        // 然后更新这个数组提交给数据库
+        db.query("update cartliststars SET data = ? where username = ?", [JSON.stringify(arr), username], (err, result) => {
+            if (err) { reject(err) }
+
+            if (result.affectedRows === 1) {
+                // 这里代表执行成功
+                resolve({
+                    status: 0,
+                    message: "执行成功"
+                })
+            } else {
+                reject("执行失败")
+            }
+
+
+        })
+
+    })
+}
+// 删除收藏
+const removeCartliststars = function (username, data) {
+    return new Promise((resolve, reject) => {
+        selsctCartliststars(username).then((res) => {
+            doremoveCartliststars(JSON.parse(res.MYSQLdatas), username, data).then((res2) => {
+                // 处理删除成功
+                resolve(res2)
+            })
+
+        }).catch((err) => {
+            reject(err)
+
+        }).catch(
+            (err) => { reject(err) }
+        )
+
+    })
+}
 
 
 
@@ -479,3 +530,4 @@ module.exports.SQLcartListsRepeat = SQLcartListsRepeat
 module.exports.SQLcartListsRemoveUpdate = SQLcartListsRemoveUpdate
 
 module.exports.pushCartliststars = pushCartliststars
+module.exports.removeCartliststars = removeCartliststars

@@ -73,7 +73,10 @@ import {
     cartListsRemove,
     cartListsSelect,
 } from "../../network/cart";
-import { favoriteStarsPush } from "../../network/favoriteStars";
+import {
+    favoriteStarsPush,
+    favoriteStarsRemove,
+} from "../../network/favoriteStars";
 
 import ALLCONST from "../../common/const";
 export default {
@@ -348,16 +351,21 @@ export default {
         },
 
         changeStar(istrue) {
-            // 收藏提交
-            favoriteStarsPush(ALLCONST.codes.token, this.product).then(
-                (res) => {
-                    console.log(res);
-                }
-            );
-
             if (istrue) {
+                // 收藏提交
+                favoriteStarsPush(ALLCONST.codes.token, this.product).then(
+                    (res) => {
+                        console.log(res);
+                    }
+                );
                 this.$store.dispatch("changeStar", this.iid);
             } else {
+                // 删除收藏
+                favoriteStarsRemove(ALLCONST.codes.token, this.product).then(
+                    (res) => {
+                        console.log(res);
+                    }
+                );
                 this.$store.commit("delStar", this.iid);
             }
             this.$store.commit("needChangeStar", this.iid);

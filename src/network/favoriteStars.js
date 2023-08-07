@@ -10,15 +10,15 @@ export function favoriteStarsPush(token,data) {
     })
 }
 
-// export function cartListsRemove(token,data) {
-//     return requestSelfPostAPI({
-//         url: "/shop/removedata",
-//         headers: {
-//             Authorization: `Bearer ${token}`,
-//         },  
-//         data
-//     })
-// }
+export function favoriteStarsRemove(token,data) {
+    return requestSelfPostAPI({
+        url: "/star/removedata",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },  
+        data
+    })
+}
 // export function cartListsSelect(token) {
 //     return requestSelfAPI({
 //         url: "/shop/selectdata",
