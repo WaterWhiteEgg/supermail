@@ -10,6 +10,7 @@ const validateToken = require("./api/post/validate_token")
 const cartLists = require("./api/post/cartLists")
 const getCartLists = require("./api/get/cartLists")
 const favoriteStars = require("./api/post/favoriteStars")
+const getFavoriteStars = require("./api/get/favoriteStars")
 // 自定义处理错误的包，加了个res.cc的方法   
 const error = require('./middleware/error')
 // 防止请求次数过多的三方包，封装在别的文件里
@@ -49,7 +50,7 @@ app.use(authenticateToken)
 
 // 引入需要的路由
 app.use(register, email, validateToken, cartLists, favoriteStars)
-app.use(getCartLists)
+app.use(getCartLists,getFavoriteStars)
 
 
 

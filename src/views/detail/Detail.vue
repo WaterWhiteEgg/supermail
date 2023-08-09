@@ -76,6 +76,7 @@ import {
 import {
     favoriteStarsPush,
     favoriteStarsRemove,
+    favoriteStarsSelect,
 } from "../../network/favoriteStars";
 
 import ALLCONST from "../../common/const";
@@ -223,6 +224,8 @@ export default {
     mounted() {
         // 查询购物车的数据
         this.selectCartLists();
+        // 查询收藏的数据
+        this.selectFavoriteStars();
     },
     activated() {},
 
@@ -284,6 +287,12 @@ export default {
                     this.cartListsData = res.data.data.data;
                 } else {
                 }
+            });
+        },
+        // 搜索收藏的数据
+        selectFavoriteStars() {
+            favoriteStarsSelect(ALLCONST.codes.token).then((res) => {
+                console.log(res);
             });
         },
         goOffsetTop(index) {

@@ -10,7 +10,7 @@ const crypto = require("crypto")
 const router = express.Router()
 
 
-router.post("/star/pushdata", (req, res) => {
+router.post("/star/pushdata", expressjoi(cartListsTest), (req, res) => {
     // console.log(req.body);
     pushCartliststars(req.auth.username, req.body).then((resolve) => {
         // console.log(res);

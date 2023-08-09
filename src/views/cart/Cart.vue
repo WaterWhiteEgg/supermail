@@ -64,8 +64,10 @@ export default {
     },
     mounted() {},
     methods: {
+        // 请求删除数据库
         removeCartitems(item, callback) {
-            // 请求删除数据库的组件
+        // 请求删除数据库的组件
+
             cartListsRemove(ALLCONST.codes.token, item).then((result) => {
                 // console.log(result);
                 // 删除后再次cartListsSelect请求

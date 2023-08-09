@@ -19,11 +19,11 @@ export function favoriteStarsRemove(token,data) {
         data
     })
 }
-// export function cartListsSelect(token) {
-//     return requestSelfAPI({
-//         url: "/shop/selectdata",
-//         headers: {
-//             Authorization: `Bearer ${token}`,
-//         },  
-//     })
-// }
+export function favoriteStarsSelect(token) {
+    return requestSelfAPI({
+        url: "/star/selectdata",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },  
+    })
+}
