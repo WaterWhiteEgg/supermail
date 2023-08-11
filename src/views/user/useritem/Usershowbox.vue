@@ -6,17 +6,23 @@
             <p>余额</p>
         </span>
         <span>
-            <p class="usershowbox_number">0个</p>
+            <p class="usershowbox_number">
+                {{ $store.state.cartListStarsData.length }}个
+            </p>
             <p>收藏</p>
         </span>
         <span>
-            <p class="usershowbox_number">0个</p>
+            <p class="usershowbox_number">{{ $store.state.cartListsData.length }}个</p>
             <p>购买</p>
         </span>
     </div>
 </template>
 
 <script>
+import ALLCONST from "../../../common/const";
+
+import { cartListsSelect } from "../../../network/cart";
+import { favoriteStarsSelect } from "../../../network/favoriteStars";
 export default {
     name: "Usershowbox",
 
@@ -26,7 +32,26 @@ export default {
         };
     },
 
-    mounted() {},
+    mounted() {
+        // 获取收藏栏信息
+        favoriteStarsSelect(ALLCONST.codes.token)
+            .then((res) => {
+                // 提供给vuex
+                this.$store.commit(
+                    "pushCartListStarsData",
+                    JSON.parse(res.data.data.data)
+                );
+            })
+            .catch((err) => {});
+        // 获取购物车栏信息
+        cartListsSelect(ALLCONST.codes.token)
+            .then((res) => {
+                // 提供给vuex
+                // console.log(res.data.data.data);
+                this.$store.commit("pushCartListsData", res.data.data.data);
+            })
+            .catch((err) => {});
+    },
 
     methods: {},
 };

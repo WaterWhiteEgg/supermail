@@ -149,8 +149,13 @@ const mutations = {
 
     chengeIsRequest(state, payload) {
         state.isRequest = payload
+    },
+
+    pushCartListsData(state, payload) {
+        state.cartListsData = payload
+    },
+    pushCartListStarsData(state, payload) {
+        state.cartListStarsData = payload
     }
-
-
 }
 export default mutations

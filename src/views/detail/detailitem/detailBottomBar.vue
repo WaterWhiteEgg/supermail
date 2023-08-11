@@ -11,15 +11,15 @@
                 <div>店铺</div></span
             ><span
                 class="bottombar_icon_shoucang"
-                @click="changeStar(true)"
-                v-if="$store.state.donChangeStar"
+                @click="changeStar(isChangeStar)"
+                v-if="isChangeStar"
             >
                 <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
                 <div>收藏</div>
             </span>
             <span
                 class="bottombar_icon_shoucang bottombar_icon_shoucang_Off"
-                @click="changeStar(false)"
+                @click="changeStar(isChangeStar)"
                 v-else
             >
                 <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
@@ -45,21 +45,30 @@ export default {
         Popup,
     },
     props: {
-        isIid: {
+        isCartlistIid: {
+            type: Boolean,
+            default: false,
+        },
+        isStarIid: {
             type: Boolean,
             default: false,
         },
     },
     watch: {
-        isIid(newval,oldval){
-            this.isChangeCar = !newval
-        }
+        // 根据父组件给的状态转换按钮
+        isCartlistIid(newval, oldval) {
+            this.isChangeCar = !newval;
+        },
+        isStarIid(newval, oldval) {
+            this.isChangeStar = !newval;
+        },
     },
     data() {
         return {
             popupText: "",
             loadState: false,
             isChangeCar: true,
+            isChangeStar: true,
         };
     },
     computed: {},
@@ -105,8 +114,11 @@ export default {
         callCM() {
             // alert("你拨打的用户正在跑路中，请稍后再拨");
         },
+        // 收藏切换判断以及使用什么接口
         changeStar(istrue) {
             this.$emit("changeStar", istrue);
+            // 简易切换
+            this.isChangeStar = !this.isChangeStar;
         },
     },
 };

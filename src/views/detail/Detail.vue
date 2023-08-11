@@ -40,7 +40,8 @@
         <detail-bottom-bar
             @changeCar="changeCar"
             @changeStar="changeStar"
-            :isIid="isIid"
+            :isCartlistIid="isCartlistIid"
+            :isStarIid="isStarIid"
         ></detail-bottom-bar>
     </div>
 </template>
@@ -100,8 +101,10 @@ export default {
     data() {
         return {
             iid: "",
-            status: 1,
+            cartListsPushStatus: 1,
             cartListsStatus: 0,
+            cartListStarStatus: 0,
+
             topImg: [],
             allGoodsItem: {},
             allShopInfo: {},
@@ -117,7 +120,9 @@ export default {
             popup: false,
             RecalculateScroll: 0,
             cartListsData: [],
-            isIid: false,
+            cartListStarsData: [],
+            isCartlistIid: false,
+            isStarIid: false,
         };
     },
     watch: {
@@ -127,12 +132,28 @@ export default {
         },
         cartListsData(newval, oldval) {
             // 将值循环判断是否有对应iid，有的话那就转化变删除按钮
+
             for (let obj of newval) {
                 if (obj.iid === this.iid) {
-                    this.isIid = true;
+                    this.isCartlistIid = true;
                     return 0;
                 } else {
-                    this.isIid = false;
+                    this.isCartlistIid = false;
+                }
+            }
+        },
+
+        cartListStarsData(newval, oldval) {
+            // 将值循环判断是否有对应iid，有的话那就转化变取消收藏按钮
+            // console.log(newval);
+
+
+            for (let obj of newval) {
+                if (obj.iid === this.iid) {
+                    this.isStarIid = true;
+                    return 0;
+                } else {
+                    this.isStarIid = false;
                 }
             }
         },
@@ -281,18 +302,24 @@ export default {
             cartListsSelect(ALLCONST.codes.token).then((res) => {
                 // 发送给子元素
                 // console.log(res.data.data.data);
-                // 记录状态
+                //  记录购物车搜索出来的状态
+
                 this.cartListsStatus = res.data.status;
                 if (!res.data.status) {
                     this.cartListsData = res.data.data.data;
-                } else {
                 }
             });
         },
         // 搜索收藏的数据
         selectFavoriteStars() {
             favoriteStarsSelect(ALLCONST.codes.token).then((res) => {
-                console.log(res);
+                // console.log(res);
+                //  记录收藏的状态
+                this.cartListStarStatus = res.data.status;
+                // 加载成功就解析出来赋值
+                if (!res.data.status) {
+                    this.cartListStarsData = JSON.parse(res.data.data.data);
+                }
             });
         },
         goOffsetTop(index) {
@@ -322,14 +349,14 @@ export default {
                     cartListsPush(ALLCONST.codes.token, this.product)
                         .then((res) => {
                             console.log(res);
-                            this.status = res.data.status;
+                            this.cartListsPushStatus = res.data.status;
                         })
                         .catch((err) => {
                             console.log(err);
-                            this.status = 1;
+                            this.cartListsPushStatus = 1;
                         })
                         .finally(() => {
-                            callbackStatus(this.status);
+                            callbackStatus(this.cartListsPushStatus);
                             callbackLoadState(false);
                             this.selectCartLists();
                         });
@@ -360,25 +387,38 @@ export default {
         },
 
         changeStar(istrue) {
-            if (istrue) {
-                // 收藏提交
-                favoriteStarsPush(ALLCONST.codes.token, this.product).then(
-                    (res) => {
-                        console.log(res);
-                    }
-                );
-                this.$store.dispatch("changeStar", this.iid);
-            } else {
-                // 删除收藏
-                favoriteStarsRemove(ALLCONST.codes.token, this.product).then(
-                    (res) => {
-                        console.log(res);
-                    }
-                );
-                this.$store.commit("delStar", this.iid);
+            // 如果没有内容的话以及来自搜索出错就不执行了
+            if (Object.keys(this.product).length == 0) {
+                return 0;
             }
-            this.$store.commit("needChangeStar", this.iid);
+            // 在加载页面时候记录的状态，判断未登录
+            if (this.cartListStarStatus) {
+                this.$router.push("/request");
+            }
+            // 防抖
+            debounce(() => {
+                if (istrue) {
+                    // 收藏提交
+                    favoriteStarsPush(ALLCONST.codes.token, this.product).then(
+                        (res) => {
+                            console.log(res);
+                        }
+                    );
+                    this.$store.dispatch("changeStar", this.iid);
+                } else {
+                    // 删除收藏
+                    favoriteStarsRemove(
+                        ALLCONST.codes.token,
+                        this.product
+                    ).then((res) => {
+                        console.log(res);
+                    });
+                    this.$store.commit("delStar", this.iid);
+                }
+                this.$store.commit("needChangeStar", this.iid);
+            }, 300);
         },
+        // 用于检测图片加载goodsinfo图片
         loadGoodsInfo() {
             ++this.RecalculateScroll;
         },

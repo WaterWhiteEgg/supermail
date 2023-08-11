@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <keep-alive exclude="Detail,Request">
+        <keep-alive exclude="Detail,Request,User">
             <router-view />
         </keep-alive>
         <Tabbar v-show="$store.state.needTabber"></Tabbar>

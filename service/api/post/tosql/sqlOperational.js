@@ -425,6 +425,7 @@ const doPushCartliststars = function (MYSQLdatas, data, username) {
                 // console.log(uniqueData.has(data.iid));
                 if (uniqueData.has(data.iid)) {
                     reject("重复的添加")
+                    return 0
                 }
             }
             // 查重通过后允许执行给数据库的数据push
