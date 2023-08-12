@@ -104,6 +104,7 @@ export default {
             cartListsPushStatus: 1,
             cartListsStatus: 0,
             cartListStarStatus: 0,
+            cartListStarPushStatus: 1,
 
             topImg: [],
             allGoodsItem: {},
@@ -146,7 +147,6 @@ export default {
         cartListStarsData(newval, oldval) {
             // 将值循环判断是否有对应iid，有的话那就转化变取消收藏按钮
             // console.log(newval);
-
 
             for (let obj of newval) {
                 if (obj.iid === this.iid) {
@@ -386,11 +386,13 @@ export default {
             // 加载事件
         },
 
-        changeStar(istrue) {
+        changeStar(istrue, changeStarLoadingCallback, changeStarCallback) {
             // 如果没有内容的话以及来自搜索出错就不执行了
             if (Object.keys(this.product).length == 0) {
                 return 0;
             }
+            // 加载动画
+            changeStarLoadingCallback(true);
             // 在加载页面时候记录的状态，判断未登录
             if (this.cartListStarStatus) {
                 this.$router.push("/request");
@@ -399,23 +401,39 @@ export default {
             debounce(() => {
                 if (istrue) {
                     // 收藏提交
-                    favoriteStarsPush(ALLCONST.codes.token, this.product).then(
-                        (res) => {
-                            console.log(res);
-                        }
-                    );
-                    this.$store.dispatch("changeStar", this.iid);
+                    favoriteStarsPush(ALLCONST.codes.token, this.product)
+                        .then((res) => {
+                            // console.log(res);
+
+                            this.cartListStarPushStatus = res.data.status;
+                        })
+                        .finally(() => {
+                            // 取消动画
+                            changeStarLoadingCallback(false);
+                            // 回调状态
+                            changeStarCallback(this.cartListStarPushStatus);
+                            // 重新搜索改变
+                            this.selectFavoriteStars();
+                        });
+                    // this.$store.dispatch("changeStar", this.iid);
                 } else {
                     // 删除收藏
-                    favoriteStarsRemove(
-                        ALLCONST.codes.token,
-                        this.product
-                    ).then((res) => {
-                        console.log(res);
-                    });
-                    this.$store.commit("delStar", this.iid);
+                    favoriteStarsRemove(ALLCONST.codes.token, this.product)
+                        .then((res) => {
+                            // console.log(res);
+                            this.cartListStarPushStatus = res.data.status;
+                        })
+                        .finally(() => {
+                            // 取消动画
+                            changeStarLoadingCallback(false);
+                            // 回调状态
+                            changeStarCallback(this.cartListStarPushStatus);
+                            // 重新搜索改变
+                            this.selectFavoriteStars();
+                        });
+                    // this.$store.commit("delStar", this.iid);
                 }
-                this.$store.commit("needChangeStar", this.iid);
+                // this.$store.commit("needChangeStar", this.iid);
             }, 300);
         },
         // 用于检测图片加载goodsinfo图片

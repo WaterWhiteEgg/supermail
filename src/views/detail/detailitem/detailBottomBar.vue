@@ -1,6 +1,7 @@
 <template>
     <div class="bottombar">
         <div id="loading-spinner" v-show="loadState"></div>
+
         <popup class="popup" :popupText="popupText"></popup>
         <div class="bottombar_icon">
             <span class="bottombar_icon_kefu" @click="callCM">
@@ -16,6 +17,11 @@
             >
                 <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
                 <div>收藏</div>
+                <div
+                    id="loading-spinner"
+                    class="loading_star"
+                    v-show="loadStateStar"
+                ></div>
             </span>
             <span
                 class="bottombar_icon_shoucang bottombar_icon_shoucang_Off"
@@ -24,6 +30,11 @@
             >
                 <img src="~/assets/img/svg/detail/shoucang.svg" alt="" />
                 <div>已收藏</div>
+                <div
+                    id="loading-spinner"
+                    class="loading_star"
+                    v-show="loadStateStar"
+                ></div>
             </span>
         </div>
         <div class="bottombar_car" v-if="isChangeCar">
@@ -67,6 +78,7 @@ export default {
         return {
             popupText: "",
             loadState: false,
+            loadStateStar: false,
             isChangeCar: true,
             isChangeStar: true,
         };
@@ -90,7 +102,7 @@ export default {
             if (status) {
                 this.popupText = "操作失败";
             } else {
-                this.changeText(this.isChangeCar);
+                this.changeText(this.isChangeCar, "添加到购物车", "移除购物车");
             }
             this.$store.commit("openPopup");
         },
@@ -98,27 +110,41 @@ export default {
             // 显示加载判断
             this.loadState = loadState;
         },
-        changeText(istrue) {
+        changeText(istrue, Ttext, Ftext) {
             if (istrue) {
-                this.addtext();
+                this.addtext(Ttext);
             } else {
-                this.deltext();
+                this.deltext(Ftext);
             }
         },
-        deltext() {
-            this.popupText = "移除购物车";
+        deltext(text) {
+            this.popupText = text;
         },
-        addtext() {
-            this.popupText = "添加到购物车";
+        addtext(text) {
+            this.popupText = text;
         },
         callCM() {
             // alert("你拨打的用户正在跑路中，请稍后再拨");
         },
         // 收藏切换判断以及使用什么接口
         changeStar(istrue) {
-            this.$emit("changeStar", istrue);
-            // 简易切换
-            this.isChangeStar = !this.isChangeStar;
+            this.$emit(
+                "changeStar",
+                istrue,
+                this.changeStarLoadingCallback,
+                this.changeStarCallback
+            );
+        },
+        changeStarLoadingCallback(loadStateStar) {
+            this.loadStateStar = loadStateStar;
+        },
+        changeStarCallback(status) {
+            if (status) {
+                this.popupText = "操作失败";
+            } else {
+                this.changeText(this.isChangeStar, "添加到收藏", "移除收藏");
+            }
+            this.$store.commit("openPopup");
         },
     },
 };
@@ -137,6 +163,10 @@ export default {
     padding: 0px 10px;
 
     z-index: 999;
+}
+.loading_star {
+    bottom: 0;
+    left: 40vw !important;
 }
 button {
     padding: 0;
