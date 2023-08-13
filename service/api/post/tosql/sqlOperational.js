@@ -451,7 +451,7 @@ const doPushCartliststars = function (MYSQLdatas, data, username) {
     })
 }
 
-// push收藏到数据库里
+// push收藏stars到数据库里
 const pushCartliststars = function (username, data) {
     return new Promise((resolve, reject) => {
         selsctCartliststars(username).then((res) => {

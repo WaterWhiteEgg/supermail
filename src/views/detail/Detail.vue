@@ -343,49 +343,91 @@ export default {
                 // 加载动画播放
                 callbackLoadState(true);
                 // 判断这是什么状态的提交
+
                 if (istrue) {
                     // 提交到数据库
                     // 状态默认是1，这个状态用于给子组件识别
-                    cartListsPush(ALLCONST.codes.token, this.product)
+                    this.submitCartListsPush()
                         .then((res) => {
-                            console.log(res);
-                            this.cartListsPushStatus = res.data.status;
+                            this.handleSubmitResponseCartlists(res);
                         })
                         .catch((err) => {
-                            console.log(err);
-                            this.cartListsPushStatus = 1;
+                            this.handleError(err, "cartListsPushStatus");
                         })
                         .finally(() => {
+                            // 无论如何都执行
+                            // 提交状态
+                            // console.log(this.cartListsPushStatus);
                             callbackStatus(this.cartListsPushStatus);
+                            // 结束加载动画
                             callbackLoadState(false);
+                            // 执行搜索函数(重新查找渲染)
                             this.selectCartLists();
                         });
-
-                    this.$store.dispatch("shopcarData", this.product);
+                    // this.$store.dispatch("shopcarData", this.product);
                 } else {
                     // 如果是删除请求
-                    cartListsRemove(ALLCONST.codes.token, this.product)
+                    this.removeFromCartLists()
                         .then((res) => {
-                            console.log(res);
-                            this.status = res.data.status;
+                            this.handleSubmitResponseCartlists(res);
                         })
                         .catch((err) => {
-                            console.log(err);
-                            this.status = 1;
+                            this.handleError(err, "cartListsPushStatus");
                         })
                         .finally(() => {
-                            callbackStatus(this.status);
+                            // 无论如何都执行
+                            // 提交状态
+                            callbackStatus(this.cartListsPushStatus);
+                            // 结束加载动画
                             callbackLoadState(false);
+                            // 执行搜索函数(重新查找渲染)
                             this.selectCartLists();
                         });
-                    this.$store.commit("delShopcar", this.iid);
+
+                    // this.$store.commit("delShopcar", this.iid);
                 }
 
-                this.$store.commit("needChangeShopcar", this.iid);
+                // this.$store.commit("needChangeShopcar", this.iid);
             }, 300);
             // 加载事件
         },
+        // 提交到cartlists数据库
+        submitCartListsPush() {
+            // 状态默认是1，这个状态用于给子组件识别
+            return cartListsPush(ALLCONST.codes.token, this.product);
+        },
+        // 提交到cartliststars数据库
+        submitFavoriteStarsPush() {
+            // 状态默认是1，这个状态用于给子组件识别
+            return favoriteStarsPush(ALLCONST.codes.token, this.product);
+        },
+        //cartlists 删除请求
+        removeFromCartLists() {
+            return cartListsRemove(ALLCONST.codes.token, this.product);
+        },
+        //cartliststars 删除请求
+        removeFromFavoriteStars() {
+            return favoriteStarsRemove(ALLCONST.codes.token, this.product);
+        },
+        // 记录购物车状态并提交
+        handleSubmitResponseCartlists(res) {
+            console.log(res);
+            // 将状态记录
+            this.cartListsPushStatus = res.data.status;
+        },
+        // 记录收藏状态并提交
 
+        handleSubmitResponseStar(res) {
+            console.log(res);
+            // 记录状态
+            this.cartListStarPushStatus = res.data.status;
+        },
+        // err的状态提交
+        handleError(err, errStatusName) {
+            console.log(err);
+            // 记录状态
+            this[errStatusName] = 1;
+        },
         changeStar(istrue, changeStarLoadingCallback, changeStarCallback) {
             // 如果没有内容的话以及来自搜索出错就不执行了
             if (Object.keys(this.product).length == 0) {
@@ -401,11 +443,12 @@ export default {
             debounce(() => {
                 if (istrue) {
                     // 收藏提交
-                    favoriteStarsPush(ALLCONST.codes.token, this.product)
+                    this.submitFavoriteStarsPush()
                         .then((res) => {
-                            // console.log(res);
-
-                            this.cartListStarPushStatus = res.data.status;
+                            this.handleSubmitResponseStar(res);
+                        })
+                        .catch((err) => {
+                            this.handleError(err, "cartListStarStatus");
                         })
                         .finally(() => {
                             // 取消动画
@@ -418,10 +461,12 @@ export default {
                     // this.$store.dispatch("changeStar", this.iid);
                 } else {
                     // 删除收藏
-                    favoriteStarsRemove(ALLCONST.codes.token, this.product)
+                    this.removeFromFavoriteStars()
                         .then((res) => {
-                            // console.log(res);
-                            this.cartListStarPushStatus = res.data.status;
+                            this.handleSubmitResponseStar(res);
+                        })
+                        .catch((err) => {
+                            this.handleError(err, "cartListStarStatus");
                         })
                         .finally(() => {
                             // 取消动画
