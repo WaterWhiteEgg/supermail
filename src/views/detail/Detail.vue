@@ -177,6 +177,10 @@ export default {
                 Number.MAX_VALUE,
             ];
         },
+        // 判断this.product是否有内容
+        isProductNull() {
+            return Object.keys(this.product).length == 0;
+        },
     },
 
     beforeDestroy() {
@@ -327,9 +331,10 @@ export default {
             // console.log(this.navbarOffsetTop);
             this.$refs.scroll.backTop(0, -(this.navbarOffsetTop[index] + 1));
         },
+
         changeCar(istrue, callbackStatus, callbackLoadState) {
             // 如果没有内容的话以及来自搜索出错就不执行了
-            if (Object.keys(this.product).length == 0) {
+            if (this.isProductNull) {
                 return 0;
             }
             // 以及来自搜索出错就不执行还有跳转
@@ -430,7 +435,8 @@ export default {
         },
         changeStar(istrue, changeStarLoadingCallback, changeStarCallback) {
             // 如果没有内容的话以及来自搜索出错就不执行了
-            if (Object.keys(this.product).length == 0) {
+            // 如果没有内容的话以及来自搜索出错就不执行了
+            if (this.isProductNull) {
                 return 0;
             }
             // 加载动画
