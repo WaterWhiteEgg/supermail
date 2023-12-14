@@ -8,7 +8,6 @@ const { excludedPaths } = require('../middleware/config');
 const authenticateToken = function (req, res, next) {
 
 
-
     // 检查当前请求路径是否在排除列表中
     // 首先，我们通过 typeof 操作符检查当前路径是否是一个字符串类型。如果是字符串类型，我们将当前路径
     // 与指定的路径进行严格相等比较 (===)。如果相等，
@@ -20,9 +19,6 @@ const authenticateToken = function (req, res, next) {
     // 表示当前路径不需要被排除。
 
     if (excludedPaths.some(path => {
-        if (typeof path === 'string') {
-            return req.path === path;
-        }
         if (path instanceof RegExp) {
             return path.test(req.path);
         }

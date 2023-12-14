@@ -12,6 +12,7 @@ export default {
     },
     methods: {
         changeRoute() {
+
             this.$router.push(this.this_router);
         },
     },

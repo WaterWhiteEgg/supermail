@@ -435,7 +435,6 @@ export default {
         },
         changeStar(istrue, changeStarLoadingCallback, changeStarCallback) {
             // 如果没有内容的话以及来自搜索出错就不执行了
-            // 如果没有内容的话以及来自搜索出错就不执行了
             if (this.isProductNull) {
                 return 0;
             }

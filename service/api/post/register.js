@@ -13,7 +13,6 @@ const router = express.Router()
 const { SQLusername, SQLregister, SQLrecord, SQLemailCode } = require("./tosql/sqlOperational")
 router.post("/register", expressjoi(registerText), (req, res) => {
     // 处理登录，通过表单验证的数据都是可以过了的
-
     SQLusername(req.body).then((resolve) => {
         // 查询成功时证明找到唯一的username
         SQLregister(req.body, resolve).then((resolve) => {
